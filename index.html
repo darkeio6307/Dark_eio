@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dark_eio - Premium Study & Entertainment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #09090b; color: #f4f4f5; }
+        ::-webkit-scrollbar { width: 6px; hieght: 6px; }
+        ::-webkit-scrollbar-track { background: #09090b; }
+        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
+        .tab-view { display: none; }
+        .tab-view.active { display: block; }
+    </style>
+</head>
+<body class="font-sans antialiased min-h-screen pb-20 select-none">
+
+    <div id="login-screen" class="fixed inset-0 bg-[#09090b] z-50 flex flex-col items-center justify-center p-6">
+        <div class="w-full max-w-md bg-[#18181b] border border-zinc-800 p-8 rounded-2xl shadow-2xl text-center">
+            <h1 class="text-3xl font-extrabold tracking-tighter text-red-500 mb-2">dark_eio</h1>
+            <p class="text-zinc-400 text-sm mb-8">Premium Study & Entertainment Platform</p>
+            
+            <button id="btn-google-login" class="w-full flex items-center justify-center gap-3 bg-white text-black font-semibold py-3 px-4 rounded-xl hover:bg-zinc-200 transition-all duration-200">
+                <svg class="w-5 h-5" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.53-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-8.17z"/>
+                    <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.11 0-5.74-2.11-6.68-4.96H1.21v3.15C3.18 21.88 7.31 24 12 24z"/>
+                    <path fill="#FBBC05" d="M5.32 14.24A7.16 7.16 0 0 1 4.91 12c0-.79.13-1.57.41-2.24V6.61H1.21A11.94 11.94 0 0 0 0 12c0 1.92.45 3.74 1.21 5.39l4.11-3.15z"/>
+                    <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.18 2.12 1.21 5.39l4.11 3.15c.94-2.85 3.57-4.96 6.68-4.96z"/>
+                </svg>
+                Continue with Google
+            </button>
+        </div>
+    </div>
+
+    <div id="onboarding-modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+        <div class="w-full max-w-md bg-[#18181b] border border-zinc-800 p-6 rounded-2xl">
+            <h2 class="text-xl font-bold mb-4 text-zinc-100">Complete Your Profile</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1">Class</label>
+                    <input type="text" id="onboard-class" placeholder="e.g. Class 12" class="w-full bg-[#09090b] border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-red-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1">Subjects</label>
+                    <input type="text" id="onboard-subjects" placeholder="e.g. PCM, English" class="w-full bg-[#09090b] border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-red-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1">Exam Seat / Roll No</label>
+                    <input type="text" id="onboard-seat" placeholder="Enter Seat Number" class="w-full bg-[#09090b] border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-red-500">
+                </div>
+                <button id="btn-save-onboarding" class="w-full bg-red-600 text-white font-medium py-2.5 rounded-xl hover:bg-red-700 transition">Save Profile</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="app-content" class="hidden">
+        
+        <header class="sticky top-0 bg-[#09090b]/95 backdrop-blur border-b border-zinc-800 px-4 py-3 flex items-center justify-between z-40">
+            <div>
+                <span class="text-xs text-zinc-500 block font-medium">Welcome back,</span>
+                <span id="user-display-name" class="text-sm font-bold text-zinc-200">Student</span>
+            </div>
+            <div class="bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-xl text-center">
+                <span class="text-[10px] text-zinc-500 block uppercase tracking-wider font-bold">Exam Countdown</span>
+                <span id="countdown-timer" class="text-xs font-mono font-bold text-red-400">Loading Days...</span>
+            </div>
+        </header>
+
+        <div id="sidebar-drawer" class="fixed top-0 left-0 bottom-0 w-64 bg-[#18181b] border-r border-zinc-800 transform -translate-x-full transition-transform duration-300 ease-in-out z-50 p-6 flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between mb-8">
+                    <h3 class="text-lg font-bold text-red-500 tracking-tight">dark_eio Menu</h3>
+                    <button onclick="toggleSidebar()" class="text-zinc-400 hover:text-white">✕</button>
+                </div>
+                <nav class="space-y-4">
+                    <div class="p-3 bg-zinc-900 border border-zinc-800 rounded-xl">
+                        <span class="text-xs text-zinc-400 block mb-1">Theme Status</span>
+                        <span class="text-xs text-red-400 font-bold flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Ultra Premium Dark
+                        </span>
+                    </div>
+                    <button id="sidebar-admin-link" onclick="switchTab('admin-view'); toggleSidebar();" class="hidden w-full text-left text-sm font-medium text-amber-400 hover:text-amber-300 p-2 rounded-lg hover:bg-zinc-800 transition">⚡ Admin Controls</button>
+                </nav>
+            </div>
+            <button id="btn-logout" class="w-full bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-sm font-semibold py-2.5 rounded-xl transition">Sign Out</button>
+        </div>
+
+        <main class="max-w-7xl mx-auto p-4">
+            
+            <section id="home-view" class="tab-view active space-y-6">
+                <div class="bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800 rounded-2xl p-6">
+                    <h2 class="text-xl font-bold tracking-tight text-white mb-1">नमस्ते, dark_eio Dashboard में आपका स्वागत है</h2>
+                    <p class="text-xs text-zinc-400">यहाँ आप अपने पढ़ाई के लेक्चर्स और मनोरंजन के लिए यूट्यूब क्लोन का मज़ा एक साथ ले सकते हैं।</p>
+                </div>
+                <div class="border border-zinc-800 rounded-2xl p-5 bg-zinc-900/50">
+                    <h3 class="text-sm font-bold text-zinc-300 uppercase tracking-wider mb-3">📌 Latest Update</h3>
+                    <div id="home-notice-box" class="text-sm text-zinc-400 italic">No updates posted yet.</div>
+                </div>
+            </section>
+
+            <section id="lecture-view" class="tab-view space-y-4">
+                <h2 class="text-xl font-bold tracking-tight mb-4">📚 Your Online Lectures</h2>
+                <div id="lecture-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    </div>
+            </section>
+
+            <section id="social-view" class="tab-view space-y-4">
+                <form id="yt-search-form" class="flex items-center w-full bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+                    <input type="text" id="yt-search-input" placeholder="Search entertainment/videos on YouTube..." class="w-full bg-transparent px-4 py-2.5 text-sm text-white focus:outline-none placeholder-zinc-500">
+                    <button type="submit" class="bg-zinc-800 px-5 py-2.5 hover:bg-zinc-700 transition border-l border-zinc-800">
+                        🔍
+                    </button>
+                </form>
+                <div id="yt-video-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+                    </div>
+            </section>
+
+            <section id="notice-view" class="tab-view space-y-4">
+                <h2 class="text-xl font-bold tracking-tight mb-4">🔔 Important Notice Bulletin</h2>
+                <div id="notice-list-container" class="space-y-3">
+                    </div>
+            </section>
+
+            <section id="profile-view" class="tab-view">
+                <h2 class="text-xl font-bold tracking-tight mb-6">👤 Profile Details</h2>
+                <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-4 max-w-xl">
+                    <div class="flex items-center gap-4 border-b border-zinc-800 pb-4">
+                        <div class="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center text-lg font-bold text-red-500" id="prof-avatar">U</div>
+                        <div>
+                            <h3 id="prof-name" class="font-bold text-zinc-100">Name Loading...</h3>
+                            <p id="prof-email" class="text-xs text-zinc-500">email@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div class="bg-[#09090b] p-3 rounded-xl border border-zinc-800">
+                            <span class="text-[10px] text-zinc-500 block uppercase font-bold">Class</span>
+                            <span id="prof-class" class="font-semibold text-zinc-200">-</span>
+                        </div>
+                        <div class="bg-[#09090b] p-3 rounded-xl border border-zinc-800">
+                            <span class="text-[10px] text-zinc-500 block uppercase font-bold">Subjects</span>
+                            <span id="prof-subjects" class="font-semibold text-zinc-200">-</span>
+                        </div>
+                    </div>
+                    <div class="bg-red-950/20 border border-red-900/40 p-4 rounded-xl">
+                        <span class="text-[10px] text-red-400 block uppercase font-bold tracking-wider mb-1">🎫 Exam Seat Allocation</span>
+                        <span id="prof-seat" class="text-base font-mono font-bold text-zinc-100">Not Assigned</span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="admin-view" class="tab-view space-y-6">
+                <div class="border border-amber-500/30 bg-amber-500/5 p-4 rounded-xl">
+                    <h2 class="text-xl font-bold text-amber-400 flex items-center gap-2">🛡️ Admin Control Panel</h2>
+                    <p class="text-xs text-zinc-400">Welcome Mohammad Arshad. Here you can push real-time database configurations.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl space-y-3">
+                        <h3 class="text-sm font-bold text-zinc-200">Upload New Lecture</h3>
+                        <input type="text" id="adm-lec-title" placeholder="Lecture Title" class="w-full bg-[#09090b] border border-zinc-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none">
+                        <input type="text" id="adm-lec-url" placeholder="Video URL (Drive / YouTube)" class="w-full bg-[#09090b] border border-zinc-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none">
+                        <input type="text" id="adm-lec-subject" placeholder="Subject" class="w-full bg-[#09090b] border border-zinc-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none">
+                        <button id="btn-adm-add-lec" class="w-full bg-amber-500 text-black font-bold py-2 rounded-lg text-sm transition hover:bg-amber-400">Push to Database</button>
+                    </div>
+
+                    <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl space-y-3">
+                        <h3 class="text-sm font-bold text-zinc-200">Publish New Notice</h3>
+                        <textarea id="adm-notice-msg" rows="4" placeholder="Type notice message here..." class="w-full bg-[#09090b] border border-zinc-800 rounded-lg p-3 text-sm text-white focus:outline-none"></textarea>
+                        <button id="btn-adm-add-notice" class="w-full bg-amber-500 text-black font-bold py-2 rounded-lg text-sm transition hover:bg-amber-400">Broadcast Notice</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <div id="inapp-player-modal" class="hidden fixed inset-0 bg-black/95 z-50 flex flex-col items-center justify-center p-4">
+            <div class="w-full max-w-4xl bg-[#18181b] rounded-xl overflow-hidden border border-zinc-800 relative shadow-2xl">
+                <button onclick="closeInAppPlayer()" class="absolute top-3 right-3 bg-black/60 text-white hover:bg-red-600 p-2 rounded-full transition z-10">✕</button>
+                <div class="aspect-video w-full bg-black">
+                    <iframe id="inapp-iframe" class="w-full h-full" src="" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="p-4 bg-zinc-900">
+                    <h3 id="inapp-player-title" class="text-sm font-bold text-zinc-200">Playing Video</h3>
+                </div>
+            </div>
+        </div>
+
+        <footer class="fixed bottom-0 left-0 right-0 bg-[#09090b]/95 backdrop-blur border-t border-zinc-800 flex items-center justify-around py-2 z-40">
+            <button onclick="switchTab('home-view')" class="flex flex-col items-center gap-1 text-zinc-400 focus:outline-none hover:text-white">
+                <span class="text-lg">🏠</span><span class="text-[9px] font-medium">Home</span>
+            </button>
+            <button onclick="switchTab('lecture-view')" class="flex flex-col items-center gap-1 text-zinc-400 focus:outline-none hover:text-white">
+                <span class="text-lg">📖</span><span class="text-[9px] font-medium">Lectures</span>
+            </button>
+            <button onclick="switchTab('social-view')" class="flex flex-col items-center gap-1 text-zinc-400 focus:outline-none hover:text-white">
+                <span class="text-lg">📺</span><span class="text-[9px] font-medium">Social</span>
+            </button>
+            <button onclick="switchTab('notice-view')" class="flex flex-col items-center gap-1 text-zinc-400 focus:outline-none hover:text-white">
+                <span class="text-lg">🔔</span><span class="text-[9px] font-medium">Notice</span>
+            </button>
+            <button onclick="switchTab('profile-view')" class="flex flex-col items-center gap-1 text-zinc-400 focus:outline-none hover:text-white">
+                <span class="text-lg">👤</span><span class="text-[9px] font-medium">Profile</span>
+            </button>
+            <button onclick="toggleSidebar()" class="flex flex-col items-center gap-1 text-zinc-400 focus:outline-none hover:text-white">
+                <span class="text-lg">⚙️</span><span class="text-[9px] font-medium">More</span>
+            </button>
+        </footer>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Firebase Setup using your exact configurations
+        const firebaseConfig = {
+            apiKey: "AIzaSyC-psUKqTO9u5kCuA3OUqWT63Ey0IvDei4",
+            authDomain: "study-ae01d.firebaseapp.com",
+            databaseURL: "https://study-ae01d-default-rtdb.firebaseio.com",
+            projectId: "study-ae01d",
+            storageBucket: "study-ae01d.firebasestorage.app",
+            messagingSenderId: "198271524977",
+            appId: "1:198271524977:web:d54ad6d58cd6c5c4103bd0",
+            measurementId: "G-Q51PB50Q51"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
+
+        // YouTube Data API Key 
+        const ytApiKey = 'AIzaSyAra2lkY-sdBKeahyfmb4qNlpSmnBeOnkA';
+
+        let currentUserGlobal = null;
+
+        // AUTH CONTROL LIFECYCLE STATE LSTENER
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUserGlobal = user;
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('app-content').classList.remove('hidden');
+                document.getElementById('user-display-name').innerText = user.displayName;
+                
+                // Fetch or onboard Student details
+                const userDocRef = doc(db, "users", user.uid);
+                const userDocSnap = await getDoc(userDocRef);
+
+                if (!userDocSnap.exists()) {
+                    // Show onboarding setup popup modal if profile missing
+                    document.getElementById('onboarding-modal').classList.remove('hidden');
+                } else {
+                    loadUserProfileData(userDocSnap.data());
+                }
+
+                // Check Admin Access Strategy
+                if(user.email === 'moharshad687@gmail.com') {
+                    document.getElementById('sidebar-admin-link').classList.remove('hidden');
+                }
+
+                // Initial Global App Data Fetches
+                startCountdownTimer();
+                fetchDatabaseLectures();
+                fetchDatabaseNotices();
+                loadDefaultSocialVideos();
+
+            } else {
+                // Not authenticated layout toggle reset
+                document.getElementById('login-screen').classList.remove('hidden');
+                document.getElementById('app-content').classList.add('hidden');
+            }
+        });
+
+        // ACTION HANDLE: GOOGLE POPUP LOGIN
+        document.getElementById('btn-google-login').addEventListener('click', () => {
+            signInWithPopup(auth, provider).catch(err => alert("Auth Fail: " + err.message));
+        });
+
+        // ACTION HANDLE: LOGOUT SIGN OUT SYSTEM
+        document.getElementById('btn-logout').addEventListener('click', () => {
+            signOut(auth).then(() => {
+                window.location.reload();
+            });
+        });
+
+        // ACTION HANDLE: SAVE STUDENT PROFILE ONBOARDING
+        document.getElementById('btn-save-onboarding').addEventListener('click', async () => {
+            const studentClass = document.getElementById('onboard-class').value.trim();
+            const studentSubjects = document.getElementById('onboard-subjects').value.trim();
+            const studentSeat = document.getElementById('onboard-seat').value.trim();
+
+            if(!studentClass || !studentSubjects) {
+                alert("Please fill Class and Subject details.");
+                return;
+            }
+
+            const payload = {
+                name: currentUserGlobal.displayName,
+                email: currentUserGlobal.email,
+                class: studentClass,
+                subjects: studentSubjects,
+                examSeat: studentSeat || "Not Assigned",
+                role: currentUserGlobal.email === 'moharshad687@gmail.com' ? 'admin' : 'student'
+            };
+
+            await setDoc(doc(db, "users", currentUserGlobal.uid), payload);
+            document.getElementById('onboarding-modal').classList.add('hidden');
+            loadUserProfileData(payload);
+        });
+
+        function loadUserProfileData(data) {
+            document.getElementById('prof-name').innerText = data.name || currentUserGlobal.displayName;
+            document.getElementById('prof-email').innerText = data.email;
+            document.getElementById('prof-class').innerText = data.class || "Class 12";
+            document.getElementById('prof-subjects').innerText = data.subjects || "Not Specified";
+            document.getElementById('prof-seat').innerText = data.examSeat || "Not Assigned";
+            document.getElementById('prof-avatar').innerText = (data.name || "U").charAt(0).toUpperCase();
+        }
+
+        // FEATURE 1: CORE DYNAMIC COUNTDOWN TIMER
+        function startCountdownTimer() {
+            // Target set by default for Class 12 Boards (February 15, 2027)
+            const targetDate = new Date("February 15, 2027 00:00:00").getTime();
+            
+            setInterval(() => {
+                const now = new Date().getTime();
+                const difference = targetDate - now;
+
+                if (difference < 0) {
+                    document.getElementById('countdown-timer').innerText = "Exams Started!";
+                    return;
+                }
+
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+
+                document.getElementById('countdown-timer').innerText = `${days}d : ${hours}h : ${minutes}m left`;
+            }, 1000);
+        }
+
+        // FEATURE 2: FIRESTORE LECTURES REAL-TIME RENDERING ENGINE
+        async function fetchDatabaseLectures() {
+            const container = document.getElementById('lecture-list-container');
+            container.innerHTML = `<p class="text-zinc-500 text-sm">Loading online classes links...</p>`;
+            
+            try {
+                const qSnap = await getDocs(collection(db, "lectures"));
+                container.innerHTML = '';
+                
+                if(qSnap.empty) {
+                    container.innerHTML = `<p class="text-zinc-500 text-sm italic col-span-2">No uploaded lecture sessions available.</p>`;
+                    return;
+                }
+
+                qSnap.forEach(docSnap => {
+                    const lec = docSnap.data();
+                    const card = document.createElement('div');
+                    card.className = "bg-zinc-900 border border-zinc-800 p-4 rounded-xl flex flex-col justify-between gap-3";
+                    
+                    // Simple check if link belongs to youtube to extract ID or treat as external Drive file link
+                    let clickAction = `window.open('${lec.url}', '_blank')`;
+                    if(lec.url.includes('youtube.com') || lec.url.includes('youtu.be')) {
+                        let ytId = lec.url.split('v=')[1] || lec.url.split('/').pop();
+                        if(ytId.includes('&')) ytId = ytId.split('&')[0];
+                        clickAction = `window.playInAppVideo('${ytId}', '${lec.title.replace(/'/g, "\\'")}')`;
+                    }
+
+                    card.innerHTML = `
+                        <div>
+                            <span class="text-[10px] bg-red-950 text-red-400 font-bold px-2 py-0.5 rounded-full border border-red-900/50 uppercase tracking-wider mb-2 inline-block">${lec.subject}</span>
+                            <h3 class="text-sm font-bold text-zinc-200 line-clamp-2">${lec.title}</h3>
+                        </div>
+                        <button onclick="${clickAction}" class="w-full text-center bg-zinc-800 hover:bg-zinc-700 text-zinc-100 text-xs font-semibold py-2 rounded-lg transition">▶ Watch Stream</button>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (e) {
+                container.innerHTML = `<p class="text-red-400 text-xs">Error parsing files links.</p>`;
+            }
+        }
+
+        // FEATURE 3: FIRESTORE NOTICES RENDERING
+        async function fetchDatabaseNotices() {
+            const container = document.getElementById('notice-list-container');
+            const homeNoticeBox = document.getElementById('home-notice-box');
+            container.innerHTML = '';
+
+            try {
+                const qSnap = await getDocs(collection(db, "notices"));
+                let count = 0;
+                
+                qSnap.forEach(docSnap => {
+                    const notice = docSnap.data();
+                    if(count === 0) homeNoticeBox.innerText = notice.message; // Mirror latest to Dashboard Home view
+                    
+                    const el = document.createElement('div');
+                    el.className = "bg-zinc-900/60 border border-zinc-800 p-4 rounded-xl";
+                    el.innerHTML = `<p class="text-sm text-zinc-300 leading-relaxed">${notice.message}</p>`;
+                    container.appendChild(el);
+                    count++;
+                });
+
+                if(count === 0) {
+                    container.innerHTML = `<p class="text-zinc-500 text-sm italic">No official notices right now.</p>`;
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        // FEATURE 4: INTEGRATED SOCIAL YOUTUBE CLONE COMPONENT
+        const ytGrid = document.getElementById('yt-video-grid');
+        
+        function loadDefaultSocialVideos() {
+            const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=15&q=trending+anime+gaming+music&type=video&key=${ytApiKey}`;
+            executeYoutubeFetch(url);
+        }
+
+        document.getElementById('yt-search-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const q = document.getElementById('yt-search-input').value.trim();
+            if(!q) return;
+            const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=18&q=${encodeURIComponent(q)}&type=video&key=${ytApiKey}`;
+            executeYoutubeFetch(url);
+        });
+
+        function executeYoutubeFetch(url) {
+            ytGrid.innerHTML = `<p class="text-zinc-500 text-sm col-span-3">Streaming search queries from cloud...</p>`;
+            fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                ytGrid.innerHTML = '';
+                if(!data.items || data.items.length === 0) {
+                    ytGrid.innerHTML = `<p class="text-zinc-500 text-sm col-span-3">No matching results found.</p>`;
+                    return;
+                }
+                data.items.forEach(item => {
+                    if(item.id && item.id.videoId) {
+                        const vId = item.id.videoId;
+                        const title = item.snippet.title.replace(/'/g, "\\'");
+                        const thumb = item.snippet.thumbnails.high ? item.snippet.thumbnails.high.url : item.snippet.thumbnails.medium.url;
+                        const channel = item.snippet.channelTitle;
+
+                        const card = document.createElement('div');
+                        card.className = "bg-zinc-900/40 border border-zinc-800 rounded-xl overflow-hidden cursor-pointer group";
+                        card.setAttribute('onclick', `window.playInAppVideo('${vId}', '${title}')`);
+                        card.innerHTML = `
+                            <div class="aspect-video w-full bg-zinc-800 overflow-hidden relative">
+                                <img src="${thumb}" class="w-full h-full object-cover group-hover:scale-105 transition duration-200">
+                            </div>
+                            <div class="p-3">
+                                <h4 class="text-xs font-bold text-zinc-200 line-clamp-2 leading-snug">${item.snippet.title}</h4>
+                                <p class="text-[10px] text-zinc-500 mt-1 font-semibold">${channel}</p>
+                            </div>
+                        `;
+                        ytGrid.appendChild(card);
+                    }
+                });
+            })
+            .catch(() => { ytGrid.innerHTML = `<p class="text-red-400 text-xs">API Error or Limit issues.</p>`; });
+        }
+
+        // FEATURE 5: MOHARSHAD687 EXPERT ADMIN WRITING PROTOCOLS
+        document.getElementById('btn-adm-add-lec').addEventListener('click', async () => {
+            const title = document.getElementById('adm-lec-title').value.trim();
+            const url = document.getElementById('adm-lec-url').value.trim();
+            const subject = document.getElementById('adm-lec-subject').value.trim();
+
+            if(!title || !url || !subject) return alert("Fill all lecture fields.");
+
+            await addDoc(collection(db, "lectures"), { title, url, subject, timestamp: new Date().getTime() });
+            alert("Lecture added into real-time stream successfully!");
+            document.getElementById('adm-lec-title').value = '';
+            document.getElementById('adm-lec-url').value = '';
+            document.getElementById('adm-lec-subject').value = '';
+            fetchDatabaseLectures();
+        });
+
+        document.getElementById('btn-adm-add-notice').addEventListener('click', async () => {
+            const msg = document.getElementById('adm-notice-msg').value.trim();
+            if(!msg) return alert("Write some notice message text.");
+
+            await addDoc(collection(db, "notices"), { message: msg, timestamp: new Date().getTime() });
+            alert("Broadcast notice live pushed!");
+            document.getElementById('adm-notice-msg').value = '';
+            fetchDatabaseNotices();
+        });
+
+    </script>
+
+    <script>
+        // SPA TAB MANAGER ROUTING SYSTEM
+        function switchTab(tabId) {
+            const tabs = document.querySelectorAll('.tab-view');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            const target = document.getElementById(tabId);
+            if(target) {
+                target.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // SIDEBAR DRAWER TOGGLE UTILITY
+        function toggleSidebar() {
+            const drawer = document.getElementById('sidebar-drawer');
+            if(drawer.classList.contains('-translate-x-full')) {
+                drawer.classList.remove('-translate-x-full');
+            } else {
+                drawer.classList.add('-translate-x-full');
+            }
+        }
+
+        // FULL SCREEN OVERLAY IN-APP EMBED PLAYER CONTROLS
+        window.playInAppVideo = function(id, title) {
+            const modal = document.getElementById('inapp-player-modal');
+            const iframe = document.getElementById('inapp-iframe');
+            const titleContainer = document.getElementById('inapp-player-title');
+
+            iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+            titleContainer.innerText = title;
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeInAppPlayer() {
+            const modal = document.getElementById('inapp-player-modal');
+            const iframe = document.getElementById('inapp-iframe');
+            iframe.src = '';
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+    </script>
+</body>
+</html>
