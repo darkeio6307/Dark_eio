@@ -1,1566 +1,1735 @@
-
-html_content = '''<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
   <meta name="theme-color" content="#09090b">
-  <meta name="description" content="dark_eio - UP Board Class 12 Study App">
-  <title>dark_eio — UP Board Class 12</title>
-
+  <meta name="description" content="studyPro - UP Board Class 12 Study & Mock Tests">
+  <title>studyPro — UP Board Class 12</title>
+  <link rel="manifest" href="manifest.json">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
-          fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Space Grotesk', 'sans-serif'] },
+          fontFamily: { sans: ['Inter','sans-serif'], display: ['Space Grotesk','sans-serif'] },
           colors: {
             app: {
-              bg: 'var(--app-bg)',
-              surface: 'var(--app-surface)',
-              surface2: 'var(--app-surface2)',
-              border: 'var(--app-border)',
-              text: 'var(--app-text)',
-              textMuted: 'var(--app-text-muted)',
-              textDim: 'var(--app-text-dim)',
-              accent: 'var(--app-accent)',
-              accentSoft: 'var(--app-accent-soft)',
-              danger: 'var(--app-danger)',
-              success: 'var(--app-success)',
+              bg: 'var(--app-bg)', surface: 'var(--app-surface)', surface2: 'var(--app-surface2)',
+              border: 'var(--app-border)', text: 'var(--app-text)', textMuted: 'var(--app-text-muted)',
+              textDim: 'var(--app-text-dim)', accent: 'var(--app-accent)', accentSoft: 'var(--app-accent-soft)',
+              danger: 'var(--app-danger)', success: 'var(--app-success)',
             }
           }
         }
       }
     }
   </script>
-
   <style>
     :root, .theme-light {
-      --app-bg: #f8fafc;
-      --app-surface: #ffffff;
-      --app-surface2: #f1f5f9;
-      --app-surface-rgb: 255,255,255;
-      --app-border: #e2e8f0;
-      --app-text: #0f172a;
-      --app-text-muted: #475569;
-      --app-text-dim: #94a3b8;
-      --app-accent: #0f172a;
-      --app-accent-soft: rgba(15,23,42,0.08);
-      --app-danger: #dc2626;
-      --app-success: #16a34a;
-      --app-gold: #d4af37;
+      --app-bg:#f8fafc; --app-surface:#ffffff; --app-surface2:#f1f5f9; --app-surface-rgb:255,255,255;
+      --app-border:#e2e8f0; --app-text:#0f172a; --app-text-muted:#475569; --app-text-dim:#94a3b8;
+      --app-accent:#0f172a; --app-accent-soft:rgba(15,23,42,0.08); --app-danger:#dc2626; --app-success:#16a34a;
     }
     .theme-dark {
-      --app-bg: #09090b;
-      --app-surface: #121214;
-      --app-surface2: #1c1c1f;
-      --app-surface-rgb: 18,18,20;
-      --app-border: #27272a;
-      --app-text: #e4e4e7;
-      --app-text-muted: #a1a1aa;
-      --app-text-dim: #71717a;
-      --app-accent: #e4e4e7;
-      --app-accent-soft: rgba(228,228,231,0.08);
-      --app-danger: #ef4444;
-      --app-success: #22c55e;
-      --app-gold: #d4af37;
+      --app-bg:#09090b; --app-surface:#121214; --app-surface2:#1c1c1f; --app-surface-rgb:18,18,20;
+      --app-border:#27272a; --app-text:#e4e4e7; --app-text-muted:#a1a1aa; --app-text-dim:#71717a;
+      --app-accent:#e4e4e7; --app-accent-soft:rgba(228,228,231,0.08); --app-danger:#ef4444; --app-success:#22c55e;
     }
     .theme-golden {
-      --app-bg: #0a0805;
-      --app-surface: #14100a;
-      --app-surface2: #1e180f;
-      --app-surface-rgb: 20,16,10;
-      --app-border: #2a2214;
-      --app-text: #f5e6c8;
-      --app-text-muted: #c9b896;
-      --app-text-dim: #8a7a5a;
-      --app-accent: #d4af37;
-      --app-accent-soft: rgba(212,175,55,0.12);
-      --app-danger: #ef4444;
-      --app-success: #22c55e;
-      --app-gold: #d4af37;
+      --app-bg:#1a1100; --app-surface:#241800; --app-surface2:#2e1f00; --app-surface-rgb:36,24,0;
+      --app-border:#3d2800; --app-text:#FFD700; --app-text-muted:#D4AF37; --app-text-dim:#8a7a3a;
+      --app-accent:#FFD700; --app-accent-soft:rgba(255,215,0,0.12); --app-danger:#ef4444; --app-success:#22c55e;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body {
-      height: 100%; overflow: hidden; font-family: 'Inter', sans-serif;
-      background-color: var(--app-bg); color: var(--app-text);
-      overscroll-behavior-y: none; touch-action: manipulation;
-    }
-    #main-scroll {
-      overflow-y: auto; -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin; scrollbar-color: var(--app-border) var(--app-bg);
-    }
-    #main-scroll::-webkit-scrollbar { width: 3px; }
-    #main-scroll::-webkit-scrollbar-track { background: transparent; }
-    #main-scroll::-webkit-scrollbar-thumb { background: var(--app-border); border-radius: 4px; }
-    .app-input {
-      background: var(--app-surface); border: 1.5px solid var(--app-border);
-      color: var(--app-text); border-radius: 14px; padding: 13px 16px;
-      font-size: 14px; width: 100%; transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
-      outline: none;
-    }
-    .app-input:focus {
-      border-color: var(--app-accent);
-      box-shadow: 0 0 0 4px var(--app-accent-soft);
-    }
-    .app-input::placeholder { color: var(--app-text-dim); }
-    .app-btn {
-      background: var(--app-accent); color: var(--app-bg);
-      font-weight: 700; border-radius: 14px; padding: 14px;
-      font-size: 14px; border: none; cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      position: relative; overflow: hidden;
-    }
-    .app-btn::after {
-      content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.15), transparent);
-      opacity: 0; transition: opacity 0.2s;
-    }
-    .app-btn:hover::after { opacity: 1; }
-    .app-btn:active { transform: scale(0.97); }
-    .app-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-    .app-btn-outline {
-      background: transparent; color: var(--app-text);
-      border: 1.5px solid var(--app-border);
-    }
-    .app-btn-outline:active { background: var(--app-surface2); }
-    .app-card {
-      background: var(--app-surface); border: 1px solid var(--app-border);
-      border-radius: 18px; overflow: hidden;
-      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s ease;
-      will-change: transform;
-    }
-    .app-card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
-    .app-card:active { transform: scale(0.98); }
-    @media (hover: none) { .app-card:hover { box-shadow: none; } }
-
-    #auth-screen {
-      position: fixed; inset: 0; z-index: 100;
-      background: var(--app-bg); display: flex; flex-direction: column;
-      align-items: center; justify-content: center; padding: 24px;
-      transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1);
-    }
-    #auth-screen.hidden-auth {
-      opacity: 0; pointer-events: none; transform: scale(1.05);
-    }
-    .auth-form-box {
-      width: 100%; max-width: 380px;
-      transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
-    }
-    .auth-form-box.hidden { display: none; }
-
-    .tab-view {
-      display: none; opacity: 0; transform: translateY(16px);
-      transition: opacity 0.35s cubic-bezier(0.4,0,0.2,1), transform 0.35s cubic-bezier(0.4,0,0.2,1);
-    }
-    .tab-view.active { display: block; opacity: 1; transform: translateY(0); }
-
-    .nav-btn {
-      position: relative; user-select: none; -webkit-user-select: none;
-      color: var(--app-text-dim); transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-      display: flex; flex-direction: column; align-items: center; gap: 4px;
-      padding: 6px 0;
-    }
-    .nav-btn i { font-size: 20px; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); }
-    .nav-btn span { font-size: 10px; font-weight: 600; letter-spacing: 0.02em; }
-    .nav-btn.active-tab { color: var(--app-accent); }
-    .nav-btn.active-tab i { transform: translateY(-3px) scale(1.1); }
-
-    #sidebar {
-      position: fixed; top: 0; left: 0; bottom: 0; width: 300px;
-      background: var(--app-surface); z-index: 90;
-      border-right: 1px solid var(--app-border);
-      transform: translateX(-105%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
-      display: flex; flex-direction: column;
-      box-shadow: 4px 0 24px rgba(0,0,0,0.15);
-    }
-    #sidebar.open { transform: translateX(0); }
-    #sidebar-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(8px); z-index: 80; opacity: 0;
-      pointer-events: none; transition: opacity 0.35s ease;
-    }
-    #sidebar-overlay.open { opacity: 1; pointer-events: auto; }
-
-    .theme-pill {
-      width: 36px; height: 36px; border-radius: 50%;
-      border: 2.5px solid transparent; cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-      position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    }
-    .theme-pill.active { border-color: var(--app-accent); transform: scale(1.15); box-shadow: 0 0 0 4px var(--app-accent-soft); }
-    .theme-pill:active { transform: scale(0.9); }
-
-    .modal-overlay {
-      position: fixed; inset: 0; z-index: 150;
-      background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
-      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-      display: flex; align-items: center; justify-content: center; padding: 20px;
-    }
-    .modal-overlay.open { opacity: 1; pointer-events: auto; }
-    .modal-content {
-      width: 100%; max-width: 420px; background: var(--app-surface);
-      border-radius: 24px; border: 1px solid var(--app-border);
-      box-shadow: 0 24px 48px rgba(0,0,0,0.35);
-      transform: scale(0.9) translateY(20px); opacity: 0;
-      transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
-      max-height: 90vh; overflow-y: auto;
-    }
-    .modal-overlay.open .modal-content { transform: scale(1) translateY(0); opacity: 1; }
-
-    #video-modal {
-      position: fixed; inset: 0; z-index: 200;
-      background: rgba(0,0,0,0.95); backdrop-filter: blur(12px);
-      display: flex; flex-direction: column;
-      opacity: 0; pointer-events: none; transition: opacity 0.35s ease;
-    }
-    #video-modal.open { opacity: 1; pointer-events: auto; }
-
-    #test-modal {
-      position: fixed; inset: 0; z-index: 200;
-      background: var(--app-bg);
-      display: flex; flex-direction: column;
-      opacity: 0; pointer-events: none; transition: opacity 0.35s ease;
-    }
-    #test-modal.open { opacity: 1; pointer-events: auto; }
-
-    #admin-panel {
-      position: fixed; inset: 0; z-index: 95;
-      background: var(--app-bg); display: none;
-      flex-direction: column; opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    #admin-panel.open { display: flex; opacity: 1; }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fade-up { animation: fadeUp 0.5s cubic-bezier(0.4,0,0.2,1) forwards; opacity: 0; }
-    .delay-1 { animation-delay: 0.08s; }
-    .delay-2 { animation-delay: 0.16s; }
-    .delay-3 { animation-delay: 0.24s; }
-    .delay-4 { animation-delay: 0.32s; }
-
-    @keyframes slideInRight {
-      from { transform: translateX(30px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-    .slide-in { animation: slideInRight 0.4s cubic-bezier(0.4,0,0.2,1) forwards; }
-
-    .skeleton {
-      background: linear-gradient(90deg, var(--app-surface2) 25%, var(--app-border) 50%, var(--app-surface2) 75%);
-      background-size: 200% 100%; animation: skeleton 1.5s ease infinite;
-      border-radius: 8px;
-    }
-    @keyframes skeleton {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-
-    #toast {
-      position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(120px);
-      z-index: 300; opacity: 0; transition: all 0.4s cubic-bezier(0.4,0,0.2,1); pointer-events: none;
-    }
-    #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
-    .theme-golden .gold-shimmer {
-      background: linear-gradient(135deg, #d4af37 0%, #f5e6c8 50%, #d4af37 100%);
-      background-size: 200% 200%; animation: shimmer 3s ease infinite;
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    @keyframes shimmer {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    .theme-golden .app-btn { background: linear-gradient(135deg, #d4af37, #b8941d); color: #0a0805; }
-    .theme-golden .nav-btn.active-tab { color: #d4af37; }
-
-    .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-    }
-    .glass-header {
-      background: rgba(var(--app-surface-rgb), 0.8);
-      backdrop-filter: blur(16px) saturate(1.5);
-      -webkit-backdrop-filter: blur(16px) saturate(1.5);
-    }
-    .badge {
-      display: inline-flex; align-items: center; gap: 4px;
-      font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
-      padding: 4px 10px; border-radius: 8px; border: 1px solid;
-    }
-    .progress-track {
-      height: 6px; border-radius: 999px; overflow: hidden;
-      background: var(--app-surface2); position: relative;
-    }
-    .progress-fill {
-      height: 100%; border-radius: 999px;
-      transition: width 1s cubic-bezier(0.4,0,0.2,1);
-      position: relative; overflow: hidden;
-    }
-    .progress-fill::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-      animation: progress-shine 2s ease infinite;
-    }
-    @keyframes progress-shine {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:var(--app-bg);color:var(--app-text);overscroll-behavior-y:none;touch-action:manipulation}
+    #main-scroll{overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--app-border) var(--app-bg)}
+    #main-scroll::-webkit-scrollbar{width:3px}
+    #main-scroll::-webkit-scrollbar-track{background:transparent}
+    #main-scroll::-webkit-scrollbar-thumb{background:var(--app-border);border-radius:4px}
+    .app-input{background:var(--app-surface);border:1.5px solid var(--app-border);color:var(--app-text);border-radius:14px;padding:13px 16px;font-size:14px;width:100%;transition:all .25s cubic-bezier(.4,0,.2,1);outline:none}
+    .app-input:focus{border-color:var(--app-accent);box-shadow:0 0 0 4px var(--app-accent-soft)}
+    .app-input::placeholder{color:var(--app-text-dim)}
+    .app-btn{background:var(--app-accent);color:var(--app-bg);font-weight:700;border-radius:14px;padding:14px;font-size:14px;border:none;cursor:pointer;transition:all .2s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden}
+    .app-btn:active{transform:scale(.97)}
+    .app-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .app-btn-outline{background:transparent;color:var(--app-text);border:1.5px solid var(--app-border)}
+    .app-btn-outline:active{background:var(--app-surface2)}
+    .app-card{background:var(--app-surface);border:1px solid var(--app-border);border-radius:18px;overflow:hidden;transition:transform .3s cubic-bezier(.4,0,.2,1),box-shadow .3s ease;will-change:transform}
+    .app-card:active{transform:scale(.98)}
+    #auth-screen{position:fixed;inset:0;z-index:100;background:var(--app-bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}
+    #auth-screen.hidden-auth{opacity:0;pointer-events:none;transform:scale(1.05)}
+    .auth-form-box{width:100%;max-width:380px;transition:all .4s cubic-bezier(.4,0,.2,1)}
+    .auth-form-box.hidden{display:none}
+    .tab-view{display:none;opacity:0;transform:translateY(16px);transition:opacity .35s cubic-bezier(.4,0,.2,1),transform .35s cubic-bezier(.4,0,.2,1)}
+    .tab-view.active{display:block;opacity:1;transform:translateY(0)}
+    .nav-btn{position:relative;user-select:none;-webkit-user-select:none;color:var(--app-text-dim);transition:all .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 0}
+    .nav-btn i{font-size:20px;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+    .nav-btn span{font-size:10px;font-weight:600;letter-spacing:.02em}
+    .nav-btn.active-tab{color:var(--app-accent)}
+    .nav-btn.active-tab i{transform:translateY(-3px) scale(1.1)}
+    #sidebar{position:fixed;top:0;left:0;bottom:0;width:300px;background:var(--app-surface);z-index:90;border-right:1px solid var(--app-border);transform:translateX(-105%);transition:transform .4s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;box-shadow:4px 0 24px rgba(0,0,0,.15)}
+    #sidebar.open{transform:translateX(0)}
+    #sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px);z-index:80;opacity:0;pointer-events:none;transition:opacity .35s ease}
+    #sidebar-overlay.open{opacity:1;pointer-events:auto}
+    .theme-pill{width:36px;height:36px;border-radius:50%;border:2.5px solid transparent;cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);position:relative;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+    .theme-pill.active{border-color:var(--app-accent);transform:scale(1.15);box-shadow:0 0 0 4px var(--app-accent-soft)}
+    .theme-pill:active{transform:scale(.9)}
+    .modal-overlay{position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s ease;display:flex;align-items:center;justify-content:center;padding:20px}
+    .modal-overlay.open{opacity:1;pointer-events:auto}
+    .modal-content{width:100%;max-width:420px;background:var(--app-surface);border-radius:24px;border:1px solid var(--app-border);box-shadow:0 24px 48px rgba(0,0,0,.35);transform:scale(.9) translateY(20px);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);max-height:90vh;overflow-y:auto}
+    .modal-overlay.open .modal-content{transform:scale(1) translateY(0);opacity:1}
+    #video-modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.95);backdrop-filter:blur(12px);display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .35s ease}
+    #video-modal.open{opacity:1;pointer-events:auto}
+    #test-modal{position:fixed;inset:0;z-index:200;background:var(--app-bg);display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .35s ease}
+    #test-modal.open{opacity:1;pointer-events:auto}
+    #admin-panel{position:fixed;inset:0;z-index:95;background:var(--app-bg);display:none;flex-direction:column;opacity:0;transition:opacity .3s ease}
+    #admin-panel.open{display:flex;opacity:1}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .animate-fade-up{animation:fadeUp .5s cubic-bezier(.4,0,.2,1) forwards;opacity:0}
+    .delay-1{animation-delay:.08s}.delay-2{animation-delay:.16s}.delay-3{animation-delay:.24s}.delay-4{animation-delay:.32s}
+    .delay-5{animation-delay:.40s}
+    @keyframes slideInRight{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
+    .slide-in{animation:slideInRight .4s cubic-bezier(.4,0,.2,1) forwards}
+    .skeleton{background:linear-gradient(90deg,var(--app-surface2) 25%,var(--app-border) 50%,var(--app-surface2) 75%);background-size:200% 100%;animation:skeleton 1.5s ease infinite;border-radius:8px}
+    @keyframes skeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(120px);z-index:300;opacity:0;transition:all .4s cubic-bezier(.4,0,.2,1);pointer-events:none}
+    #toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+    .theme-golden .gold-shimmer{background:linear-gradient(135deg,#FFD700 0%,#f5e6c8 50%,#FFD700 100%);background-size:200% 200%;animation:shimmer 3s ease infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    @keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    .theme-golden .app-btn{background:linear-gradient(135deg,#FFD700,#D4AF37);color:#1a1100}
+    .theme-golden .nav-btn.active-tab{color:#FFD700}
+    .pb-safe{padding-bottom:env(safe-area-inset-bottom)}
+    @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+    .glass-header{background:rgba(var(--app-surface-rgb),.8);backdrop-filter:blur(16px) saturate(1.5);-webkit-backdrop-filter:blur(16px) saturate(1.5)}
+    .badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:4px 10px;border-radius:8px;border:1px solid}
+    .progress-track{height:6px;border-radius:999px;overflow:hidden;background:var(--app-surface2);position:relative}
+    .progress-fill{height:100%;border-radius:999px;transition:width 1s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden}
+    .progress-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);animation:progress-shine 2s ease infinite}
+    @keyframes progress-shine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+    .sub-tab-btn{white-space:nowrap;padding:8px 16px;border-radius:12px;font-size:12px;font-weight:700;border:1.5px solid var(--app-border);background:var(--app-surface);color:var(--app-text-dim);transition:all .2s;cursor:pointer}
+    .sub-tab-btn.active{background:var(--app-accent);color:var(--app-bg);border-color:var(--app-accent)}
+    .glow-soon{animation:glowSoon 2s ease-in-out infinite}
+    @keyframes glowSoon{0%,100%{box-shadow:0 0 5px rgba(255,215,0,.3)}50%{box-shadow:0 0 20px rgba(255,215,0,.6)}}
+    .calc-btn{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:12px;border:1px solid var(--app-border);background:var(--app-surface2);color:var(--app-text);font-weight:700;font-size:18px;cursor:pointer;transition:all .15s}
+    .calc-btn:active{transform:scale(.95);background:var(--app-accent);color:var(--app-bg)}
+    .calc-btn-op{background:var(--app-accent-soft);color:var(--app-accent)}
+    .calc-display{width:100%;background:var(--app-surface);border:1.5px solid var(--app-border);border-radius:14px;padding:16px;font-size:24px;font-weight:700;text-align:right;color:var(--app-text);font-family:'Space Grotesk',monospace;overflow-x:auto}
+    .hw-tab-btn{white-space:nowrap;padding:8px 16px;border-radius:12px;font-size:12px;font-weight:700;border:1.5px solid var(--app-border);background:var(--app-surface);color:var(--app-text-dim);transition:all .2s;cursor:pointer}
+    .hw-tab-btn.active{background:var(--app-accent);color:var(--app-bg);border-color:var(--app-accent)}
   </style>
 </head>
 <body class="theme-dark antialiased">
 
-  <!-- ═══════════════════════════════════════════════════ -->
-  <!-- AUTHENTICATION SCREEN                              -->
-  <!-- ═══════════════════════════════════════════════════ -->
-  <div id="auth-screen">
-    <div class="w-full max-w-sm">
-      <!-- Logo -->
-      <div class="text-center space-y-3 mb-8">
-        <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg"
-          style="background: var(--app-accent-soft); border: 1px solid var(--app-border);">
-          <i class="fa-solid fa-graduation-cap text-2xl" style="color: var(--app-accent);"></i>
-        </div>
-        <h1 class="text-4xl font-extrabold tracking-tight font-display" style="color: var(--app-text);">dark_eio</h1>
-        <p class="text-sm font-medium" style="color: var(--app-text-muted);">UP Board Class 12 &bull; Study & Mock Tests</p>
+<!-- AUTH SCREEN -->
+<div id="auth-screen">
+  <div class="w-full max-w-sm">
+    <div class="text-center space-y-3 mb-8">
+      <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg" style="background:var(--app-accent-soft);border:1px solid var(--app-border)">
+        <i class="fa-solid fa-graduation-cap text-2xl" style="color:var(--app-accent)"></i>
       </div>
-
-      <!-- LOGIN FORM -->
-      <div id="login-box" class="auth-form-box space-y-4">
-        <div class="text-center mb-2">
-          <h2 class="text-xl font-bold font-display" style="color: var(--app-text);">Welcome Back</h2>
-          <p class="text-xs mt-1" style="color: var(--app-text-dim);">Log in to continue your prep</p>
-        </div>
-
-        <button id="google-login" class="app-btn app-btn-outline w-full">
-          <i class="fa-brands fa-google"></i>
-          <span>Continue with Google</span>
-        </button>
-
-        <div class="flex items-center gap-3">
-          <div class="flex-1 h-px" style="background: var(--app-border);"></div>
-          <span class="text-xs font-bold uppercase tracking-widest" style="color: var(--app-text-dim);">or</span>
-          <div class="flex-1 h-px" style="background: var(--app-border);"></div>
-        </div>
-
-        <form id="login-form" class="space-y-3">
-          <input type="email" id="login-email" class="app-input" placeholder="Email address" required autocomplete="email">
-          <input type="password" id="login-password" class="app-input" placeholder="Password" required autocomplete="current-password">
-          <button type="submit" id="login-submit" class="app-btn w-full mt-2">
-            <span>Log In</span>
-          </button>
-        </form>
-
-        <p class="text-center text-sm" style="color: var(--app-text-dim);">
-          New student? 
-          <button onclick="App.showRegister()" class="font-bold underline" style="color: var(--app-accent); background: none; border: none; cursor: pointer;">Create account</button>
-        </p>
-      </div>
-
-      <!-- REGISTER FORM -->
-      <div id="register-box" class="auth-form-box hidden space-y-4">
-        <div class="text-center mb-2">
-          <h2 class="text-xl font-bold font-display" style="color: var(--app-text);">Create Account</h2>
-          <p class="text-xs mt-1" style="color: var(--app-text-dim);">Join dark_eio for UP Board prep</p>
-        </div>
-
-        <button id="google-register" class="app-btn app-btn-outline w-full">
-          <i class="fa-brands fa-google"></i>
-          <span>Sign up with Google</span>
-        </button>
-
-        <div class="flex items-center gap-3">
-          <div class="flex-1 h-px" style="background: var(--app-border);"></div>
-          <span class="text-xs font-bold uppercase tracking-widest" style="color: var(--app-text-dim);">or</span>
-          <div class="flex-1 h-px" style="background: var(--app-border);"></div>
-        </div>
-
-        <form id="register-form" class="space-y-3">
-          <input type="text" id="reg-name" class="app-input" placeholder="Full Name" required autocomplete="name">
-          <input type="email" id="reg-email" class="app-input" placeholder="Email address" required autocomplete="email">
-          <input type="password" id="reg-password" class="app-input" placeholder="Password (min. 6 chars)" required minlength="6" autocomplete="new-password">
-          <select id="reg-class" class="app-input" style="appearance: none; background-image: url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 fill=%27%2371717a%27 viewBox=%270 0 16 16%27%3E%3Cpath d=%27M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z%27/%3E%3C/svg%3E'); background-repeat: no-repeat; background-position: right 14px center;">
-            <option value="12">Class 12</option>
-            <option value="11">Class 11</option>
-            <option value="10">Class 10</option>
-          </select>
-          <button type="submit" id="reg-submit" class="app-btn w-full mt-2">
-            <span>Create Account</span>
-          </button>
-        </form>
-
-        <p class="text-center text-sm" style="color: var(--app-text-dim);">
-          Already have an account? 
-          <button onclick="App.showLogin()" class="font-bold underline" style="color: var(--app-accent); background: none; border: none; cursor: pointer;">Log in</button>
-        </p>
-      </div>
-
-      <p class="text-center text-xs leading-relaxed mt-6" style="color: var(--app-text-dim);">
-        By continuing, you agree to our <a href="#" class="underline" style="color: var(--app-text-muted);">Terms</a> and <a href="#" class="underline" style="color: var(--app-text-muted);">Privacy Policy</a>.
-      </p>
+      <h1 class="text-4xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">studyPro</h1>
+      <p class="text-sm font-medium" style="color:var(--app-text-muted)">UP Board Class 12 &bull; Study & Mock Tests</p>
     </div>
-  </div>
 
-  <!-- ═══════════════════════════════════════════════════ -->
-  <!-- APP SHELL                                          -->
-  <!-- ═══════════════════════════════════════════════════ -->
-  <div id="app-shell" class="hidden h-full w-full flex-col">
-
-    <!-- Header -->
-    <header class="shrink-0 h-16 flex items-center justify-between px-5 z-40 border-b glass-header"
-      style="border-color: var(--app-border);">
+    <div id="login-box" class="auth-form-box space-y-4">
+      <div class="text-center mb-2">
+        <h2 class="text-xl font-bold font-display" style="color:var(--app-text)">Welcome Back</h2>
+        <p class="text-xs mt-1" style="color:var(--app-text-dim)">Log in to continue your prep</p>
+      </div>
+      <button id="google-login" class="app-btn app-btn-outline w-full">
+        <i class="fa-brands fa-google"></i><span>Continue with Google</span>
+      </button>
       <div class="flex items-center gap-3">
-        <button id="menu-btn" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-90 transition-transform"
-          style="background: var(--app-surface2); border: 1px solid var(--app-border);">
-          <i class="fa-solid fa-bars text-sm" style="color: var(--app-text-muted);"></i>
-        </button>
-        <div>
-          <span class="font-extrabold text-lg tracking-tight font-display block leading-none" style="color: var(--app-text);">dark_eio</span>
-          <span class="text-[10px] font-bold uppercase tracking-wider" style="color: var(--app-text-dim);">UP Board</span>
-        </div>
+        <div class="flex-1 h-px" style="background:var(--app-border)"></div>
+        <span class="text-xs font-bold uppercase tracking-widest" style="color:var(--app-text-dim)">or</span>
+        <div class="flex-1 h-px" style="background:var(--app-border)"></div>
       </div>
-      <div class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border" style="background: var(--app-surface2); border-color: var(--app-border);">
-        <span class="relative flex h-2.5 w-2.5">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style="background: var(--app-success);"></span>
-          <span class="relative inline-flex rounded-full h-2.5 w-2.5" style="background: var(--app-success);"></span>
-        </span>
-        <span id="exam-timer" class="text-xs font-mono font-bold tracking-wide" style="color: var(--app-text-muted);">--</span>
-      </div>
-    </header>
-
-    <!-- Scrollable Main -->
-    <main id="main-scroll" class="flex-1 relative">
-
-      <!-- HOME TAB -->
-      <section id="tab-home" class="tab-view active p-5 space-y-5 pb-28">
-        <div class="animate-fade-up">
-          <p class="text-[11px] font-bold uppercase tracking-wider mb-1" style="color: var(--app-text-dim);">Welcome back</p>
-          <h2 id="home-welcome" class="text-3xl font-extrabold tracking-tight font-display" style="color: var(--app-text);">Student</h2>
-        </div>
-
-        <div class="app-card p-5 animate-fade-up delay-1 shadow-sm">
-          <div class="flex items-center gap-2.5 mb-4">
-            <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2);">
-              <i class="fa-solid fa-bullhorn text-amber-500 text-sm"></i>
-            </div>
-            <h3 class="font-bold text-sm" style="color: var(--app-text);">Notice Board</h3>
-            <span class="ml-auto text-[10px] font-bold px-2.5 py-1 rounded-full" style="background: rgba(239,68,68,0.1); color: var(--app-danger); border: 1px solid rgba(239,68,68,0.2);">URGENT</span>
-          </div>
-          <div id="notices-list" class="space-y-3">
-            <div class="flex gap-3 items-start">
-              <div class="w-2 h-2 rounded-full bg-amber-500 mt-2 shrink-0 shadow-sm shadow-amber-500/50"></div>
-              <div>
-                <p class="text-sm leading-relaxed" style="color: var(--app-text-muted);">UP Board Physics practical exam preponed to <span class="font-semibold" style="color: var(--app-text);">28th May</span>. Report to Lab-2 at 9:00 AM.</p>
-                <p class="text-[11px] mt-1 font-medium" style="color: var(--app-text-dim);">2 hours ago</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="app-card p-5 animate-fade-up delay-2 shadow-sm">
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center gap-2.5">
-              <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2);">
-                <i class="fa-solid fa-crosshairs text-emerald-500 text-sm"></i>
-              </div>
-              <h3 class="font-bold text-sm" style="color: var(--app-text);">Next Study Goal</h3>
-            </div>
-            <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg border uppercase tracking-wider" style="background: var(--app-surface2); color: var(--app-text-dim); border-color: var(--app-border);">Today</span>
-          </div>
-          <div id="goals-list" class="space-y-4">
-            <div>
-              <div class="flex justify-between text-sm mb-2">
-                <span class="font-semibold" style="color: var(--app-text-muted);">Mathematics &mdash; Integration</span>
-                <span class="text-xs font-bold" style="color: var(--app-text-dim);">Ch. 7</span>
-              </div>
-              <div class="progress-track">
-                <div class="progress-fill bg-emerald-500" style="width: 70%;"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3 animate-fade-up delay-3">
-          <div class="app-card p-5 text-center shadow-sm">
-            <p class="text-3xl font-extrabold font-display" style="color: var(--app-text);">12</p>
-            <p class="text-[11px] font-bold uppercase tracking-wide mt-1.5" style="color: var(--app-text-dim);">Pending Tasks</p>
-          </div>
-          <div class="app-card p-5 text-center shadow-sm">
-            <p class="text-3xl font-extrabold font-display" style="color: var(--app-text);">4.2h</p>
-            <p class="text-[11px] font-bold uppercase tracking-wide mt-1.5" style="color: var(--app-text-dim);">Study Streak</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- CLASSES TAB -->
-      <section id="tab-classes" class="tab-view p-5 space-y-4 pb-28">
-        <div class="flex items-center justify-between mb-1">
-          <div>
-            <h2 class="text-2xl font-extrabold tracking-tight font-display" style="color: var(--app-text);">Classes</h2>
-            <p class="text-xs mt-0.5" style="color: var(--app-text-dim);">Video lectures &amp; notes</p>
-          </div>
-          <span class="text-[11px] font-bold px-3 py-1.5 rounded-lg border uppercase tracking-wider" style="background: var(--app-surface2); color: var(--app-text-dim); border-color: var(--app-border);">Class 12</span>
-        </div>
-        <div id="lectures-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        </div>
-      </section>
-
-      <!-- MOCK TESTS TAB -->
-      <section id="tab-tests" class="tab-view p-5 space-y-4 pb-28">
-        <div class="mb-1">
-          <h2 class="text-2xl font-extrabold tracking-tight font-display" style="color: var(--app-text);">Mock Tests</h2>
-          <p class="text-xs mt-0.5" style="color: var(--app-text-dim);">Practice with UP Board pattern tests</p>
-        </div>
-        <div id="tests-grid" class="grid grid-cols-1 gap-4">
-        </div>
-      </section>
-
-      <!-- PROFILE TAB -->
-      <section id="tab-profile" class="tab-view p-5 space-y-6 pb-28">
-        <div class="text-center py-8">
-          <div class="w-24 h-24 rounded-full mx-auto flex items-center justify-center border-2 mb-4 shadow-xl relative"
-            style="background: var(--app-surface2); border-color: var(--app-border);">
-            <span id="profile-avatar" class="text-3xl font-extrabold font-display" style="color: var(--app-text);">S</span>
-            <div class="absolute bottom-0 right-0 w-7 h-7 rounded-full border-2 flex items-center justify-center" style="background: var(--app-success); border-color: var(--app-surface);">
-              <i class="fa-solid fa-check text-white text-[10px]"></i>
-            </div>
-          </div>
-          <h2 id="profile-name" class="text-2xl font-extrabold tracking-tight font-display" style="color: var(--app-text);">Student</h2>
-          <p id="profile-class" class="text-sm mt-1 font-medium" style="color: var(--app-text-muted);">Class 12 &bull; UP Board</p>
-        </div>
-
-        <div class="app-card divide-y overflow-hidden shadow-sm" style="border-color: var(--app-border);">
-          <div class="flex items-center justify-between p-4">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl flex items-center justify-center border" style="background: var(--app-surface2); border-color: var(--app-border);">
-                <i class="fa-solid fa-id-card text-xs" style="color: var(--app-text-dim);"></i>
-              </div>
-              <div>
-                <p class="text-[11px] font-bold uppercase tracking-wider" style="color: var(--app-text-dim);">Exam Seat Number</p>
-                <p id="profile-seat" class="text-sm font-bold font-mono tracking-wide" style="color: var(--app-text);">UP-2027-88421</p>
-              </div>
-            </div>
-          </div>
-          <div class="flex items-center justify-between p-4">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl flex items-center justify-center border" style="background: var(--app-surface2); border-color: var(--app-border);">
-                <i class="fa-solid fa-book text-xs" style="color: var(--app-text-dim);"></i>
-              </div>
-              <div>
-                <p class="text-[11px] font-bold uppercase tracking-wider" style="color: var(--app-text-dim);">Subjects</p>
-                <p id="profile-subjects" class="text-sm font-bold" style="color: var(--app-text);">Hindi, English, Physics, Chemistry, Math</p>
-              </div>
-            </div>
-          </div>
-          <div class="flex items-center justify-between p-4">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl flex items-center justify-center border" style="background: var(--app-surface2); border-color: var(--app-border);">
-                <i class="fa-solid fa-envelope text-xs" style="color: var(--app-text-dim);"></i>
-              </div>
-              <div>
-                <p class="text-[11px] font-bold uppercase tracking-wider" style="color: var(--app-text-dim);">Email</p>
-                <p id="profile-email" class="text-sm font-bold" style="color: var(--app-text);">student@school.edu</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <button id="edit-profile-btn" class="app-btn app-btn-outline w-full">
-          <i class="fa-solid fa-pen-to-square"></i>
-          <span>Edit Profile</span>
-        </button>
-
-        <button onclick="App.logout()" class="w-full py-3.5 rounded-xl text-sm font-bold uppercase tracking-wider text-[11px] border active:scale-95 transition-transform"
-          style="background: var(--app-surface2); color: var(--app-text-dim); border-color: var(--app-border);">
-          Log Out
-        </button>
-      </section>
-    </main>
-
-    <!-- Bottom Nav -->
-    <nav class="shrink-0 h-[72px] grid grid-cols-4 items-end pb-3 pb-safe z-40 border-t glass-header"
-      style="border-color: var(--app-border);">
-      <button data-tab="home" class="nav-btn active-tab">
-        <i class="fa-solid fa-house"></i>
-        <span>Home</span>
-      </button>
-      <button data-tab="classes" class="nav-btn">
-        <i class="fa-solid fa-play-circle"></i>
-        <span>Classes</span>
-      </button>
-      <button data-tab="tests" class="nav-btn">
-        <i class="fa-solid fa-file-circle-check"></i>
-        <span>Tests</span>
-      </button>
-      <button data-tab="profile" class="nav-btn">
-        <i class="fa-solid fa-user"></i>
-        <span>Profile</span>
-      </button>
-    </nav>
-  </div>
-
-  <!-- ═══════════════════════════════════════════════════ -->
-  <!-- SIDEBAR DRAWER                                     -->
-  <!-- ═══════════════════════════════════════════════════ -->
-  <div id="sidebar-overlay"></div>
-  <div id="sidebar" class="pb-safe">
-    <div class="p-6 border-b flex items-center gap-3" style="border-color: var(--app-border);">
-      <div class="w-11 h-11 rounded-xl flex items-center justify-center border shadow-md" style="background: var(--app-surface2); border-color: var(--app-border);">
-        <i class="fa-solid fa-bolt text-xl" style="color: var(--app-accent);"></i>
-      </div>
-      <div>
-        <h3 class="font-bold text-lg font-display" style="color: var(--app-text);">dark_eio</h3>
-        <p class="text-[11px] font-medium" style="color: var(--app-text-dim);">v3.0 &bull; UP Board Class 12</p>
-      </div>
-    </div>
-
-    <div class="flex-1 overflow-y-auto p-5 space-y-6">
-      <div>
-        <p class="text-[11px] font-bold uppercase tracking-wider mb-3" style="color: var(--app-text-dim);">Appearance</p>
-        <div class="flex items-center gap-4">
-          <button onclick="App.setTheme('light')" class="theme-pill active" id="pill-light" style="background: #f8fafc; border-color: #cbd5e1;" title="Light"></button>
-          <button onclick="App.setTheme('dark')" class="theme-pill" id="pill-dark" style="background: #09090b; border-color: #27272a;" title="Dark"></button>
-          <button onclick="App.setTheme('golden')" class="theme-pill" id="pill-golden" style="background: linear-gradient(135deg, #d4af37, #0a0805); border-color: #d4af37;" title="Golden"></button>
-        </div>
-        <p id="theme-label" class="text-xs mt-2.5 font-semibold" style="color: var(--app-text-muted);">Dark Mode</p>
-      </div>
-
-      <div id="admin-btn-container" class="hidden">
-        <button onclick="App.openAdmin()" class="app-btn w-full" style="background: var(--app-danger);">
-          <i class="fa-solid fa-shield-halved"></i>
-          <span>Admin Dashboard</span>
-        </button>
-      </div>
-
-      <div class="h-px" style="background: var(--app-border);"></div>
-
-      <div class="space-y-1">
-        <a href="#" class="flex items-center gap-3 text-sm font-medium py-2.5 px-3 rounded-xl transition-colors" style="color: var(--app-text-muted);" onmouseover="this.style.background='var(--app-surface2)'" onmouseout="this.style.background='transparent'">
-          <i class="fa-solid fa-file-contract w-5 text-center"></i>
-          <span>Terms &amp; Conditions</span>
-        </a>
-        <a href="#" class="flex items-center gap-3 text-sm font-medium py-2.5 px-3 rounded-xl transition-colors" style="color: var(--app-text-muted);" onmouseover="this.style.background='var(--app-surface2)'" onmouseout="this.style.background='transparent'">
-          <i class="fa-solid fa-lock w-5 text-center"></i>
-          <span>Privacy Policy</span>
-        </a>
-        <a href="#" class="flex items-center gap-3 text-sm font-medium py-2.5 px-3 rounded-xl transition-colors" style="color: var(--app-text-muted);" onmouseover="this.style.background='var(--app-surface2)'" onmouseout="this.style.background='transparent'">
-          <i class="fa-solid fa-circle-info w-5 text-center"></i>
-          <span>About dark_eio</span>
-        </a>
-      </div>
-    </div>
-
-    <div class="p-5 border-t" style="border-color: var(--app-border);">
-      <p class="text-[10px] text-center font-medium" style="color: var(--app-text-dim);">
-        &copy; 2026 dark_eio. Built for UP Board students.
+      <form id="login-form" class="space-y-3">
+        <input type="email" id="login-email" class="app-input" placeholder="Email address" required autocomplete="email">
+        <input type="password" id="login-password" class="app-input" placeholder="Password" required autocomplete="current-password">
+        <button type="submit" id="login-submit" class="app-btn w-full mt-2"><span>Log In</span></button>
+      </form>
+      <p class="text-center text-sm" style="color:var(--app-text-dim)">
+        New student? <button onclick="App.showRegister()" class="font-bold underline" style="color:var(--app-accent);background:none;border:none;cursor:pointer">Create account</button>
       </p>
     </div>
+
+    <div id="register-box" class="auth-form-box hidden space-y-4">
+      <div class="text-center mb-2">
+        <h2 class="text-xl font-bold font-display" style="color:var(--app-text)">Create Account</h2>
+        <p class="text-xs mt-1" style="color:var(--app-text-dim)">Join studyPro for UP Board prep</p>
+      </div>
+      <button id="google-register" class="app-btn app-btn-outline w-full">
+        <i class="fa-brands fa-google"></i><span>Sign up with Google</span>
+      </button>
+      <div class="flex items-center gap-3">
+        <div class="flex-1 h-px" style="background:var(--app-border)"></div>
+        <span class="text-xs font-bold uppercase tracking-widest" style="color:var(--app-text-dim)">or</span>
+        <div class="flex-1 h-px" style="background:var(--app-border)"></div>
+      </div>
+      <form id="register-form" class="space-y-3">
+        <input type="text" id="reg-name" class="app-input" placeholder="Full Name" required autocomplete="name">
+        <input type="email" id="reg-email" class="app-input" placeholder="Email address" required autocomplete="email">
+        <input type="password" id="reg-password" class="app-input" placeholder="Password (min. 6 chars)" required minlength="6" autocomplete="new-password">
+        <select id="reg-class" class="app-input" style="appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 fill=%27%2371717a%27 viewBox=%270 0 16 16%27%3E%3Cpath d=%27M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z%27/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 14px center">
+          <option value="12">Class 12</option><option value="11">Class 11</option><option value="10">Class 10</option>
+        </select>
+        <button type="submit" id="reg-submit" class="app-btn w-full mt-2"><span>Create Account</span></button>
+      </form>
+      <p class="text-center text-sm" style="color:var(--app-text-dim)">
+        Already have an account? <button onclick="App.showLogin()" class="font-bold underline" style="color:var(--app-accent);background:none;border:none;cursor:pointer">Log in</button>
+      </p>
+    </div>
+
+    <p class="text-center text-xs leading-relaxed mt-6" style="color:var(--app-text-dim)">
+      By continuing, you agree to our <a href="#" onclick="App.openTerms();return false" class="underline" style="color:var(--app-text-muted)">Terms</a> and <a href="#" class="underline" style="color:var(--app-text-muted)">Privacy Policy</a>.
+    </p>
+  </div>
+</div>
+
+<!-- APP SHELL -->
+<div id="app-shell" class="hidden h-full w-full flex-col">
+  <header class="shrink-0 h-16 flex items-center justify-between px-5 z-40 border-b glass-header" style="border-color:var(--app-border)">
+    <div class="flex items-center gap-3">
+      <button id="menu-btn" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-90 transition-transform" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+        <i class="fa-solid fa-bars text-sm" style="color:var(--app-text-muted)"></i>
+      </button>
+      <div>
+        <span class="font-extrabold text-lg tracking-tight font-display block leading-none" style="color:var(--app-text)">studyPro</span>
+        <span class="text-[10px] font-bold uppercase tracking-wider" style="color:var(--app-text-dim)">UP Board</span>
+      </div>
+    </div>
+    <div id="exam-timer-badge" class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border glow-soon" style="background:var(--app-surface2);border-color:var(--app-border)">
+      <span class="relative flex h-2.5 w-2.5">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style="background:var(--app-success)"></span>
+        <span class="relative inline-flex rounded-full h-2.5 w-2.5" style="background:var(--app-success)"></span>
+      </span>
+      <span id="exam-timer" class="text-xs font-mono font-bold tracking-wide" style="color:var(--app-text-muted)">Soon...</span>
+    </div>
+  </header>
+
+  <main id="main-scroll" class="flex-1 relative">
+
+    <!-- HOME TAB -->
+    <section id="tab-home" class="tab-view active p-5 space-y-5 pb-28">
+      <div class="animate-fade-up">
+        <p class="text-[11px] font-bold uppercase tracking-wider mb-1" style="color:var(--app-text-dim)">Welcome back</p>
+        <h2 id="home-welcome" class="text-3xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">Student</h2>
+      </div>
+
+      <div class="app-card p-5 animate-fade-up delay-1 shadow-sm">
+        <div class="flex items-center gap-2.5 mb-4">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2)">
+            <i class="fa-solid fa-bullhorn text-amber-500 text-sm"></i>
+          </div>
+          <h3 class="font-bold text-sm" style="color:var(--app-text)">Notice Board</h3>
+          <span class="ml-auto text-[10px] font-bold px-2.5 py-1 rounded-full" style="background:rgba(239,68,68,0.1);color:var(--app-danger);border:1px solid rgba(239,68,68,0.2)">URGENT</span>
+        </div>
+        <div id="notices-list" class="space-y-3">
+          <div class="flex gap-3 items-start">
+            <div class="w-2 h-2 rounded-full bg-amber-500 mt-2 shrink-0 shadow-sm shadow-amber-500/50"></div>
+            <div>
+              <p class="text-sm leading-relaxed" style="color:var(--app-text-muted)">UP Board Physics practical exam preponed to <span class="font-semibold" style="color:var(--app-text)">28th May</span>.</p>
+              <p class="text-[11px] mt-1 font-medium" style="color:var(--app-text-dim)">2 hours ago</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exam Date Sheet Card -->
+      <div class="app-card p-5 animate-fade-up delay-2 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2)">
+              <i class="fa-solid fa-calendar-days text-violet-500 text-sm"></i>
+            </div>
+            <h3 class="font-bold text-sm" style="color:var(--app-text)">Exam Date Sheet</h3>
+          </div>
+          <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg border uppercase tracking-wider" style="background:var(--app-surface2);color:var(--app-text-dim);border-color:var(--app-border)">UP Board</span>
+        </div>
+        <div id="datesheet-list" class="space-y-2">
+          <p class="text-xs text-center py-4" style="color:var(--app-text-dim)">Loading date sheet...</p>
+        </div>
+      </div>
+
+      <!-- Widget 1: Formula of the Day -->
+      <div class="app-card p-5 animate-fade-up delay-3 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2)">
+              <i class="fa-solid fa-square-root-variable text-blue-500 text-sm"></i>
+            </div>
+            <h3 class="font-bold text-sm" style="color:var(--app-text)">Formula of the Day</h3>
+          </div>
+          <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg border uppercase tracking-wider" style="background:var(--app-surface2);color:var(--app-text-dim);border-color:var(--app-border)">Daily</span>
+        </div>
+        <div id="formula-widget" class="space-y-2">
+          <p class="text-sm text-center py-4" style="color:var(--app-text-dim)">Loading formula...</p>
+        </div>
+      </div>
+
+      <!-- Widget 2: Word of the Day -->
+      <div class="app-card p-5 animate-fade-up delay-4 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2)">
+              <i class="fa-solid fa-spell-check text-violet-500 text-sm"></i>
+            </div>
+            <h3 class="font-bold text-sm" style="color:var(--app-text)">Word of the Day</h3>
+          </div>
+          <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg border uppercase tracking-wider" style="background:var(--app-surface2);color:var(--app-text-dim);border-color:var(--app-border)">Vocab</span>
+        </div>
+        <div id="word-widget" class="space-y-3">
+          <p class="text-sm text-center py-4" style="color:var(--app-text-dim)">Loading word...</p>
+        </div>
+      </div>
+
+      <!-- Widget 3: Upcoming Test Alert -->
+      <div class="app-card p-5 animate-fade-up delay-5 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2)">
+              <i class="fa-solid fa-bell text-red-500 text-sm"></i>
+            </div>
+            <h3 class="font-bold text-sm" style="color:var(--app-text)">Upcoming Test Alert</h3>
+          </div>
+          <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg border uppercase tracking-wider" style="background:var(--app-surface2);color:var(--app-text-dim);border-color:var(--app-border)">Alert</span>
+        </div>
+        <div id="upcoming-test-widget" class="space-y-2">
+          <p class="text-sm text-center py-4" style="color:var(--app-text-dim)">Loading upcoming tests...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLASSES & MOCK TESTS TAB -->
+    <section id="tab-classes" class="tab-view p-5 space-y-4 pb-28">
+      <div class="flex items-center justify-between mb-1">
+        <div>
+          <h2 class="text-2xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">Study</h2>
+          <p class="text-xs mt-0.5" style="color:var(--app-text-dim)">Lectures & Mock Tests</p>
+        </div>
+        <span class="text-[11px] font-bold px-3 py-1.5 rounded-lg border uppercase tracking-wider" style="background:var(--app-surface2);color:var(--app-text-dim);border-color:var(--app-border)">Class 12</span>
+      </div>
+      <!-- Sub-tabs -->
+      <div class="flex gap-2 overflow-x-auto pb-2 -mx-5 px-5" style="scrollbar-width:none;-webkit-overflow-scrolling:touch">
+        <button onclick="App.filterSubject('all')" class="sub-tab-btn active" data-sub="all">All</button>
+        <button onclick="App.filterSubject('Hindi')" class="sub-tab-btn" data-sub="Hindi">Hin</button>
+        <button onclick="App.filterSubject('English')" class="sub-tab-btn" data-sub="English">Eng</button>
+        <button onclick="App.filterSubject('Mathematics')" class="sub-tab-btn" data-sub="Mathematics">Math</button>
+        <button onclick="App.filterSubject('Physics')" class="sub-tab-btn" data-sub="Physics">Phy</button>
+        <button onclick="App.filterSubject('Chemistry')" class="sub-tab-btn" data-sub="Chemistry">Che</button>
+      </div>
+      <div id="lectures-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+      <div class="mt-6">
+        <h3 class="font-bold text-sm mb-3 flex items-center gap-2" style="color:var(--app-text)">
+          <i class="fa-solid fa-file-circle-check" style="color:#8b5cf6"></i> Mock Tests
+        </h3>
+        <div id="tests-grid" class="grid grid-cols-1 gap-4"></div>
+      </div>
+    </section>
+
+    <!-- MEDIA TAB -->
+    <section id="tab-media" class="tab-view p-5 space-y-4 pb-28">
+      <div class="mb-2">
+        <h2 class="text-2xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">Media</h2>
+        <p class="text-xs mt-0.5" style="color:var(--app-text-dim)">Search YouTube for study breaks</p>
+      </div>
+      <form id="yt-search-form" class="flex gap-2 sticky top-0 z-10 py-2 -mx-5 px-5" style="background:var(--app-bg)">
+        <input type="text" id="yt-query" placeholder="Search music, podcasts, vlogs..." required class="app-input flex-1" style="background:var(--app-surface)">
+        <button type="submit" class="app-btn px-4" style="width:auto"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </form>
+      <div id="yt-results" class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+        <div class="text-center py-12 text-sm" style="color:var(--app-text-dim)">
+          <i class="fa-brands fa-youtube text-4xl mb-3 block" style="color:var(--app-border)"></i>
+          <p>Search for something to watch.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROFILE TAB -->
+    <section id="tab-profile" class="tab-view p-5 space-y-6 pb-28">
+      <div class="text-center py-8">
+        <div class="w-24 h-24 rounded-full mx-auto flex items-center justify-center border-2 mb-4 shadow-xl relative" style="background:var(--app-surface2);border-color:var(--app-border)">
+          <span id="profile-avatar" class="text-3xl font-extrabold font-display" style="color:var(--app-text)">S</span>
+          <div class="absolute bottom-0 right-0 w-7 h-7 rounded-full border-2 flex items-center justify-center" style="background:var(--app-success);border-color:var(--app-surface)">
+            <i class="fa-solid fa-check text-white text-[10px]"></i>
+          </div>
+        </div>
+        <h2 id="profile-name" class="text-2xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">Student</h2>
+        <p id="profile-class" class="text-sm mt-1 font-medium" style="color:var(--app-text-muted)">Class 12 &bull; UP Board</p>
+      </div>
+      <div class="app-card divide-y overflow-hidden shadow-sm" style="border-color:var(--app-border)">
+        <div class="flex items-center justify-between p-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center border" style="background:var(--app-surface2);border-color:var(--app-border)">
+              <i class="fa-solid fa-id-card text-xs" style="color:var(--app-text-dim)"></i>
+            </div>
+            <div>
+              <p class="text-[11px] font-bold uppercase tracking-wider" style="color:var(--app-text-dim)">Exam Seat Number</p>
+              <p id="profile-seat" class="text-sm font-bold font-mono tracking-wide" style="color:var(--app-text)">UP-2027-88421</p>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between p-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center border" style="background:var(--app-surface2);border-color:var(--app-border)">
+              <i class="fa-solid fa-book text-xs" style="color:var(--app-text-dim)"></i>
+            </div>
+            <div>
+              <p class="text-[11px] font-bold uppercase tracking-wider" style="color:var(--app-text-dim)">Subjects</p>
+              <p id="profile-subjects" class="text-sm font-bold" style="color:var(--app-text)">Hindi, English, Physics, Chemistry, Math</p>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between p-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center border" style="background:var(--app-surface2);border-color:var(--app-border)">
+              <i class="fa-solid fa-envelope text-xs" style="color:var(--app-text-dim)"></i>
+            </div>
+            <div>
+              <p class="text-[11px] font-bold uppercase tracking-wider" style="color:var(--app-text-dim)">Email</p>
+              <p id="profile-email" class="text-sm font-bold" style="color:var(--app-text)">student@school.edu</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button id="edit-profile-btn" class="app-btn app-btn-outline w-full">
+        <i class="fa-solid fa-pen-to-square"></i><span>Edit Profile</span>
+      </button>
+      <button onclick="App.logout()" class="w-full py-3.5 rounded-xl text-sm font-bold uppercase tracking-wider text-[11px] border active:scale-95 transition-transform" style="background:var(--app-surface2);color:var(--app-text-dim);border-color:var(--app-border)">
+        Log Out
+      </button>
+    </section>
+  </main>
+
+  <!-- Bottom Nav -->
+  <nav class="shrink-0 h-[72px] grid grid-cols-4 items-end pb-3 pb-safe z-40 border-t glass-header" style="border-color:var(--app-border)">
+    <button data-tab="home" class="nav-btn active-tab"><i class="fa-solid fa-house"></i><span>Home</span></button>
+    <button data-tab="classes" class="nav-btn"><i class="fa-solid fa-book-open"></i><span>Study</span></button>
+    <button data-tab="media" class="nav-btn"><i class="fa-brands fa-youtube"></i><span>Media</span></button>
+    <button data-tab="profile" class="nav-btn"><i class="fa-solid fa-user"></i><span>Profile</span></button>
+  </nav>
+</div>
+<!-- SIDEBAR -->
+<div id="sidebar-overlay"></div>
+<div id="sidebar" class="pb-safe">
+  <div class="p-6 border-b flex items-center gap-3" style="border-color:var(--app-border)">
+    <div class="w-11 h-11 rounded-xl flex items-center justify-center border shadow-md" style="background:var(--app-surface2);border-color:var(--app-border)">
+      <i class="fa-solid fa-bolt text-xl" style="color:var(--app-accent)"></i>
+    </div>
+    <div>
+      <h3 class="font-bold text-lg font-display" style="color:var(--app-text)">studyPro</h3>
+      <p class="text-[11px] font-medium" style="color:var(--app-text-dim)">v3.0 &bull; UP Board Class 12</p>
+    </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════════════ -->
-  <!-- EDIT PROFILE MODAL                                 -->
-  <!-- ═══════════════════════════════════════════════════ -->
-  <div id="edit-modal" class="modal-overlay">
-    <div class="modal-content p-6 space-y-5">
-      <div class="flex items-center justify-between">
-        <h3 class="font-bold text-lg font-display" style="color: var(--app-text);">Edit Profile</h3>
-        <button onclick="App.closeEditModal()" class="w-9 h-9 rounded-xl flex items-center justify-center active:scale-90 transition-transform" style="background: var(--app-surface2); border: 1px solid var(--app-border);">
-          <i class="fa-solid fa-xmark" style="color: var(--app-text-muted);"></i>
+  <div class="flex-1 overflow-y-auto p-5 space-y-6">
+    <!-- Theme Switcher -->
+    <div>
+      <p class="text-[11px] font-bold uppercase tracking-wider mb-3" style="color:var(--app-text-dim)">Appearance</p>
+      <div class="flex items-center gap-4">
+        <button onclick="App.setTheme('light')" class="theme-pill active" id="pill-light" style="background:#f8fafc;border-color:#cbd5e1" title="Light"></button>
+        <button onclick="App.setTheme('dark')" class="theme-pill" id="pill-dark" style="background:#09090b;border-color:#27272a" title="Dark"></button>
+        <button onclick="App.setTheme('golden')" class="theme-pill" id="pill-golden" style="background:linear-gradient(135deg,#FFD700,#1a1100);border-color:#FFD700" title="Golden"></button>
+      </div>
+      <p id="theme-label" class="text-xs mt-2.5 font-semibold" style="color:var(--app-text-muted)">Dark Mode</p>
+    </div>
+
+    <!-- Install App -->
+    <div id="install-container" class="hidden">
+      <button onclick="App.installApp()" class="app-btn w-full" style="background:var(--app-success)">
+        <i class="fa-solid fa-download"></i><span>Install App</span>
+      </button>
+    </div>
+
+    <!-- Mini Tools -->
+    <div>
+      <p class="text-[11px] font-bold uppercase tracking-wider mb-3" style="color:var(--app-text-dim)">Mini Tools</p>
+      <div class="space-y-2">
+        <button onclick="App.openCalculator()" class="w-full flex items-center gap-3 p-3 rounded-xl border text-sm font-medium transition-all active:scale-95" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">
+          <i class="fa-solid fa-calculator w-5 text-center"></i><span>Scientific Calculator</span>
+        </button>
+        <button onclick="App.openNotepad()" class="w-full flex items-center gap-3 p-3 rounded-xl border text-sm font-medium transition-all active:scale-95" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">
+          <i class="fa-solid fa-note-sticky w-5 text-center"></i><span>Quick Note Pad</span>
+        </button>
+        <button onclick="App.openTodo()" class="w-full flex items-center gap-3 p-3 rounded-xl border text-sm font-medium transition-all active:scale-95" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">
+          <i class="fa-solid fa-list-check w-5 text-center"></i><span>To-Do List</span>
         </button>
       </div>
-      <form id="edit-form" class="space-y-3">
-        <div>
-          <label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color: var(--app-text-dim);">Name</label>
-          <input type="text" id="edit-name" class="app-input" required>
-        </div>
-        <div>
-          <label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color: var(--app-text-dim);">Class</label>
-          <select id="edit-class" class="app-input">
-            <option value="12">Class 12</option>
-            <option value="11">Class 11</option>
-            <option value="10">Class 10</option>
-          </select>
-        </div>
-        <div>
-          <label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color: var(--app-text-dim);">Subjects (comma separated)</label>
-          <input type="text" id="edit-subjects" class="app-input" placeholder="Hindi, English, Physics...">
-        </div>
-        <div>
-          <label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color: var(--app-text-dim);">Exam Seat Number</label>
-          <input type="text" id="edit-seat" class="app-input" placeholder="UP-2027-XXXXX">
-        </div>
-        <button type="submit" class="app-btn w-full mt-2">Save Changes</button>
+    </div>
+
+    <!-- Summer Homework -->
+    <div>
+      <p class="text-[11px] font-bold uppercase tracking-wider mb-3" style="color:var(--app-text-dim)">Vacation</p>
+      <button onclick="App.openHomework()" class="w-full flex items-center gap-3 p-3 rounded-xl border text-sm font-medium transition-all active:scale-95" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">
+        <i class="fa-solid fa-sun w-5 text-center" style="color:#f59e0b"></i><span>Summer Homework</span>
+      </button>
+    </div>
+
+    <div class="h-px" style="background:var(--app-border)"></div>
+
+    <!-- Admin Button -->
+    <div id="admin-btn-container" class="hidden">
+      <button onclick="App.openAdmin()" class="app-btn w-full" style="background:var(--app-danger)">
+        <i class="fa-solid fa-shield-halved"></i><span>Admin Dashboard</span>
+      </button>
+    </div>
+
+    <div class="h-px" style="background:var(--app-border)"></div>
+
+    <!-- Links -->
+    <div class="space-y-1">
+      <button onclick="App.openTerms()" class="w-full flex items-center gap-3 text-sm font-medium py-2.5 px-3 rounded-xl text-left transition-colors" style="color:var(--app-text-muted)">
+        <i class="fa-solid fa-file-contract w-5 text-center"></i><span>Terms & Conditions</span>
+      </button>
+      <button onclick="App.openAbout()" class="w-full flex items-center gap-3 text-sm font-medium py-2.5 px-3 rounded-xl text-left transition-colors" style="color:var(--app-text-muted)">
+        <i class="fa-solid fa-circle-info w-5 text-center"></i><span>About studyPro</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="p-5 border-t" style="border-color:var(--app-border)">
+    <p class="text-[10px] text-center font-medium" style="color:var(--app-text-dim)">&copy; 2026 studyPro. Built for UP Board students.</p>
+  </div>
+</div>
+
+<!-- EDIT PROFILE MODAL -->
+<div id="edit-modal" class="modal-overlay">
+  <div class="modal-content p-6 space-y-5">
+    <div class="flex items-center justify-between">
+      <h3 class="font-bold text-lg font-display" style="color:var(--app-text)">Edit Profile</h3>
+      <button onclick="App.closeEditModal()" class="w-9 h-9 rounded-xl flex items-center justify-center active:scale-90 transition-transform" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+        <i class="fa-solid fa-xmark" style="color:var(--app-text-muted)"></i>
+      </button>
+    </div>
+    <form id="edit-form" class="space-y-3">
+      <div><label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Name</label><input type="text" id="edit-name" class="app-input" required></div>
+      <div><label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Class</label>
+        <select id="edit-class" class="app-input"><option value="12">Class 12</option><option value="11">Class 11</option><option value="10">Class 10</option></select>
+      </div>
+      <div><label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Subjects</label><input type="text" id="edit-subjects" class="app-input" placeholder="Hindi, English, Physics..."></div>
+      <div><label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Exam Seat Number</label><input type="text" id="edit-seat" class="app-input" placeholder="UP-2027-XXXXX"></div>
+      <button type="submit" class="app-btn w-full mt-2">Save Changes</button>
+    </form>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin-panel" class="pb-safe">
+  <header class="shrink-0 h-16 flex items-center justify-between px-5 border-b glass-header" style="border-color:var(--app-border);background:var(--app-surface)">
+    <div class="flex items-center gap-3">
+      <button onclick="App.closeAdmin()" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-90 transition-transform" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+        <i class="fa-solid fa-arrow-left text-sm" style="color:var(--app-text-muted)"></i>
+      </button>
+      <span class="font-extrabold text-lg tracking-tight font-display" style="color:var(--app-text)">Admin</span>
+    </div>
+  </header>
+  <main id="admin-scroll" class="flex-1 overflow-y-auto p-5 space-y-6 pb-28">
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-bullhorn" style="color:var(--app-danger)"></i> Push Notice</h3>
+      <form id="notice-form" class="space-y-3">
+        <input type="text" id="notice-title" class="app-input" placeholder="Notice title..." required>
+        <textarea id="notice-body" class="app-input h-24 resize-none" placeholder="Notice body text..." required></textarea>
+        <select id="notice-priority" class="app-input"><option value="normal">Normal</option><option value="urgent">Urgent</option></select>
+        <button type="submit" class="app-btn w-full">Publish Notice</button>
       </form>
     </div>
-  </div>
 
-  <!-- ═══════════════════════════════════════════════════ -->
-  <!-- ADMIN PANEL                                        -->
-  <!-- ═══════════════════════════════════════════════════ -->
-  <div id="admin-panel" class="pb-safe">
-    <header class="shrink-0 h-16 flex items-center justify-between px-5 border-b glass-header" style="border-color: var(--app-border); background: var(--app-surface);">
-      <div class="flex items-center gap-3">
-        <button onclick="App.closeAdmin()" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-90 transition-transform" style="background: var(--app-surface2); border: 1px solid var(--app-border);">
-          <i class="fa-solid fa-arrow-left text-sm" style="color: var(--app-text-muted);"></i>
-        </button>
-        <span class="font-extrabold text-lg tracking-tight font-display" style="color: var(--app-text);">Admin</span>
-      </div>
-    </header>
-    <main id="admin-scroll" class="flex-1 overflow-y-auto p-5 space-y-6 pb-28">
-      <div class="app-card p-5 shadow-sm">
-        <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color: var(--app-text);">
-          <i class="fa-solid fa-bullhorn" style="color: var(--app-danger);"></i>
-          Push Notice
-        </h3>
-        <form id="notice-form" class="space-y-3">
-          <input type="text" id="notice-title" class="app-input" placeholder="Notice title..." required>
-          <textarea id="notice-body" class="app-input h-24 resize-none" placeholder="Notice body text..." required></textarea>
-          <select id="notice-priority" class="app-input">
-            <option value="normal">Normal</option>
-            <option value="urgent">Urgent</option>
-          </select>
-          <button type="submit" class="app-btn w-full">Publish Notice</button>
-        </form>
-      </div>
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-video" style="color:var(--app-success)"></i> Add Lecture</h3>
+      <form id="lecture-form" class="space-y-3">
+        <input type="text" id="lec-title" class="app-input" placeholder="Lecture title..." required>
+        <select id="lec-subject" class="app-input">
+          <option value="Hindi">Hindi</option><option value="English">English</option><option value="Mathematics">Mathematics</option><option value="Physics">Physics</option><option value="Chemistry">Chemistry</option>
+        </select>
+        <input type="text" id="lec-chapter" class="app-input" placeholder="Chapter (e.g. Ch. 7)" required>
+        <input type="url" id="lec-url" class="app-input" placeholder="Video URL (optional)">
+        <button type="submit" class="app-btn w-full">Add Lecture</button>
+      </form>
+    </div>
 
-      <div class="app-card p-5 shadow-sm">
-        <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color: var(--app-text);">
-          <i class="fa-solid fa-video" style="color: var(--app-success);"></i>
-          Add Lecture
-        </h3>
-        <form id="lecture-form" class="space-y-3">
-          <input type="text" id="lec-title" class="app-input" placeholder="Lecture title..." required>
-          <input type="text" id="lec-subject" class="app-input" placeholder="Subject (Physics, Chem...)" required>
-          <input type="text" id="lec-chapter" class="app-input" placeholder="Chapter (e.g. Ch. 7)" required>
-          <input type="url" id="lec-url" class="app-input" placeholder="Video URL (optional)">
-          <button type="submit" class="app-btn w-full">Add Lecture</button>
-        </form>
-      </div>
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-file-circle-check" style="color:#8b5cf6"></i> Add Mock Test</h3>
+      <form id="test-form" class="space-y-3">
+        <input type="text" id="test-title" class="app-input" placeholder="Test title..." required>
+        <select id="test-subject" class="app-input">
+          <option value="Hindi">Hindi</option><option value="English">English</option><option value="Mathematics">Mathematics</option><option value="Physics">Physics</option><option value="Chemistry">Chemistry</option>
+        </select>
+        <textarea id="test-desc" class="app-input h-20 resize-none" placeholder="Short description..."></textarea>
+        <input type="url" id="test-link" class="app-input" placeholder="Google Drive / Form Link" required>
+        <input type="date" id="test-date" class="app-input" required>
+        <div class="grid grid-cols-2 gap-3">
+          <input type="number" id="test-duration" class="app-input" placeholder="Duration (min)" min="1" value="60">
+          <input type="number" id="test-marks" class="app-input" placeholder="Max Marks" min="1" value="100">
+        </div>
+        <button type="submit" class="app-btn w-full">Add Mock Test</button>
+      </form>
+    </div>
 
-      <div class="app-card p-5 shadow-sm">
-        <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color: var(--app-text);">
-          <i class="fa-solid fa-file-circle-check" style="color: #8b5cf6;"></i>
-          Add Mock Test
-        </h3>
-        <form id="test-form" class="space-y-3">
-          <input type="text" id="test-title" class="app-input" placeholder="Test title..." required>
-          <input type="text" id="test-subject" class="app-input" placeholder="Subject" required>
-          <textarea id="test-desc" class="app-input h-20 resize-none" placeholder="Short description..."></textarea>
-          <input type="url" id="test-link" class="app-input" placeholder="Google Drive / Form Link" required>
-          <div class="grid grid-cols-2 gap-3">
-            <input type="number" id="test-duration" class="app-input" placeholder="Duration (min)" min="1" value="60">
-            <input type="number" id="test-marks" class="app-input" placeholder="Max Marks" min="1" value="100">
-          </div>
-          <button type="submit" class="app-btn w-full">Add Mock Test</button>
-        </form>
-      </div>
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-calendar-plus" style="color:var(--app-accent)"></i> Add Exam Date</h3>
+      <form id="datesheet-form" class="space-y-3">
+        <input type="text" id="ds-name" class="app-input" placeholder="Exam Name (e.g. Pre-Board)" required>
+        <select id="ds-subject" class="app-input">
+          <option value="Hindi">Hindi</option><option value="English">English</option><option value="Mathematics">Mathematics</option><option value="Physics">Physics</option><option value="Chemistry">Chemistry</option>
+        </select>
+        <input type="date" id="ds-date" class="app-input" required>
+        <select id="ds-shift" class="app-input">
+          <option value="Morning">Morning Shift</option><option value="Evening">Evening Shift</option>
+        </select>
+        <input type="time" id="ds-time" class="app-input" required>
+        <button type="submit" class="app-btn w-full">Add to Date Sheet</button>
+      </form>
+    </div>
 
-      <div class="app-card p-5 shadow-sm">
-        <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color: var(--app-text);">
-          <i class="fa-solid fa-list-check" style="color: var(--app-accent);"></i>
-          Manage Mock Tests
-        </h3>
-        <div id="admin-tests-list" class="space-y-3">
-          <p class="text-xs text-center py-4" style="color: var(--app-text-dim);">Loading tests...</p>
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-square-root-variable" style="color:#3b82f6"></i> Formula of the Day</h3>
+      <form id="formula-form" class="space-y-3">
+        <input type="text" id="formula-title" class="app-input" placeholder="Formula Title (e.g. Newton's Second Law)" required>
+        <input type="text" id="formula-math" class="app-input" placeholder="Formula (e.g. F = ma)" required>
+        <textarea id="formula-desc" class="app-input h-20 resize-none" placeholder="Brief description..."></textarea>
+        <button type="submit" class="app-btn w-full">Update Formula</button>
+      </form>
+    </div>
+
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-spell-check" style="color:#8b5cf6"></i> Word of the Day</h3>
+      <form id="word-form" class="space-y-3">
+        <input type="text" id="word-en" class="app-input" placeholder="English Word" required>
+        <input type="text" id="word-hi" class="app-input" placeholder="Hindi Meaning" required>
+        <input type="text" id="word-syn" class="app-input" placeholder="Synonyms (comma separated)">
+        <input type="text" id="word-ex" class="app-input" placeholder="Example Sentence">
+        <button type="submit" class="app-btn w-full">Update Word</button>
+      </form>
+    </div>
+
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-sun" style="color:#f59e0b"></i> Push Summer Homework</h3>
+      <form id="homework-form" class="space-y-3">
+        <select id="hw-subject" class="app-input">
+          <option value="Hindi">Hindi</option><option value="English">English</option><option value="Mathematics">Mathematics</option><option value="Physics">Physics</option><option value="Chemistry">Chemistry</option>
+        </select>
+        <input type="text" id="hw-teacher" class="app-input" placeholder="Teacher Name" required>
+        <input type="tel" id="hw-mobile" class="app-input" placeholder="Teacher Mobile" required>
+        <textarea id="hw-content" class="app-input h-40 resize-none" placeholder="Homework content (supports multiple lines)..." required></textarea>
+        <button type="submit" class="app-btn w-full">Publish Homework</button>
+      </form>
+    </div>
+
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-list-check" style="color:var(--app-accent)"></i> Manage Mock Tests</h3>
+      <div id="admin-tests-list" class="space-y-3"><p class="text-xs text-center py-4" style="color:var(--app-text-dim)">Loading tests...</p></div>
+    </div>
+
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-calendar-days" style="color:var(--app-accent)"></i> Exam Date Sheet</h3>
+      <div id="admin-datesheet-list" class="space-y-3"><p class="text-xs text-center py-4" style="color:var(--app-text-dim)">Loading dates...</p></div>
+    </div>
+
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-users" style="color:var(--app-success)"></i> User Stats</h3>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="p-4 rounded-xl border text-center" style="background:var(--app-surface2);border-color:var(--app-border)">
+          <p id="stat-users" class="text-2xl font-extrabold font-display" style="color:var(--app-text)">--</p>
+          <p class="text-[10px] font-bold uppercase tracking-wide mt-1" style="color:var(--app-text-dim)">Total Users</p>
+        </div>
+        <div class="p-4 rounded-xl border text-center" style="background:var(--app-surface2);border-color:var(--app-border)">
+          <p id="stat-tests" class="text-2xl font-extrabold font-display" style="color:var(--app-text)">--</p>
+          <p class="text-[10px] font-bold uppercase tracking-wide mt-1" style="color:var(--app-text-dim)">Mock Tests</p>
         </div>
       </div>
+    </div>
+  </main>
+</div>
 
-      <div class="app-card p-5 shadow-sm">
-        <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color: var(--app-text);">
-          <i class="fa-solid fa-calendar-day" style="color: var(--app-accent);"></i>
-          Global Exam Date
-        </h3>
-        <form id="exam-form" class="space-y-3">
-          <input type="date" id="exam-date-input" class="app-input" required>
-          <button type="submit" class="app-btn w-full">Update Countdown</button>
-        </form>
-        <p class="text-xs mt-3 font-medium" style="color: var(--app-text-dim);">Current: <span id="current-exam-date">--</span></p>
+<!-- SUMMER HOMEWORK VIEW -->
+<div id="homework-view" class="pb-safe" style="position:fixed;inset:0;z-index:95;background:var(--app-bg);display:none;flex-direction:column;opacity:0;transition:opacity .3s ease">
+  <header class="shrink-0 h-16 flex items-center justify-between px-5 border-b glass-header" style="border-color:var(--app-border);background:var(--app-surface)">
+    <div class="flex items-center gap-3">
+      <button onclick="App.closeHomework()" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-90 transition-transform" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+        <i class="fa-solid fa-arrow-left text-sm" style="color:var(--app-text-muted)"></i>
+      </button>
+      <div>
+        <span class="font-extrabold text-lg tracking-tight font-display block leading-none" style="color:var(--app-text)">Summer Homework</span>
+        <span class="text-[10px] font-bold uppercase tracking-wider" style="color:var(--app-text-dim)">Class 12 Vacation</span>
       </div>
-    </main>
-  </div>
+    </div>
+  </header>
+  <main id="homework-scroll" class="flex-1 overflow-y-auto">
+    <div class="flex gap-2 overflow-x-auto pb-2 px-5 pt-4" style="scrollbar-width:none;-webkit-overflow-scrolling:touch">
+      <button onclick="App.filterHomework('Hindi')" class="hw-tab-btn active" data-hw="Hindi">Hin</button>
+      <button onclick="App.filterHomework('English')" class="hw-tab-btn" data-hw="English">Eng</button>
+      <button onclick="App.filterHomework('Mathematics')" class="hw-tab-btn" data-hw="Mathematics">Math</button>
+      <button onclick="App.filterHomework('Physics')" class="hw-tab-btn" data-hw="Physics">Phy</button>
+      <button onclick="App.filterHomework('Chemistry')" class="hw-tab-btn" data-hw="Chemistry">Che</button>
+    </div>
+    <div id="homework-list" class="p-5 space-y-4 pb-28"></div>
+  </main>
+</div>
 
-  <!-- ═══════════════════════════════════════════════════ -->
-  <!-- VIDEO MODAL                                        -->
-  <!-- ═══════════════════════════════════════════════════ -->
-  <div id="video-modal">
-    <div class="shrink-0 h-14 flex items-center justify-between px-4 border-b glass-header" style="border-color: var(--app-border); background: var(--app-surface);">
-      <h3 id="modal-title" class="text-sm font-bold truncate pr-4" style="color: var(--app-text);">Video</h3>
-      <button onclick="App.closeVideo()" class="w-9 h-9 rounded-full flex items-center justify-center active:scale-90 transition-transform" style="background: var(--app-surface2); border: 1px solid var(--app-border);">
-        <i class="fa-solid fa-xmark" style="color: var(--app-text-muted);"></i>
+<!-- VIDEO MODAL -->
+<div id="video-modal">
+  <div class="shrink-0 h-14 flex items-center justify-between px-4 border-b glass-header" style="border-color:var(--app-border);background:var(--app-surface)">
+    <h3 id="modal-title" class="text-sm font-bold truncate pr-4" style="color:var(--app-text)">Video</h3>
+    <button onclick="App.closeVideo()" class="w-9 h-9 rounded-full flex items-center justify-center active:scale-90 transition-transform" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+      <i class="fa-solid fa-xmark" style="color:var(--app-text-muted)"></i>
+    </button>
+  </div>
+  <div class="flex-1 flex items-center justify-center p-4" style="background:#000">
+    <div class="w-full aspect-video rounded-2xl overflow-hidden border shadow-2xl" style="border-color:var(--app-border)">
+      <iframe id="video-iframe" class="w-full h-full" frameborder="0" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- TEST VIEWER MODAL -->
+<div id="test-modal">
+  <div class="shrink-0 h-14 flex items-center justify-between px-4 border-b glass-header" style="border-color:var(--app-border);background:var(--app-surface)">
+    <div class="flex items-center gap-3 overflow-hidden">
+      <button onclick="App.closeTest()" class="w-9 h-9 rounded-full flex items-center justify-center active:scale-90 transition-transform shrink-0" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+        <i class="fa-solid fa-arrow-left" style="color:var(--app-text-muted)"></i>
+      </button>
+      <div class="truncate">
+        <h3 id="test-modal-title" class="text-sm font-bold truncate" style="color:var(--app-text)">Mock Test</h3>
+        <p id="test-modal-subject" class="text-[11px] font-medium" style="color:var(--app-text-dim)">Subject</p>
+      </div>
+    </div>
+    <span id="test-modal-timer" class="text-xs font-mono font-bold px-2 py-1 rounded-lg border shrink-0" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">--:--</span>
+  </div>
+  <div class="flex-1 flex flex-col">
+    <div class="flex-1 relative" style="background:var(--app-bg)">
+      <iframe id="test-iframe" class="w-full h-full border-0" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+    </div>
+    <div class="shrink-0 p-4 border-t flex items-center justify-between gap-3" style="border-color:var(--app-border);background:var(--app-surface)">
+      <button onclick="App.closeTest()" class="app-btn app-btn-outline flex-1" style="padding:12px"><i class="fa-solid fa-xmark"></i><span>Close Test</span></button>
+      <a id="test-external-link" href="#" target="_blank" rel="noopener" class="app-btn flex-1" style="padding:12px;text-decoration:none"><i class="fa-solid fa-external-link-alt"></i><span>Open in Drive</span></a>
+    </div>
+  </div>
+</div>
+
+<!-- CALCULATOR MODAL -->
+<div id="calc-modal" class="modal-overlay">
+  <div class="modal-content p-5 space-y-4" style="max-width:360px">
+    <div class="flex items-center justify-between">
+      <h3 class="font-bold text-lg font-display" style="color:var(--app-text)">Calculator</h3>
+      <button onclick="App.closeCalculator()" class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+        <i class="fa-solid fa-xmark" style="color:var(--app-text-muted)"></i>
       </button>
     </div>
-    <div class="flex-1 flex items-center justify-center p-4" style="background: #000;">
-      <div class="w-full aspect-video rounded-2xl overflow-hidden border shadow-2xl" style="border-color: var(--app-border);">
-        <iframe id="video-iframe" class="w-full h-full" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-      </div>
+    <div id="calc-display" class="calc-display">0</div>
+    <div class="grid grid-cols-4 gap-2">
+      <button onclick="App.calcInput('C')" class="calc-btn" style="background:var(--app-danger);color:#fff;border-color:var(--app-danger)">C</button>
+      <button onclick="App.calcInput('(')" class="calc-btn calc-btn-op">(</button>
+      <button onclick="App.calcInput(')')" class="calc-btn calc-btn-op">)</button>
+      <button onclick="App.calcInput('/')" class="calc-btn calc-btn-op">&divide;</button>
+      <button onclick="App.calcInput('7')" class="calc-btn">7</button>
+      <button onclick="App.calcInput('8')" class="calc-btn">8</button>
+      <button onclick="App.calcInput('9')" class="calc-btn">9</button>
+      <button onclick="App.calcInput('*')" class="calc-btn calc-btn-op">&times;</button>
+      <button onclick="App.calcInput('4')" class="calc-btn">4</button>
+      <button onclick="App.calcInput('5')" class="calc-btn">5</button>
+      <button onclick="App.calcInput('6')" class="calc-btn">6</button>
+      <button onclick="App.calcInput('-')" class="calc-btn calc-btn-op">&minus;</button>
+      <button onclick="App.calcInput('1')" class="calc-btn">1</button>
+      <button onclick="App.calcInput('2')" class="calc-btn">2</button>
+      <button onclick="App.calcInput('3')" class="calc-btn">3</button>
+      <button onclick="App.calcInput('+')" class="calc-btn calc-btn-op">+</button>
+      <button onclick="App.calcInput('0')" class="calc-btn">0</button>
+      <button onclick="App.calcInput('.')" class="calc-btn">.</button>
+      <button onclick="App.calcInput('del')" class="calc-btn calc-btn-op"><i class="fa-solid fa-delete-left text-sm"></i></button>
+      <button onclick="App.calcInput('=')" class="calc-btn" style="background:var(--app-success);color:#fff;border-color:var(--app-success)">=</button>
     </div>
   </div>
+</div>
 
-  <!-- ═══════════════════════════════════════════════════ -->
-  <!-- TEST VIEWER MODAL                                  -->
-  <!-- ═══════════════════════════════════════════════════ -->
-  <div id="test-modal">
-    <div class="shrink-0 h-14 flex items-center justify-between px-4 border-b glass-header" style="border-color: var(--app-border); background: var(--app-surface);">
-      <div class="flex items-center gap-3 overflow-hidden">
-        <button onclick="App.closeTest()" class="w-9 h-9 rounded-full flex items-center justify-center active:scale-90 transition-transform shrink-0" style="background: var(--app-surface2); border: 1px solid var(--app-border);">
-          <i class="fa-solid fa-arrow-left" style="color: var(--app-text-muted);"></i>
-        </button>
-        <div class="truncate">
-          <h3 id="test-modal-title" class="text-sm font-bold truncate" style="color: var(--app-text);">Mock Test</h3>
-          <p id="test-modal-subject" class="text-[11px] font-medium" style="color: var(--app-text-dim);">Subject</p>
-        </div>
-      </div>
-      <div class="flex items-center gap-2 shrink-0">
-        <span id="test-modal-timer" class="text-xs font-mono font-bold px-2 py-1 rounded-lg border" style="background: var(--app-surface2); border-color: var(--app-border); color: var(--app-text-muted);">--:--</span>
-      </div>
+<!-- NOTEPAD MODAL -->
+<div id="notepad-modal" class="modal-overlay">
+  <div class="modal-content p-5 space-y-4" style="max-width:420px">
+    <div class="flex items-center justify-between">
+      <h3 class="font-bold text-lg font-display" style="color:var(--app-text)">Quick Notes</h3>
+      <button onclick="App.closeNotepad()" class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+        <i class="fa-solid fa-xmark" style="color:var(--app-text-muted)"></i>
+      </button>
     </div>
-    <div class="flex-1 flex flex-col">
-      <div id="test-iframe-container" class="flex-1 relative" style="background: var(--app-bg);">
-        <iframe id="test-iframe" class="w-full h-full border-0" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
-      </div>
-      <div class="shrink-0 p-4 border-t flex items-center justify-between gap-3" style="border-color: var(--app-border); background: var(--app-surface);">
-        <button onclick="App.closeTest()" class="app-btn app-btn-outline flex-1" style="padding: 12px;">
-          <i class="fa-solid fa-xmark"></i>
-          <span>Close Test</span>
-        </button>
-        <a id="test-external-link" href="#" target="_blank" rel="noopener" class="app-btn flex-1" style="padding: 12px; text-decoration: none;">
-          <i class="fa-solid fa-external-link-alt"></i>
-          <span>Open in Drive</span>
-        </a>
-      </div>
+    <textarea id="notepad-area" class="app-input h-64 resize-none" placeholder="Type your quick notes here..."></textarea>
+    <div class="flex gap-2">
+      <button onclick="App.saveNotepad()" class="app-btn flex-1"><i class="fa-solid fa-floppy-disk"></i><span>Save</span></button>
+      <button onclick="App.clearNotepad()" class="app-btn app-btn-outline flex-1"><i class="fa-solid fa-trash"></i><span>Clear</span></button>
     </div>
   </div>
+</div>
 
-  <!-- ═══════════════════════════════════════════════════ -->
-  <!-- TOAST                                              -->
-  <!-- ═══════════════════════════════════════════════════ -->
-  <div id="toast">
-    <div class="px-5 py-3.5 rounded-2xl border shadow-2xl flex items-center gap-3" style="background: var(--app-surface); border-color: var(--app-border);">
-      <i id="toast-icon" class="fa-solid fa-circle-check" style="color: var(--app-success);"></i>
-      <span id="toast-msg" class="text-sm font-semibold" style="color: var(--app-text);">Success</span>
+<!-- TODO MODAL -->
+<div id="todo-modal" class="modal-overlay">
+  <div class="modal-content p-5 space-y-4" style="max-width:420px">
+    <div class="flex items-center justify-between">
+      <h3 class="font-bold text-lg font-display" style="color:var(--app-text)">To-Do List</h3>
+      <button onclick="App.closeTodo()" class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+        <i class="fa-solid fa-xmark" style="color:var(--app-text-muted)"></i>
+      </button>
     </div>
+    <div class="flex gap-2">
+      <input type="text" id="todo-input" class="app-input flex-1" placeholder="Add a task...">
+      <button onclick="App.addTodo()" class="app-btn px-4" style="width:auto"><i class="fa-solid fa-plus"></i></button>
+    </div>
+    <div id="todo-list" class="space-y-2 max-h-64 overflow-y-auto"></div>
   </div>
+</div>
 
-  <!-- ═══════════════════════════════════════════════════ -->
-  <!-- FIREBASE & APP LOGIC                               -->
-  <!-- ═══════════════════════════════════════════════════ -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, deleteDoc, updateDoc, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+<!-- TERMS MODAL -->
+<div id="terms-modal" class="modal-overlay">
+  <div class="modal-content p-6 space-y-4" style="max-width:480px">
+    <div class="flex items-center justify-between">
+      <h3 class="font-bold text-lg font-display" style="color:var(--app-text)">Terms & Conditions</h3>
+      <button onclick="App.closeTerms()" class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+        <i class="fa-solid fa-xmark" style="color:var(--app-text-muted)"></i>
+      </button>
+    </div>
+    <div class="space-y-3 text-sm leading-relaxed" style="color:var(--app-text-muted);max-height:60vh;overflow-y:auto">
+      <p><strong style="color:var(--app-text)">1. Acceptance of Terms</strong><br>By accessing and using studyPro, you accept and agree to be bound by these Terms and Conditions.</p>
+      <p><strong style="color:var(--app-text)">2. Use of Service</strong><br>studyPro provides study materials, mock tests, and entertainment content for UP Board Class 12 students. All content is for educational purposes only.</p>
+      <p><strong style="color:var(--app-text)">3. User Accounts</strong><br>You are responsible for maintaining the confidentiality of your account credentials. Notify us immediately of any unauthorized use.</p>
+      <p><strong style="color:var(--app-text)">4. Content Ownership</strong><br>All study materials and content provided through the app remain the intellectual property of studyPro and its contributors.</p>
+      <p><strong style="color:var(--app-text)">5. Privacy</strong><br>We collect minimal user data necessary for app functionality. Your data is stored securely and never shared with third parties.</p>
+      <p><strong style="color:var(--app-text)">6. Modifications</strong><br>We reserve the right to modify these terms at any time. Continued use constitutes acceptance of updated terms.</p>
+    </div>
+    <button onclick="App.closeTerms()" class="app-btn w-full">I Understand</button>
+  </div>
+</div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyC-psUKqTO9u5kCuA3OUqWT63Ey0IvDei4",
-      authDomain: "study-ae01d.firebaseapp.com",
-      databaseURL: "https://study-ae01d-default-rtdb.firebaseio.com",
-      projectId: "study-ae01d",
-      storageBucket: "study-ae01d.firebasestorage.app",
-      messagingSenderId: "198271524977",
-      appId: "1:198271524977:web:d54ad6d58cd6c5c4103bd0",
-      measurementId: "G-Q51PB50Q51"
-    };
+<!-- ABOUT MODAL -->
+<div id="about-modal" class="modal-overlay">
+  <div class="modal-content p-6 space-y-5 text-center" style="max-width:400px">
+    <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto shadow-lg" style="background:var(--app-accent-soft);border:1px solid var(--app-border)">
+      <i class="fa-solid fa-graduation-cap text-2xl" style="color:var(--app-accent)"></i>
+    </div>
+    <div>
+      <h3 class="font-bold text-xl font-display" style="color:var(--app-text)">About studyPro</h3>
+      <p class="text-xs mt-1 font-medium" style="color:var(--app-text-dim)">Version 3.0 &bull; UP Board Edition</p>
+    </div>
+    <div class="p-4 rounded-xl border text-left space-y-3" style="background:var(--app-surface2);border-color:var(--app-border)">
+      <p class="text-sm leading-relaxed" style="color:var(--app-text-muted)">
+        <strong style="color:var(--app-text)">Developed by Mohammad Arshad</strong>, a Class 12 student from <strong style="color:var(--app-text)">Lakhimpur Kheri, Uttar Pradesh</strong>.
+      </p>
+      <p class="text-sm leading-relaxed" style="color:var(--app-text-muted)">
+        studyPro is <strong style="color:var(--app-text)">Project 0</strong>, designed to revolutionize digital study notes and entertainment for UP Board students.
+      </p>
+    </div>
+    <button onclick="App.closeAbout()" class="app-btn w-full">Close</button>
+  </div>
+</div>
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const googleProvider = new GoogleAuthProvider();
+<!-- TOAST -->
+<div id="toast">
+  <div class="px-5 py-3.5 rounded-2xl border shadow-2xl flex items-center gap-3" style="background:var(--app-surface);border-color:var(--app-border)">
+    <i id="toast-icon" class="fa-solid fa-circle-check" style="color:var(--app-success)"></i>
+    <span id="toast-msg" class="text-sm font-semibold" style="color:var(--app-text)">Success</span>
+  </div>
+</div>
 
-    const state = {
-      user: null,
-      profile: null,
-      theme: localStorage.getItem('dark_eio_theme') || 'dark',
-      tab: 'home',
-      examDate: new Date('2027-02-15T09:00:00'),
-      isAdmin: false,
-      sidebarOpen: false,
-      testTimerInterval: null,
-    };
+<!-- FIREBASE & APP LOGIC -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, deleteDoc, updateDoc, query, orderBy, limit, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    const $ = (sel) => document.querySelector(sel);
-    const $$ = (sel) => document.querySelectorAll(sel);
+  const firebaseConfig = {
+    apiKey: "AIzaSyC-psUKqTO9u5kCuA3OUqWT63Ey0IvDei4",
+    authDomain: "study-ae01d.firebaseapp.com",
+    databaseURL: "https://study-ae01d-default-rtdb.firebaseio.com",
+    projectId: "study-ae01d",
+    storageBucket: "study-ae01d.firebasestorage.app",
+    messagingSenderId: "198271524977",
+    appId: "1:198271524977:web:d54ad6d58cd6c5c4103bd0",
+    measurementId: "G-Q51PB50Q51"
+  };
 
-    function escapeHtml(str) {
-      if (!str) return '';
-      return str
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-    }
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const googleProvider = new GoogleAuthProvider();
+  const ytApiKey = "AIzaSyAra2lkY-sdBKeahyfmb4qNlpSmnBeOnkA";
 
-    function applyTheme(theme) {
-      const classes = document.body.className.split(' ');
-      const filtered = classes.filter(function(c) { return c.indexOf('theme-') !== 0; });
-      filtered.push('theme-' + theme);
-      document.body.className = filtered.join(' ');
-      state.theme = theme;
-      localStorage.setItem('dark_eio_theme', theme);
-      $$('.theme-pill').forEach(function(p) { p.classList.remove('active'); });
-      const pill = $('#pill-' + theme);
-      if (pill) pill.classList.add('active');
-      const labels = { light: 'Light Mode', dark: 'Dark Mode', golden: 'Golden Luxe' };
-      const label = $('#theme-label');
-      if (label) label.textContent = labels[theme] || 'Dark Mode';
-    }
+  const state = {
+    user: null, profile: null,
+    theme: localStorage.getItem('studyPro_theme') || 'dark',
+    tab: 'home', examDate: new Date('2027-02-15T09:00:00'),
+    isAdmin: false, sidebarOpen: false, testTimerInterval: null,
+    activeSubject: 'all', installPrompt: null,
+    calcExpr: '', todos: JSON.parse(localStorage.getItem('studyPro_todos') || '[]'),
+  };
 
-    function showToast(msg, type) {
-      type = type || 'success';
-      const toast = $('#toast');
-      const toastMsg = $('#toast-msg');
-      const toastIcon = $('#toast-icon');
-      if (!toast || !toastMsg || !toastIcon) return;
-      toastMsg.textContent = msg;
-      var iconClass = 'fa-circle-check';
-      var iconColor = 'var(--app-success)';
-      if (type === 'error') { iconClass = 'fa-circle-xmark'; iconColor = 'var(--app-danger)'; }
-      else if (type === 'info') { iconClass = 'fa-circle-info'; iconColor = 'var(--app-accent)'; }
-      toastIcon.className = 'fa-solid ' + iconClass;
-      toastIcon.style.color = iconColor;
-      toast.classList.add('show');
-      setTimeout(function() { toast.classList.remove('show'); }, 3200);
-    }
+  const $ = (sel) => document.querySelector(sel);
+  const $$ = (sel) => document.querySelectorAll(sel);
 
-    function updateTimer() {
-      const timerEl = $('#exam-timer');
-      if (!timerEl) return;
-      const now = new Date();
-      const diff = state.examDate - now;
-      if (diff <= 0) {
-        timerEl.textContent = "Exam Started!";
-        timerEl.style.color = 'var(--app-danger)';
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function applyTheme(theme) {
+    var classes = document.body.className.split(' ');
+    var filtered = classes.filter(function(c) { return c.indexOf('theme-') !== 0; });
+    filtered.push('theme-' + theme);
+    document.body.className = filtered.join(' ');
+    state.theme = theme;
+    localStorage.setItem('studyPro_theme', theme);
+    $$('.theme-pill').forEach(function(p) { p.classList.remove('active'); });
+    var pill = $('#pill-' + theme);
+    if (pill) pill.classList.add('active');
+    var labels = { light: 'Light Mode', dark: 'Dark Mode', golden: 'Golden Luxe' };
+    var label = $('#theme-label');
+    if (label) label.textContent = labels[theme] || 'Dark Mode';
+  }
+
+  function showToast(msg, type) {
+    type = type || 'success';
+    var toast = $('#toast'), toastMsg = $('#toast-msg'), toastIcon = $('#toast-icon');
+    if (!toast || !toastMsg || !toastIcon) return;
+    toastMsg.textContent = msg;
+    var iconClass = 'fa-circle-check', iconColor = 'var(--app-success)';
+    if (type === 'error') { iconClass = 'fa-circle-xmark'; iconColor = 'var(--app-danger)'; }
+    else if (type === 'info') { iconClass = 'fa-circle-info'; iconColor = 'var(--app-accent)'; }
+    toastIcon.className = 'fa-solid ' + iconClass;
+    toastIcon.style.color = iconColor;
+    toast.classList.add('show');
+    setTimeout(function() { toast.classList.remove('show'); }, 3200);
+  }
+
+  // ─── Exam Timer: Auto-reads date sheet ───
+  async function updateTimer() {
+    var timerEl = $('#exam-timer');
+    var badge = $('#exam-timer-badge');
+    if (!timerEl) return;
+    try {
+      var q = query(collection(db, 'datesheet'), orderBy('date', 'asc'));
+      var snapshot = await getDocs(q);
+      var now = new Date();
+      var nextExam = null;
+      snapshot.docs.forEach(function(d) {
+        var data = d.data();
+        var examDate = new Date(data.date + 'T' + (data.time || '09:00'));
+        if (examDate > now && !nextExam) nextExam = { date: examDate, subject: data.subject, name: data.name };
+      });
+      if (!nextExam) {
+        timerEl.textContent = "Soon...";
+        timerEl.style.color = 'var(--app-text-muted)';
+        if (badge) { badge.classList.add('glow-soon'); }
         return;
       }
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const mins = Math.floor((diff / (1000 * 60)) % 60);
-      timerEl.textContent = days + 'd ' + hours + 'h ' + mins + 'm';
+      if (badge) { badge.classList.remove('glow-soon'); }
+      var diff = nextExam.date - now;
+      if (diff <= 0) { timerEl.textContent = "Exam Started!"; timerEl.style.color = 'var(--app-danger)'; return; }
+      var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      var mins = Math.floor((diff / (1000 * 60)) % 60);
+      timerEl.textContent = nextExam.subject + ': ' + days + 'd ' + hours + 'h ' + mins + 'm';
       timerEl.style.color = '';
+    } catch (e) {
+      timerEl.textContent = "Soon...";
     }
+  }
 
-    // ─── Auth: Login ───
-    async function handleLogin(e) {
-      e.preventDefault();
-      const email = $('#login-email').value.trim();
-      const password = $('#login-password').value;
-      const btn = $('#login-submit');
-      const originalText = btn.innerHTML;
-      btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Logging in...';
-      btn.disabled = true;
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        showToast('Welcome back!');
-      } catch (err) {
-        showToast(err.message, 'error');
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-      }
+  // ─── Auth ───
+  async function handleLogin(e) {
+    e.preventDefault();
+    var email = $('#login-email').value.trim();
+    var password = $('#login-password').value;
+    var btn = $('#login-submit');
+    var originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Logging in...';
+    btn.disabled = true;
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      showToast('Welcome back!');
+    } catch (err) {
+      showToast(err.message, 'error');
+      btn.innerHTML = originalText;
+      btn.disabled = false;
     }
+  }
 
-    // ─── Auth: Register ───
-    async function handleRegister(e) {
-      e.preventDefault();
-      const email = $('#reg-email').value.trim();
-      const password = $('#reg-password').value;
-      const name = $('#reg-name').value.trim();
-      const cls = $('#reg-class').value;
-      const btn = $('#reg-submit');
-      const originalText = btn.innerHTML;
-      btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Creating...';
-      btn.disabled = true;
-      try {
-        const cred = await createUserWithEmailAndPassword(auth, email, password);
-        await setDoc(doc(db, 'users', cred.user.uid), {
-          name: name,
-          class: cls,
-          email: email,
+  async function handleRegister(e) {
+    e.preventDefault();
+    var email = $('#reg-email').value.trim();
+    var password = $('#reg-password').value;
+    var name = $('#reg-name').value.trim();
+    var cls = $('#reg-class').value;
+    var btn = $('#reg-submit');
+    var originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Creating...';
+    btn.disabled = true;
+    try {
+      var cred = await createUserWithEmailAndPassword(auth, email, password);
+      await setDoc(doc(db, 'users', cred.user.uid), {
+        name: name, class: cls, email: email,
+        subjects: 'Hindi, English, Physics, Chemistry, Math',
+        seatNumber: 'UP-2027-88421', createdAt: new Date().toISOString(), board: 'UP'
+      });
+      showToast('Account created! Welcome!');
+    } catch (err) {
+      showToast(err.message, 'error');
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+    }
+  }
+
+  async function handleGoogleAuth(isRegister) {
+    var btnId = isRegister ? 'google-register' : 'google-login';
+    var btn = $('#' + btnId);
+    try {
+      if (btn) btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Connecting...';
+      var result = await signInWithPopup(auth, googleProvider);
+      var user = result.user;
+      var profileDoc = await getDoc(doc(db, 'users', user.uid));
+      if (!profileDoc.exists()) {
+        await setDoc(doc(db, 'users', user.uid), {
+          name: user.displayName || 'Student', class: '12', email: user.email,
           subjects: 'Hindi, English, Physics, Chemistry, Math',
-          seatNumber: 'UP-2027-88421',
-          createdAt: new Date().toISOString(),
-          board: 'UP'
+          seatNumber: 'UP-2027-88421', createdAt: new Date().toISOString(), board: 'UP'
         });
-        showToast('Account created! Welcome!');
-      } catch (err) {
-        showToast(err.message, 'error');
-        btn.innerHTML = originalText;
-        btn.disabled = false;
+      }
+      showToast('Signed in with Google!');
+    } catch (err) {
+      showToast(err.message, 'error');
+      if (btn) {
+        if (isRegister) btn.innerHTML = '<i class="fa-brands fa-google"></i><span>Sign up with Google</span>';
+        else btn.innerHTML = '<i class="fa-brands fa-google"></i><span>Continue with Google</span>';
       }
     }
+  }
 
-    // ─── Auth: Google ───
-    async function handleGoogleAuth(isRegister) {
-      const btnId = isRegister ? 'google-register' : 'google-login';
-      const btn = $('#' + btnId);
-      try {
-        if (btn) btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Connecting...';
-        const result = await signInWithPopup(auth, googleProvider);
-        const user = result.user;
-        const profileDoc = await getDoc(doc(db, 'users', user.uid));
-        if (!profileDoc.exists()) {
-          await setDoc(doc(db, 'users', user.uid), {
-            name: user.displayName || 'Student',
-            class: '12',
-            email: user.email,
-            subjects: 'Hindi, English, Physics, Chemistry, Math',
-            seatNumber: 'UP-2027-88421',
-            createdAt: new Date().toISOString(),
-            board: 'UP'
-          });
-        }
-        showToast('Signed in with Google!');
-      } catch (err) {
-        showToast(err.message, 'error');
-        if (btn) {
-          if (isRegister) {
-            btn.innerHTML = '<i class="fa-brands fa-google"></i><span>Sign up with Google</span>';
-          } else {
-            btn.innerHTML = '<i class="fa-brands fa-google"></i><span>Continue with Google</span>';
-          }
-        }
+  // ─── Profile ───
+  async function loadProfile(uid) {
+    var docSnap = await getDoc(doc(db, 'users', uid));
+    if (docSnap.exists()) { state.profile = docSnap.data(); renderProfile(); }
+  }
+
+  function renderProfile() {
+    var p = state.profile || {};
+    var name = p.name || (state.user && state.user.displayName) || 'Student';
+    var email = p.email || (state.user && state.user.email) || 'student@school.edu';
+    var cls = p.class || '12';
+    var subjects = p.subjects || 'Hindi, English, Physics, Chemistry, Math';
+    var seat = p.seatNumber || 'UP-2027-88421';
+    var welcomeEl = $('#home-welcome'), nameEl = $('#profile-name'), classEl = $('#profile-class');
+    var emailEl = $('#profile-email'), avatarEl = $('#profile-avatar'), seatEl = $('#profile-seat');
+    var subjectsEl = $('#profile-subjects');
+    if (welcomeEl) welcomeEl.textContent = name.split(' ')[0];
+    if (nameEl) nameEl.textContent = name;
+    if (classEl) classEl.textContent = 'Class ' + cls + ' \u2022 UP Board';
+    if (emailEl) emailEl.textContent = email;
+    if (avatarEl) avatarEl.textContent = name.charAt(0).toUpperCase();
+    if (seatEl) seatEl.textContent = seat;
+    if (subjectsEl) subjectsEl.textContent = subjects;
+    state.isAdmin = (email === 'moharshad687@gmail.com');
+    var adminBtn = $('#admin-btn-container');
+    if (adminBtn) adminBtn.classList.toggle('hidden', !state.isAdmin);
+    var editName = $('#edit-name'), editClass = $('#edit-class');
+    var editSubjects = $('#edit-subjects'), editSeat = $('#edit-seat');
+    if (editName) editName.value = name;
+    if (editClass) editClass.value = cls;
+    if (editSubjects) editSubjects.value = subjects;
+    if (editSeat) editSeat.value = seat;
+  }
+
+  // ─── Notices ───
+  async function loadNotices() {
+    var container = $('#notices-list');
+    if (!container) return;
+    try {
+      var q = query(collection(db, 'notices'), orderBy('createdAt', 'desc'), limit(8));
+      var snapshot = await getDocs(q);
+      if (snapshot.empty) {
+        container.innerHTML = '<div class="flex gap-3 items-start"><div class="w-2 h-2 rounded-full mt-2 shrink-0" style="background:var(--app-text-dim)"></div><div><p class="text-sm leading-relaxed" style="color:var(--app-text-muted)">No notices yet. Check back later!</p></div></div>';
+        return;
       }
-    }
+      var html = '';
+      snapshot.docs.forEach(function(docItem, idx) {
+        var n = docItem.data();
+        var isUrgent = n.priority === 'urgent';
+        var dateStr = n.createdAt ? new Date(n.createdAt).toLocaleDateString() : 'Recently';
+        html += '<div class="flex gap-3 items-start slide-in" style="animation-delay:' + (idx * 0.05) + 's">';
+        html += '<div class="w-2 h-2 rounded-full mt-2 shrink-0 ' + (isUrgent ? 'bg-amber-500 shadow-sm shadow-amber-500/50' : '') + '"' + (isUrgent ? '' : ' style="background:var(--app-text-dim)"') + '></div>';
+        html += '<div><p class="text-sm leading-relaxed" style="color:var(--app-text-muted)">' + escapeHtml(n.body) + '</p>';
+        html += '<p class="text-[11px] mt-1 font-medium" style="color:var(--app-text-dim)">' + escapeHtml(dateStr) + '</p></div></div>';
+        if (idx < snapshot.docs.length - 1) html += '<div class="h-px my-2.5" style="background:var(--app-border)"></div>';
+      });
+      container.innerHTML = html;
+    } catch (e) { console.error('Load notices error:', e); }
+  }
 
-    // ─── Profile ───
-    async function loadProfile(uid) {
-      const docSnap = await getDoc(doc(db, 'users', uid));
-      if (docSnap.exists()) {
-        state.profile = docSnap.data();
-        renderProfile();
-      }
-    }
-
-    function renderProfile() {
-      const p = state.profile || {};
-      const name = p.name || (state.user && state.user.displayName) || 'Student';
-      const email = p.email || (state.user && state.user.email) || 'student@school.edu';
-      const cls = p.class || '12';
-      const subjects = p.subjects || 'Hindi, English, Physics, Chemistry, Math';
-      const seat = p.seatNumber || 'UP-2027-88421';
-
-      const welcomeEl = $('#home-welcome');
-      const nameEl = $('#profile-name');
-      const classEl = $('#profile-class');
-      const emailEl = $('#profile-email');
-      const avatarEl = $('#profile-avatar');
-      const seatEl = $('#profile-seat');
-      const subjectsEl = $('#profile-subjects');
-
-      if (welcomeEl) welcomeEl.textContent = name.split(' ')[0];
-      if (nameEl) nameEl.textContent = name;
-      if (classEl) classEl.textContent = 'Class ' + cls + ' \u2022 UP Board';
-      if (emailEl) emailEl.textContent = email;
-      if (avatarEl) avatarEl.textContent = name.charAt(0).toUpperCase();
-      if (seatEl) seatEl.textContent = seat;
-      if (subjectsEl) subjectsEl.textContent = subjects;
-
-      state.isAdmin = (email === 'moharshad687@gmail.com');
-      const adminBtn = $('#admin-btn-container');
-      if (adminBtn) adminBtn.classList.toggle('hidden', !state.isAdmin);
-
-      const editName = $('#edit-name');
-      const editClass = $('#edit-class');
-      const editSubjects = $('#edit-subjects');
-      const editSeat = $('#edit-seat');
-      if (editName) editName.value = name;
-      if (editClass) editClass.value = cls;
-      if (editSubjects) editSubjects.value = subjects;
-      if (editSeat) editSeat.value = seat;
-    }
-
-    // ─── Notices ───
-    async function loadNotices() {
-      const container = $('#notices-list');
-      if (!container) return;
-      try {
-        const q = query(collection(db, 'notices'), orderBy('createdAt', 'desc'), limit(8));
-        const snapshot = await getDocs(q);
-        if (snapshot.empty) {
-          container.innerHTML = '<div class="flex gap-3 items-start"><div class="w-2 h-2 rounded-full mt-2 shrink-0" style="background: var(--app-text-dim);"></div><div><p class="text-sm leading-relaxed" style="color: var(--app-text-muted);">No notices yet. Check back later!</p></div></div>';
-          return;
-        }
-        var html = '';
+  // ─── Date Sheet ───
+  async function loadDateSheet() {
+    var container = $('#datesheet-list');
+    var adminContainer = $('#admin-datesheet-list');
+    try {
+      var q = query(collection(db, 'datesheet'), orderBy('date', 'asc'));
+      var snapshot = await getDocs(q);
+      var now = new Date();
+      var html = '';
+      if (snapshot.empty) {
+        html = '<p class="text-xs text-center py-4" style="color:var(--app-text-dim)">No exam dates added yet.</p>';
+      } else {
         snapshot.docs.forEach(function(docItem, idx) {
-          const n = docItem.data();
-          const isUrgent = n.priority === 'urgent';
-          const dateStr = n.createdAt ? new Date(n.createdAt).toLocaleDateString() : 'Recently';
-          const dotColor = isUrgent ? 'bg-amber-500 shadow-sm shadow-amber-500/50' : '';
-          const dotStyle = isUrgent ? '' : 'style="background: var(--app-text-dim);"';
-          html += '<div class="flex gap-3 items-start slide-in" style="animation-delay: ' + (idx * 0.05) + 's">';
-          html += '<div class="w-2 h-2 rounded-full mt-2 shrink-0 ' + dotColor + '" ' + dotStyle + '></div>';
-          html += '<div><p class="text-sm leading-relaxed" style="color: var(--app-text-muted);">' + escapeHtml(n.body) + '</p>';
-          html += '<p class="text-[11px] mt-1 font-medium" style="color: var(--app-text-dim);">' + escapeHtml(dateStr) + '</p></div></div>';
-          if (idx < snapshot.docs.length - 1) {
-            html += '<div class="h-px my-2.5" style="background: var(--app-border);"></div>';
+          var d = docItem.data();
+          var examDate = new Date(d.date + 'T' + (d.time || '09:00'));
+          var isPast = examDate < now;
+          var statusColor = isPast ? 'var(--app-text-dim)' : 'var(--app-success)';
+          var statusText = isPast ? 'Completed' : 'Upcoming';
+          var subColors = { Hindi: '#f97316', English: '#8b5cf6', Mathematics: '#f59e0b', Physics: '#3b82f6', Chemistry: '#22c55e' };
+          var color = subColors[d.subject] || '#3b82f6';
+          html += '<div class="flex items-center justify-between p-3 rounded-xl border" style="background:var(--app-surface2);border-color:var(--app-border)">';
+          html += '<div class="flex items-center gap-3">';
+          html += '<div class="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold" style="background:' + color + '">' + (d.subject ? d.subject.charAt(0) : 'E') + '</div>';
+          html += '<div><p class="text-sm font-bold" style="color:var(--app-text)">' + escapeHtml(d.name) + '</p>';
+          html += '<p class="text-[11px]" style="color:var(--app-text-dim)">' + escapeHtml(d.subject) + ' &bull; ' + escapeHtml(d.shift) + ' &bull; ' + escapeHtml(d.time) + '</p></div></div>';
+          html += '<div class="text-right"><p class="text-xs font-bold" style="color:' + statusColor + '">' + statusText + '</p>';
+          html += '<p class="text-[10px]" style="color:var(--app-text-dim)">' + new Date(d.date).toLocaleDateString() + '</p></div>';
+          if (state.isAdmin) {
+            html += '<button onclick="App.deleteDateSheet(\\'' + docItem.id + '\\')" class="w-7 h-7 rounded-lg flex items-center justify-center ml-2" style="background:rgba(239,68,68,0.1)"><i class="fa-solid fa-trash text-[10px]" style="color:var(--app-danger)"></i></button>';
           }
+          html += '</div>';
         });
-        container.innerHTML = html;
-      } catch (e) {
-        console.error('Load notices error:', e);
       }
-    }
+      if (container) container.innerHTML = html;
+      if (adminContainer) adminContainer.innerHTML = html;
+    } catch (e) { console.error('Load date sheet error:', e); }
+  }
 
-    // ─── Lectures ───
-    var subjectMeta = {
-      Physics: { from: 'from-blue-950/60', to: 'to-indigo-950/60', text: 'text-blue-400', bg: 'rgba(59,130,246,0.1)', border: 'rgba(59,130,246,0.2)', solid: '#3b82f6' },
-      Chemistry: { from: 'from-emerald-950/60', to: 'to-teal-950/60', text: 'text-emerald-400', bg: 'rgba(34,197,94,0.1)', border: 'rgba(34,197,94,0.2)', solid: '#22c55e' },
-      Mathematics: { from: 'from-amber-950/60', to: 'to-orange-950/60', text: 'text-amber-400', bg: 'rgba(245,158,11,0.1)', border: 'rgba(245,158,11,0.2)', solid: '#f59e0b' },
-      Biology: { from: 'from-rose-950/60', to: 'to-pink-950/60', text: 'text-rose-400', bg: 'rgba(244,63,94,0.1)', border: 'rgba(244,63,94,0.2)', solid: '#f43f5e' },
-      English: { from: 'from-violet-950/60', to: 'to-purple-950/60', text: 'text-violet-400', bg: 'rgba(139,92,246,0.1)', border: 'rgba(139,92,246,0.2)', solid: '#8b5cf6' },
-      Hindi: { from: 'from-orange-950/60', to: 'to-red-950/60', text: 'text-orange-400', bg: 'rgba(249,115,22,0.1)', border: 'rgba(249,115,22,0.2)', solid: '#f97316' },
-      CS: { from: 'from-cyan-950/60', to: 'to-sky-950/60', text: 'text-cyan-400', bg: 'rgba(6,182,212,0.1)', border: 'rgba(6,182,212,0.2)', solid: '#06b6d4' },
-    };
+  // ─── Lectures & Tests ───
+  var subjectMeta = {
+    Hindi: { from: 'from-orange-950/60', to: 'to-red-950/60', text: 'text-orange-400', bg: 'rgba(249,115,22,0.1)', border: 'rgba(249,115,22,0.2)', solid: '#f97316' },
+    English: { from: 'from-violet-950/60', to: 'to-purple-950/60', text: 'text-violet-400', bg: 'rgba(139,92,246,0.1)', border: 'rgba(139,92,246,0.2)', solid: '#8b5cf6' },
+    Mathematics: { from: 'from-amber-950/60', to: 'to-orange-950/60', text: 'text-amber-400', bg: 'rgba(245,158,11,0.1)', border: 'rgba(245,158,11,0.2)', solid: '#f59e0b' },
+    Physics: { from: 'from-blue-950/60', to: 'to-indigo-950/60', text: 'text-blue-400', bg: 'rgba(59,130,246,0.1)', border: 'rgba(59,130,246,0.2)', solid: '#3b82f6' },
+    Chemistry: { from: 'from-emerald-950/60', to: 'to-teal-950/60', text: 'text-emerald-400', bg: 'rgba(34,197,94,0.1)', border: 'rgba(34,197,94,0.2)', solid: '#22c55e' },
+  };
 
-    async function loadLectures() {
-      const container = $('#lectures-grid');
-      if (!container) return;
-      container.innerHTML = '<div class="col-span-full space-y-4"><div class="skeleton h-40 rounded-2xl"></div><div class="skeleton h-40 rounded-2xl"></div></div>';
-      try {
-        const snapshot = await getDocs(collection(db, 'lectures'));
-        var defaults = [
-          { title: 'Electric Charges & Fields', subject: 'Physics', chapter: 'Ch. 1', progress: 65, total: 12, current: 8, duration: '45 min' },
-          { title: 'The Solid State', subject: 'Chemistry', chapter: 'Ch. 1', progress: 90, total: 12, current: 11, duration: '38 min' },
-          { title: 'Relations & Functions', subject: 'Mathematics', chapter: 'Ch. 1', progress: 45, total: 12, current: 5, duration: '52 min' },
-          { title: 'Python File Handling', subject: 'CS', chapter: 'Ch. 3', progress: 30, total: 10, current: 3, duration: '55 min' },
-        ];
-        var items = snapshot.empty ? defaults : snapshot.docs.map(function(d) { var data = d.data(); data.id = d.id; return data; });
-        var html = '';
-        items.forEach(function(l, idx) {
-          html += renderLectureCard(l, idx);
-        });
-        container.innerHTML = html;
-      } catch (e) {
-        console.error('Load lectures error:', e);
-        container.innerHTML = '<p class="text-sm text-center py-8" style="color: var(--app-text-dim);">Unable to load lectures.</p>';
+  async function loadLectures() {
+    var container = $('#lectures-grid');
+    if (!container) return;
+    container.innerHTML = '<div class="col-span-full space-y-4"><div class="skeleton h-40 rounded-2xl"></div><div class="skeleton h-40 rounded-2xl"></div></div>';
+    try {
+      var snapshot = await getDocs(collection(db, 'lectures'));
+      var defaults = [
+        { title: 'Electric Charges & Fields', subject: 'Physics', chapter: 'Ch. 1', progress: 65, total: 12, current: 8, duration: '45 min' },
+        { title: 'The Solid State', subject: 'Chemistry', chapter: 'Ch. 1', progress: 90, total: 12, current: 11, duration: '38 min' },
+        { title: 'Relations & Functions', subject: 'Mathematics', chapter: 'Ch. 1', progress: 45, total: 12, current: 5, duration: '52 min' },
+        { title: 'Hindi Grammar - Muhavare', subject: 'Hindi', chapter: 'Ch. 5', progress: 60, total: 10, current: 6, duration: '30 min' },
+        { title: 'English Literature - Prose', subject: 'English', chapter: 'Ch. 2', progress: 75, total: 12, current: 9, duration: '40 min' },
+      ];
+      var items = snapshot.empty ? defaults : snapshot.docs.map(function(d) { var data = d.data(); data.id = d.id; return data; });
+      if (state.activeSubject !== 'all') {
+        items = items.filter(function(l) { return l.subject === state.activeSubject; });
       }
-    }
+      if (items.length === 0) {
+        container.innerHTML = '<p class="text-sm text-center py-8 col-span-full" style="color:var(--app-text-dim)">No lectures for this subject yet.</p>';
+        return;
+      }
+      var html = '';
+      items.forEach(function(l, idx) { html += renderLectureCard(l, idx); });
+      container.innerHTML = html;
+    } catch (e) { container.innerHTML = '<p class="text-sm text-center py-8" style="color:var(--app-text-dim)">Unable to load lectures.</p>'; }
+  }
 
-    function renderLectureCard(l, idx) {
-      var color = subjectMeta[l.subject] || subjectMeta.Physics;
-      var progress = l.progress || Math.round(((l.current || 0) / (l.total || 1)) * 100);
-      var delay = idx * 0.08;
-      return '<div class="app-card active:scale-[0.97] transition-transform shadow-sm animate-fade-up" style="animation-delay: ' + delay + 's">' +
-        '<div class="h-36 bg-gradient-to-br ' + color.from + ' ' + color.to + ' flex items-center justify-center relative border-b" style="border-color: var(--app-border);">' +
-        '<i class="fa-solid fa-book-open text-5xl ' + color.text + ' opacity-40"></i>' +
-        '<span class="absolute top-3 right-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white border border-white/10 shadow-lg" style="background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);">' + escapeHtml(l.duration || '40 min') + '</span>' +
-        '</div>' +
-        '<div class="p-4">' +
-        '<span class="badge mb-2.5" style="background: ' + color.bg + '; color: ' + color.solid + '; border-color: ' + color.border + ';">' +
-        '<i class="fa-solid fa-circle text-[6px]"></i> ' + escapeHtml(l.subject) +
-        '</span>' +
-        '<h3 class="font-bold text-sm mb-1" style="color: var(--app-text);">' + escapeHtml(l.title) + '</h3>' +
-        '<p class="text-xs line-clamp-2 leading-relaxed" style="color: var(--app-text-dim);">' + escapeHtml(l.chapter) + ' &bull; ' + escapeHtml(l.subject) + ' fundamentals and core concepts.</p>' +
-        '<div class="mt-3.5 flex items-center gap-3">' +
-        '<div class="progress-track flex-1">' +
-        '<div class="progress-fill" style="background: ' + color.solid + '; width: ' + progress + '%;"></div>' +
-        '</div>' +
-        '<span class="text-[10px] font-mono font-bold" style="color: var(--app-text-dim);">' + (l.current || 0) + '/' + (l.total || 12) + '</span>' +
-        '</div>' +
-        '</div>' +
-        '</div>';
-    }
+  function renderLectureCard(l, idx) {
+    var color = subjectMeta[l.subject] || subjectMeta.Physics;
+    var progress = l.progress || Math.round(((l.current || 0) / (l.total || 1)) * 100);
+    return '<div class="app-card active:scale-[0.97] transition-transform shadow-sm animate-fade-up" style="animation-delay:' + (idx * 0.08) + 's">' +
+      '<div class="h-36 bg-gradient-to-br ' + color.from + ' ' + color.to + ' flex items-center justify-center relative border-b" style="border-color:var(--app-border)">' +
+      '<i class="fa-solid fa-book-open text-5xl ' + color.text + ' opacity-40"></i>' +
+      '<span class="absolute top-3 right-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white border border-white/10 shadow-lg" style="background:rgba(0,0,0,0.5);backdrop-filter:blur(4px)">' + escapeHtml(l.duration || '40 min') + '</span></div>' +
+      '<div class="p-4"><span class="badge mb-2.5" style="background:' + color.bg + ';color:' + color.solid + ';border-color:' + color.border + '">' +
+      '<i class="fa-solid fa-circle text-[6px]"></i> ' + escapeHtml(l.subject) + '</span>' +
+      '<h3 class="font-bold text-sm mb-1" style="color:var(--app-text)">' + escapeHtml(l.title) + '</h3>' +
+      '<p class="text-xs line-clamp-2 leading-relaxed" style="color:var(--app-text-dim)">' + escapeHtml(l.chapter) + ' &bull; ' + escapeHtml(l.subject) + ' fundamentals.</p>' +
+      '<div class="mt-3.5 flex items-center gap-3"><div class="progress-track flex-1">' +
+      '<div class="progress-fill" style="background:' + color.solid + ';width:' + progress + '%"></div></div>' +
+      '<span class="text-[10px] font-mono font-bold" style="color:var(--app-text-dim)">' + (l.current || 0) + '/' + (l.total || 12) + '</span></div></div></div>';
+  }
 
-    // ─── Mock Tests ───
-    async function loadTests() {
-      const container = $('#tests-grid');
-      if (!container) return;
-      container.innerHTML = '<div class="space-y-4"><div class="skeleton h-32 rounded-2xl"></div><div class="skeleton h-32 rounded-2xl"></div><div class="skeleton h-32 rounded-2xl"></div></div>';
-      try {
-        var q = query(collection(db, 'tests'), orderBy('createdAt', 'desc'));
-        var snapshot = await getDocs(q);
-        if (snapshot.empty) {
-          container.innerHTML = '<div class="text-center py-14"><div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style="background: var(--app-surface2); border: 1px solid var(--app-border);">' +
-            '<i class="fa-solid fa-file-circle-check text-2xl" style="color: var(--app-text-dim);"></i></div>' +
-            '<p class="text-sm font-semibold" style="color: var(--app-text-muted);">No mock tests available yet</p>' +
-            '<p class="text-xs mt-1" style="color: var(--app-text-dim);">Check back after admin adds tests.</p></div>';
+  async function loadTests() {
+    var container = $('#tests-grid');
+    if (!container) return;
+    container.innerHTML = '<div class="space-y-4"><div class="skeleton h-32 rounded-2xl"></div><div class="skeleton h-32 rounded-2xl"></div></div>';
+    try {
+      var q = query(collection(db, 'tests'), orderBy('createdAt', 'desc'));
+      var snapshot = await getDocs(q);
+      if (snapshot.empty) {
+        container.innerHTML = '<div class="text-center py-14"><div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style="background:var(--app-surface2);border:1px solid var(--app-border)">' +
+          '<i class="fa-solid fa-file-circle-check text-2xl" style="color:var(--app-text-dim)"></i></div>' +
+          '<p class="text-sm font-semibold" style="color:var(--app-text-muted)">No mock tests available yet</p>' +
+          '<p class="text-xs mt-1" style="color:var(--app-text-dim)">Check back after admin adds tests.</p></div>';
+        return;
+      }
+      var html = '';
+      snapshot.docs.forEach(function(docItem, idx) {
+        var t = docItem.data();
+        if (state.activeSubject !== 'all' && t.subject !== state.activeSubject) return;
+        var color = subjectMeta[t.subject] || subjectMeta.Physics;
+        var safeId = docItem.id;
+        var safeTitle = escapeHtml(t.title).replace(/'/g, "\\'");
+        var safeSubject = escapeHtml(t.subject).replace(/'/g, "\\'");
+        var safeLink = escapeHtml(t.link).replace(/'/g, "\\'");
+        html += '<div class="app-card p-5 animate-fade-up shadow-sm" style="animation-delay:' + (idx * 0.08) + 's">' +
+          '<div class="flex items-start justify-between gap-3 mb-3">' +
+          '<div class="flex items-center gap-2.5">' +
+          '<div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:' + color.bg + ';border:1px solid ' + color.border + '">' +
+          '<i class="fa-solid fa-file-pen text-sm" style="color:' + color.solid + '"></i></div>' +
+          '<div><span class="badge" style="background:' + color.bg + ';color:' + color.solid + ';border-color:' + color.border + '">' + escapeHtml(t.subject) + '</span>' +
+          '<h3 class="font-bold text-sm mt-1" style="color:var(--app-text)">' + escapeHtml(t.title) + '</h3></div></div>' +
+          '<span class="text-[10px] font-bold px-2 py-1 rounded-lg border shrink-0" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-dim)">' + (t.duration || 60) + 'm</span></div>' +
+          '<p class="text-xs leading-relaxed mb-4 line-clamp-2" style="color:var(--app-text-muted)">' + escapeHtml(t.description || 'Practice test following UP Board pattern.') + '</p>' +
+          '<div class="flex items-center justify-between">' +
+          '<span class="text-[11px] font-bold" style="color:var(--app-text-dim)">' + (t.marks || 100) + ' Marks</span>' +
+          '<button onclick="App.openTest(\\'' + safeId + '\\',\\'' + safeTitle + '\\',\\'' + safeSubject + '\\',\\'' + safeLink + '\\',' + (t.duration || 60) + ')" class="app-btn" style="padding:10px 20px;font-size:13px;background:' + color.solid + ';color:#fff">' +
+          '<i class="fa-solid fa-play"></i><span>Start Test</span></button></div></div>';
+      });
+      if (!html) {
+        container.innerHTML = '<p class="text-sm text-center py-8" style="color:var(--app-text-dim)">No tests for this subject yet.</p>';
+        return;
+      }
+      container.innerHTML = html;
+    } catch (e) { container.innerHTML = '<p class="text-sm text-center py-8" style="color:var(--app-text-dim)">Unable to load tests.</p>'; }
+  }
+
+  async function loadAdminTests() {
+    var container = $('#admin-tests-list');
+    if (!container) return;
+    try {
+      var q = query(collection(db, 'tests'), orderBy('createdAt', 'desc'));
+      var snapshot = await getDocs(q);
+      if (snapshot.empty) { container.innerHTML = '<p class="text-xs text-center py-4" style="color:var(--app-text-dim)">No tests added yet.</p>'; return; }
+      var html = '';
+      snapshot.docs.forEach(function(docItem) {
+        var t = docItem.data();
+        html += '<div class="flex items-center justify-between p-3 rounded-xl border" style="background:var(--app-surface2);border-color:var(--app-border)">' +
+          '<div class="overflow-hidden"><p class="text-sm font-bold truncate" style="color:var(--app-text)">' + escapeHtml(t.title) + '</p>' +
+          '<p class="text-[11px]" style="color:var(--app-text-dim)">' + escapeHtml(t.subject) + ' &bull; ' + (t.duration || 60) + 'm</p></div>' +
+          '<button onclick="App.deleteTest(\\'' + docItem.id + '\\')" class="w-8 h-8 rounded-lg flex items-center justify-center active:scale-90 transition-transform shrink-0 ml-2" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2)">' +
+          '<i class="fa-solid fa-trash text-xs" style="color:var(--app-danger)"></i></button></div>';
+      });
+      container.innerHTML = html;
+    } catch (e) { console.error('Load admin tests error:', e); }
+  }
+
+  async function deleteTest(id) {
+    if (!confirm('Delete this mock test?')) return;
+    try { await deleteDoc(doc(db, 'tests', id)); showToast('Test deleted'); loadTests(); loadAdminTests(); }
+    catch (e) { showToast(e.message, 'error'); }
+  }
+
+  async function deleteDateSheet(id) {
+    if (!confirm('Delete this exam date?')) return;
+    try { await deleteDoc(doc(db, 'datesheet', id)); showToast('Date removed'); loadDateSheet(); updateTimer(); }
+    catch (e) { showToast(e.message, 'error'); }
+  }
+
+  // ─── YouTube Search ───
+  async function searchYouTube(e) {
+    e.preventDefault();
+    var query = $('#yt-query').value.trim();
+    if (!query) return;
+    $('#yt-results').innerHTML = '<div class="col-span-full text-center py-10 text-sm" style="color:var(--app-text-dim)"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Searching...</div>';
+    try {
+      var url = 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=' + encodeURIComponent(query) + '&type=video&maxResults=12&key=' + ytApiKey;
+      var res = await fetch(url);
+      var data = await res.json();
+      if (!data.items || !data.items.length) {
+        $('#yt-results').innerHTML = '<div class="text-center py-10 text-sm" style="color:var(--app-text-dim)">No results found.</div>';
+        return;
+      }
+      var html = '';
+      data.items.forEach(function(item) {
+        var vid = item.id.videoId;
+        var title = item.snippet.title;
+        var channel = item.snippet.channelTitle;
+        var thumb = (item.snippet.thumbnails.medium && item.snippet.thumbnails.medium.url) || item.snippet.thumbnails.default.url;
+        var safeTitle = title.replace(/'/g, "\\'");
+        html += '<div onclick="App.playVideo(\\'' + vid + '\\',\\'' + safeTitle + '\\')" class="app-card active:scale-[0.97] transition-transform cursor-pointer shadow-sm">' +
+          '<div class="relative aspect-video" style="background:var(--app-surface2)">' +
+          '<img src="' + thumb + '" alt="" class="w-full h-full object-cover opacity-90" loading="lazy">' +
+          '<div class="absolute inset-0 flex items-center justify-center" style="background:rgba(0,0,0,0.2)">' +
+          '<div class="w-10 h-10 rounded-full flex items-center justify-center pl-0.5 shadow-lg" style="background:rgba(255,255,255,0.9)">' +
+          '<i class="fa-solid fa-play text-sm" style="color:#000"></i></div></div></div>' +
+          '<div class="p-3"><h4 class="text-sm font-bold line-clamp-2 leading-snug" style="color:var(--app-text)">' + escapeHtml(title) + '</h4>' +
+          '<p class="text-xs mt-1" style="color:var(--app-text-dim)">' + escapeHtml(channel) + '</p></div></div>';
+      });
+      $('#yt-results').innerHTML = html;
+    } catch (err) {
+      $('#yt-results').innerHTML = '<div class="text-center py-10 text-sm" style="color:var(--app-text-dim)"><i class="fa-solid fa-triangle-exclamation mb-2 block text-xl" style="color:var(--app-border)"></i>Unable to load results.</div>';
+    }
+  }
+
+  // ─── Test Viewer ───
+  function openTest(id, title, subject, link, duration) {
+    var modal = $('#test-modal'), titleEl = $('#test-modal-title'), subjectEl = $('#test-modal-subject');
+    var iframe = $('#test-iframe'), external = $('#test-external-link'), timerEl = $('#test-modal-timer');
+    if (titleEl) titleEl.textContent = title;
+    if (subjectEl) subjectEl.textContent = subject;
+    if (external) external.href = link;
+    var embedUrl = link;
+    var driveIdx = link.indexOf('drive.google.com/file/d/');
+    if (driveIdx !== -1) {
+      var after = link.substring(driveIdx + 24);
+      var slashIdx = after.indexOf('/');
+      var fileId = slashIdx !== -1 ? after.substring(0, slashIdx) : after;
+      var qIdx = fileId.indexOf('?');
+      if (qIdx !== -1) fileId = fileId.substring(0, qIdx);
+      embedUrl = 'https://drive.google.com/file/d/' + fileId + '/preview';
+    }
+    if (iframe) iframe.src = embedUrl;
+    if (modal) modal.classList.add('open');
+    var remaining = (duration || 60) * 60;
+    if (state.testTimerInterval) clearInterval(state.testTimerInterval);
+    function updateTestTimer() {
+      var m = Math.floor(remaining / 60).toString().padStart(2, '0');
+      var s = (remaining % 60).toString().padStart(2, '0');
+      if (timerEl) timerEl.textContent = m + ':' + s;
+      if (remaining <= 300 && timerEl) timerEl.style.color = 'var(--app-danger)';
+      if (remaining <= 0) { clearInterval(state.testTimerInterval); if (timerEl) timerEl.textContent = "TIME UP"; }
+      remaining--;
+    }
+    updateTestTimer();
+    state.testTimerInterval = setInterval(updateTestTimer, 1000);
+  }
+
+  function closeTest() {
+    var modal = $('#test-modal'), iframe = $('#test-iframe');
+    if (modal) modal.classList.remove('open');
+    if (iframe) iframe.src = '';
+    if (state.testTimerInterval) { clearInterval(state.testTimerInterval); state.testTimerInterval = null; }
+  }
+
+  // ─── Tab Router ───
+  function switchTab(tab) {
+    state.tab = tab;
+    $$('.nav-btn').forEach(function(btn) { btn.classList.toggle('active-tab', btn.dataset.tab === tab); });
+    $$('.tab-view').forEach(function(v) { v.classList.remove('active'); });
+    var target = $('#tab-' + tab);
+    if (target) {
+      target.classList.add('active');
+      target.querySelectorAll('.animate-fade-up').forEach(function(el) { el.style.animation = 'none'; void el.offsetHeight; el.style.animation = ''; });
+    }
+    var scroll = $('#main-scroll');
+    if (scroll) scroll.scrollTop = 0;
+    if (tab === 'home') { loadNotices(); loadDateSheet(); loadFormulaOfDay(); loadWordOfDay(); loadUpcomingTestAlert(); }
+    if (tab === 'classes') { loadLectures(); loadTests(); }
+    if (tab === 'media') { /* youtube loaded on search */ }
+  }
+
+  function filterSubject(sub) {
+    state.activeSubject = sub;
+    $$('.sub-tab-btn').forEach(function(btn) { btn.classList.toggle('active', btn.dataset.sub === sub); });
+    loadLectures();
+    loadTests();
+  }
+
+  // ─── Sidebar ───
+  function toggleSidebar() {
+    state.sidebarOpen = !state.sidebarOpen;
+    var sidebar = $('#sidebar'), overlay = $('#sidebar-overlay');
+    if (sidebar) sidebar.classList.toggle('open', state.sidebarOpen);
+    if (overlay) overlay.classList.toggle('open', state.sidebarOpen);
+  }
+
+  // ─── Auth View Switcher ───
+  function showLogin() {
+    var loginBox = $('#login-box'), regBox = $('#register-box');
+    if (loginBox) loginBox.classList.remove('hidden');
+    if (regBox) regBox.classList.add('hidden');
+  }
+  function showRegister() {
+    var loginBox = $('#login-box'), regBox = $('#register-box');
+    if (loginBox) loginBox.classList.add('hidden');
+    if (regBox) regBox.classList.remove('hidden');
+  }
+
+  // ─── Admin ───
+  function openAdmin() {
+    var panel = $('#admin-panel');
+    if (panel) panel.classList.add('open');
+    toggleSidebar();
+    loadAdminTests();
+    loadDateSheet();
+    loadStats();
+  }
+  function closeAdmin() { var panel = $('#admin-panel'); if (panel) panel.classList.remove('open'); }
+
+  async function loadStats() {
+    try {
+      var usersSnap = await getDocs(collection(db, 'users'));
+      var testsSnap = await getDocs(collection(db, 'tests'));
+      var usersEl = $('#stat-users'), testsEl = $('#stat-tests');
+      if (usersEl) usersEl.textContent = usersSnap.size;
+      if (testsEl) testsEl.textContent = testsSnap.size;
+    } catch (e) {}
+  }
+
+  // ─── Edit Profile ───
+  function openEditModal() { var modal = $('#edit-modal'); if (modal) modal.classList.add('open'); }
+  function closeEditModal() { var modal = $('#edit-modal'); if (modal) modal.classList.remove('open'); }
+  async function saveProfile(e) {
+    e.preventDefault();
+    if (!state.user) return;
+    var data = { name: $('#edit-name').value, class: $('#edit-class').value, subjects: $('#edit-subjects').value, seatNumber: $('#edit-seat').value };
+    await updateDoc(doc(db, 'users', state.user.uid), data);
+    state.profile = Object.assign({}, state.profile, data);
+    renderProfile();
+    closeEditModal();
+    showToast('Profile updated!');
+  }
+
+  // ─── Admin Forms ───
+  async function publishNotice(e) {
+    e.preventDefault();
+    await addDoc(collection(db, 'notices'), { title: $('#notice-title').value, body: $('#notice-body').value, priority: $('#notice-priority').value, createdAt: new Date().toISOString() });
+    $('#notice-form').reset();
+    showToast('Notice published!');
+  }
+  async function addLecture(e) {
+    e.preventDefault();
+    await addDoc(collection(db, 'lectures'), { title: $('#lec-title').value, subject: $('#lec-subject').value, chapter: $('#lec-chapter').value, url: $('#lec-url').value, progress: 0, current: 0, total: 12, duration: '40 min', createdAt: new Date().toISOString() });
+    $('#lecture-form').reset();
+    showToast('Lecture added!');
+  }
+  async function addMockTest(e) {
+    e.preventDefault();
+    await addDoc(collection(db, 'tests'), { title: $('#test-title').value, subject: $('#test-subject').value, description: $('#test-desc').value, link: $('#test-link').value, testDate: $('#test-date').value, duration: parseInt($('#test-duration').value) || 60, marks: parseInt($('#test-marks').value) || 100, createdAt: new Date().toISOString() });
+    $('#test-form').reset();
+    showToast('Mock test added!');
+    loadAdminTests();
+  }
+  async function addDateSheet(e) {
+    e.preventDefault();
+    await addDoc(collection(db, 'datesheet'), { name: $('#ds-name').value, subject: $('#ds-subject').value, date: $('#ds-date').value, shift: $('#ds-shift').value, time: $('#ds-time').value, createdAt: new Date().toISOString() });
+    $('#datesheet-form').reset();
+    showToast('Exam date added!');
+    loadDateSheet();
+    updateTimer();
+  }
+
+  // ─── Video Modal ───
+  function playVideo(id, title) {
+    var modalTitle = $('#modal-title'), iframe = $('#video-iframe');
+    if (modalTitle) modalTitle.textContent = title;
+    if (iframe) iframe.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1';
+    var modal = $('#video-modal');
+    if (modal) modal.classList.add('open');
+  }
+  function closeVideo() {
+    var modal = $('#video-modal'), iframe = $('#video-iframe');
+    if (modal) modal.classList.remove('open');
+    if (iframe) iframe.src = '';
+  }
+
+  // ─── Calculator ───
+  function openCalculator() { var modal = $('#calc-modal'); if (modal) modal.classList.add('open'); toggleSidebar(); }
+  function closeCalculator() { var modal = $('#calc-modal'); if (modal) modal.classList.remove('open'); }
+  function calcInput(val) {
+    var display = $('#calc-display');
+    if (!display) return;
+    if (val === 'C') { state.calcExpr = ''; display.textContent = '0'; }
+    else if (val === 'del') { state.calcExpr = state.calcExpr.slice(0, -1); display.textContent = state.calcExpr || '0'; }
+    else if (val === '=') {
+      try { var result = Function('"use strict"; return (' + state.calcExpr + ')')(); state.calcExpr = String(result); display.textContent = state.calcExpr; }
+      catch (e) { display.textContent = 'Error'; state.calcExpr = ''; }
+    } else { state.calcExpr += val; display.textContent = state.calcExpr; }
+  }
+
+  // ─── Notepad ───
+  function openNotepad() { var modal = $('#notepad-modal'); if (modal) modal.classList.add('open'); var area = $('#notepad-area'); if (area) area.value = localStorage.getItem('studyPro_notes') || ''; toggleSidebar(); }
+  function closeNotepad() { var modal = $('#notepad-modal'); if (modal) modal.classList.remove('open'); }
+  function saveNotepad() { var area = $('#notepad-area'); if (area) { localStorage.setItem('studyPro_notes', area.value); showToast('Notes saved!'); } }
+  function clearNotepad() { var area = $('#notepad-area'); if (area) { area.value = ''; localStorage.setItem('studyPro_notes', ''); showToast('Notes cleared!'); } }
+
+  // ─── Todo ───
+  function openTodo() { var modal = $('#todo-modal'); if (modal) modal.classList.add('open'); renderTodos(); toggleSidebar(); }
+  function closeTodo() { var modal = $('#todo-modal'); if (modal) modal.classList.remove('open'); }
+  function renderTodos() {
+    var list = $('#todo-list');
+    if (!list) return;
+    if (state.todos.length === 0) { list.innerHTML = '<p class="text-xs text-center py-4" style="color:var(--app-text-dim)">No tasks yet. Add one above!</p>'; return; }
+    var html = '';
+    state.todos.forEach(function(todo, idx) {
+      html += '<div class="flex items-center gap-3 p-3 rounded-xl border" style="background:var(--app-surface2);border-color:var(--app-border)">' +
+        '<button onclick="App.toggleTodo(' + idx + ')" class="w-5 h-5 rounded border flex items-center justify-center shrink-0" style="border-color:var(--app-border);background:' + (todo.done ? 'var(--app-success)' : 'transparent') + '">' +
+        (todo.done ? '<i class="fa-solid fa-check text-white text-[10px]"></i>' : '') + '</button>' +
+        '<span class="text-sm flex-1 ' + (todo.done ? 'line-through' : '') + '" style="color:' + (todo.done ? 'var(--app-text-dim)' : 'var(--app-text)') + '">' + escapeHtml(todo.text) + '</span>' +
+        '<button onclick="App.deleteTodo(' + idx + ')" class="w-7 h-7 rounded-lg flex items-center justify-center" style="background:rgba(239,68,68,0.1)"><i class="fa-solid fa-xmark text-xs" style="color:var(--app-danger)"></i></button></div>';
+    });
+    list.innerHTML = html;
+  }
+  function addTodo() {
+    var input = $('#todo-input');
+    if (!input || !input.value.trim()) return;
+    state.todos.push({ text: input.value.trim(), done: false });
+    localStorage.setItem('studyPro_todos', JSON.stringify(state.todos));
+    input.value = '';
+    renderTodos();
+  }
+  function toggleTodo(idx) { state.todos[idx].done = !state.todos[idx].done; localStorage.setItem('studyPro_todos', JSON.stringify(state.todos)); renderTodos(); }
+  function deleteTodo(idx) { state.todos.splice(idx, 1); localStorage.setItem('studyPro_todos', JSON.stringify(state.todos)); renderTodos(); }
+
+  // ─── Terms & About ───
+  function openTerms() { var modal = $('#terms-modal'); if (modal) modal.classList.add('open'); toggleSidebar(); }
+  function closeTerms() { var modal = $('#terms-modal'); if (modal) modal.classList.remove('open'); }
+  function openAbout() { var modal = $('#about-modal'); if (modal) modal.classList.add('open'); toggleSidebar(); }
+  function closeAbout() { var modal = $('#about-modal'); if (modal) modal.classList.remove('open'); }
+
+  // ─── PWA Install ───
+  function installApp() {
+    if (state.installPrompt) { state.installPrompt.prompt(); }
+    else { showToast('Install not available. Add to home screen manually.', 'info'); }
+  }
+
+  // ─── Logout ───
+  async function logout() {
+    await signOut(auth);
+    state.user = null; state.profile = null;
+    var appShell = $('#app-shell'), authScreen = $('#auth-screen');
+    if (appShell) { appShell.classList.add('hidden'); appShell.classList.remove('flex'); }
+    if (authScreen) { authScreen.classList.remove('hidden', 'hidden-auth'); }
+    showToast('Logged out');
+  }
+
+  // ─── Dashboard Widgets ───
+  async function loadFormulaOfDay() {
+    var container = $('#formula-widget');
+    if (!container) return;
+    try {
+      var q = query(collection(db, 'formulaOfDay'), orderBy('createdAt', 'desc'), limit(1));
+      var snapshot = await getDocs(q);
+      if (snapshot.empty) {
+        container.innerHTML = '<p class="text-sm text-center py-2" style="color:var(--app-text-dim)">No formula set yet.</p>';
+        return;
+      }
+      var data = snapshot.docs[0].data();
+      container.innerHTML = '<div class="p-3 rounded-xl border" style="background:var(--app-surface2);border-color:var(--app-border)">' +
+        '<p class="text-xs font-bold uppercase tracking-wider mb-1" style="color:var(--app-text-dim)">' + escapeHtml(data.title || 'Formula') + '</p>' +
+        '<p class="text-lg font-extrabold font-display my-1" style="color:var(--app-accent)">' + escapeHtml(data.formula) + '</p>' +
+        '<p class="text-xs leading-relaxed" style="color:var(--app-text-muted)">' + escapeHtml(data.description || '') + '</p></div>';
+    } catch (e) { container.innerHTML = '<p class="text-sm text-center py-2" style="color:var(--app-text-dim)">Unable to load formula.</p>'; }
+  }
+
+  async function loadWordOfDay() {
+    var container = $('#word-widget');
+    if (!container) return;
+    try {
+      var q = query(collection(db, 'wordOfDay'), orderBy('createdAt', 'desc'), limit(1));
+      var snapshot = await getDocs(q);
+      if (snapshot.empty) {
+        container.innerHTML = '<p class="text-sm text-center py-2" style="color:var(--app-text-dim)">No word set yet.</p>';
+        return;
+      }
+      var data = snapshot.docs[0].data();
+      var syn = data.synonyms ? '<p class="text-[11px] mt-1.5"><span style="color:var(--app-text-dim)">Synonyms: </span><span style="color:var(--app-text-muted)">' + escapeHtml(data.synonyms) + '</span></p>' : '';
+      var ex = data.example ? '<p class="text-[11px] mt-1 italic" style="color:var(--app-text-muted)">"' + escapeHtml(data.example) + '"</p>' : '';
+      container.innerHTML = '<div class="p-3 rounded-xl border" style="background:var(--app-surface2);border-color:var(--app-border)">' +
+        '<div class="flex items-baseline gap-2 mb-1"><p class="text-lg font-extrabold font-display" style="color:var(--app-accent)">' + escapeHtml(data.word) + '</p>' +
+        '<p class="text-xs font-medium" style="color:var(--app-text-muted)">' + escapeHtml(data.hindiMeaning || '') + '</p></div>' +
+        syn + ex + '</div>';
+    } catch (e) { container.innerHTML = '<p class="text-sm text-center py-2" style="color:var(--app-text-dim)">Unable to load word.</p>'; }
+  }
+
+  async function loadUpcomingTestAlert() {
+    var container = $('#upcoming-test-widget');
+    if (!container) return;
+    try {
+      var now = new Date().toISOString().split('T')[0];
+      var q = query(collection(db, 'tests'), where('testDate', '>=', now), orderBy('testDate', 'asc'), limit(1));
+      var snapshot = await getDocs(q);
+      if (snapshot.empty) {
+        var q2 = query(collection(db, 'tests'), orderBy('createdAt', 'desc'), limit(1));
+        var snap2 = await getDocs(q2);
+        if (snap2.empty) {
+          container.innerHTML = '<p class="text-sm text-center py-2" style="color:var(--app-text-dim)">No tests scheduled yet.</p>';
           return;
         }
-        var html = '';
-        snapshot.docs.forEach(function(docItem, idx) {
-          var t = docItem.data();
-          var color = subjectMeta[t.subject] || subjectMeta.Physics;
-          var delay = idx * 0.08;
-          var safeId = docItem.id;
-          var safeTitle = escapeHtml(t.title).replace(/'/g, "\\'");
-          var safeSubject = escapeHtml(t.subject).replace(/'/g, "\\'");
-          var safeLink = escapeHtml(t.link).replace(/'/g, "\\'");
-          html += '<div class="app-card p-5 animate-fade-up shadow-sm" style="animation-delay: ' + delay + 's">' +
-            '<div class="flex items-start justify-between gap-3 mb-3">' +
-            '<div class="flex items-center gap-2.5">' +
-            '<div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: ' + color.bg + '; border: 1px solid ' + color.border + ';">' +
-            '<i class="fa-solid fa-file-pen text-sm" style="color: ' + color.solid + ';"></i></div>' +
-            '<div>' +
-            '<span class="badge" style="background: ' + color.bg + '; color: ' + color.solid + '; border-color: ' + color.border + ';">' + escapeHtml(t.subject) + '</span>' +
-            '<h3 class="font-bold text-sm mt-1" style="color: var(--app-text);">' + escapeHtml(t.title) + '</h3>' +
-            '</div></div>' +
-            '<span class="text-[10px] font-bold px-2 py-1 rounded-lg border shrink-0" style="background: var(--app-surface2); border-color: var(--app-border); color: var(--app-text-dim);">' + (t.duration || 60) + 'm</span>' +
-            '</div>' +
-            '<p class="text-xs leading-relaxed mb-4 line-clamp-2" style="color: var(--app-text-muted);">' + escapeHtml(t.description || 'Practice test following UP Board pattern.') + '</p>' +
-            '<div class="flex items-center justify-between">' +
-            '<span class="text-[11px] font-bold" style="color: var(--app-text-dim);">' + (t.marks || 100) + ' Marks</span>' +
-            '<button onclick="App.openTest(\'' + safeId + '\', \'' + safeTitle + '\', \'' + safeSubject + '\', \'' + safeLink + '\', ' + (t.duration || 60) + ')" class="app-btn" style="padding: 10px 20px; font-size: 13px; background: ' + color.solid + '; color: #fff;">' +
-            '<i class="fa-solid fa-play"></i><span>Start Test</span></button>' +
-            '</div></div>';
-        });
-        container.innerHTML = html;
-      } catch (e) {
-        console.error('Load tests error:', e);
-        container.innerHTML = '<p class="text-sm text-center py-8" style="color: var(--app-text-dim);">Unable to load tests.</p>';
+        var t = snap2.docs[0].data();
+        container.innerHTML = '<div class="p-3 rounded-xl border" style="background:var(--app-surface2);border-color:var(--app-border)">' +
+          '<p class="text-sm font-bold" style="color:var(--app-text)">' + escapeHtml(t.title) + '</p>' +
+          '<p class="text-xs mt-1" style="color:var(--app-text-muted)">' + escapeHtml(t.subject) + ' &bull; ' + (t.testDate || 'Date TBD') + '</p>' +
+          '<p class="text-[11px] mt-1.5 line-clamp-2" style="color:var(--app-text-dim)">' + escapeHtml(t.description || 'No syllabus details.') + '</p></div>';
+        return;
       }
-    }
+      var t = snapshot.docs[0].data();
+      container.innerHTML = '<div class="p-3 rounded-xl border" style="background:rgba(239,68,68,0.05);border-color:rgba(239,68,68,0.2)">' +
+        '<div class="flex items-center gap-2 mb-1"><i class="fa-solid fa-bell text-[10px]" style="color:var(--app-danger)"></i>' +
+        '<p class="text-xs font-bold uppercase tracking-wider" style="color:var(--app-danger)">Next Test</p></div>' +
+        '<p class="text-sm font-bold" style="color:var(--app-text)">' + escapeHtml(t.title) + '</p>' +
+        '<p class="text-xs mt-0.5" style="color:var(--app-text-muted)">' + escapeHtml(t.subject) + ' &bull; ' + escapeHtml(t.testDate) + ' &bull; ' + (t.duration || 60) + ' min</p>' +
+        '<p class="text-[11px] mt-1.5 line-clamp-2" style="color:var(--app-text-dim)">' + escapeHtml(t.description || 'Prepare well!') + '</p></div>';
+    } catch (e) { container.innerHTML = '<p class="text-sm text-center py-2" style="color:var(--app-text-dim)">Unable to load alerts.</p>'; }
+  }
 
-    async function loadAdminTests() {
-      const container = $('#admin-tests-list');
-      if (!container) return;
-      try {
-        var q = query(collection(db, 'tests'), orderBy('createdAt', 'desc'));
-        var snapshot = await getDocs(q);
-        if (snapshot.empty) {
-          container.innerHTML = '<p class="text-xs text-center py-4" style="color: var(--app-text-dim);">No tests added yet.</p>';
-          return;
+  // ─── Summer Homework ───
+  var activeHomeworkSubject = 'Hindi';
+  function openHomework() {
+    var view = $('#homework-view');
+    if (view) { view.style.display = 'flex'; setTimeout(function() { view.style.opacity = '1'; }, 10); }
+    toggleSidebar();
+    loadHomework();
+  }
+  function closeHomework() {
+    var view = $('#homework-view');
+    if (view) { view.style.opacity = '0'; setTimeout(function() { view.style.display = 'none'; }, 300); }
+  }
+  function filterHomework(sub) {
+    activeHomeworkSubject = sub;
+    $$('.hw-tab-btn').forEach(function(btn) { btn.classList.toggle('active', btn.dataset.hw === sub); });
+    loadHomework();
+  }
+  async function loadHomework() {
+    var container = $('#homework-list');
+    if (!container) return;
+    container.innerHTML = '<div class="space-y-4"><div class="skeleton h-32 rounded-2xl"></div><div class="skeleton h-32 rounded-2xl"></div></div>';
+    try {
+      var q = query(collection(db, 'summerHomework'), where('subject', '==', activeHomeworkSubject), orderBy('createdAt', 'desc'));
+      var snapshot = await getDocs(q);
+      if (snapshot.empty) {
+        container.innerHTML = '<div class="text-center py-14"><div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style="background:var(--app-surface2);border:1px solid var(--app-border)">' +
+          '<i class="fa-solid fa-sun text-2xl" style="color:var(--app-text-dim)"></i></div>' +
+          '<p class="text-sm font-semibold" style="color:var(--app-text-muted)">No homework for ' + activeHomeworkSubject + ' yet</p>' +
+          '<p class="text-xs mt-1" style="color:var(--app-text-dim)">Check back later or contact your teacher.</p></div>';
+        return;
+      }
+      var html = '';
+      snapshot.docs.forEach(function(docItem, idx) {
+        var h = docItem.data();
+        var subColors = { Hindi: '#f97316', English: '#8b5cf6', Mathematics: '#f59e0b', Physics: '#3b82f6', Chemistry: '#22c55e' };
+        var color = subColors[h.subject] || '#3b82f6';
+        html += '<div class="app-card p-5 animate-fade-up shadow-sm" style="animation-delay:' + (idx * 0.08) + 's">' +
+          '<div class="flex items-start justify-between gap-3 mb-3">' +
+          '<div class="flex items-center gap-2.5">' +
+          '<div class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm" style="background:' + color + '">' + h.subject.charAt(0) + '</div>' +
+          '<div><p class="text-sm font-bold" style="color:var(--app-text)">' + escapeHtml(h.teacher) + '</p>' +
+          '<p class="text-[11px]" style="color:var(--app-text-dim)">' + escapeHtml(h.subject) + '</p></div></div>';
+        if (state.isAdmin) {
+          html += '<button onclick="App.deleteHomework(\\'' + docItem.id + '\\')" class="w-8 h-8 rounded-lg flex items-center justify-center active:scale-90 transition-transform shrink-0" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2)">' +
+            '<i class="fa-solid fa-trash text-xs" style="color:var(--app-danger)"></i></button>';
         }
-        var html = '';
-        snapshot.docs.forEach(function(docItem) {
-          var t = docItem.data();
-          html += '<div class="flex items-center justify-between p-3 rounded-xl border" style="background: var(--app-surface2); border-color: var(--app-border);">' +
-            '<div class="overflow-hidden">' +
-            '<p class="text-sm font-bold truncate" style="color: var(--app-text);">' + escapeHtml(t.title) + '</p>' +
-            '<p class="text-[11px]" style="color: var(--app-text-dim);">' + escapeHtml(t.subject) + ' &bull; ' + (t.duration || 60) + 'm</p>' +
-            '</div>' +
-            '<button onclick="App.deleteTest(\'' + docItem.id + '\')" class="w-8 h-8 rounded-lg flex items-center justify-center active:scale-90 transition-transform shrink-0 ml-2" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2);">' +
-            '<i class="fa-solid fa-trash text-xs" style="color: var(--app-danger);"></i></button>' +
-            '</div>';
-        });
-        container.innerHTML = html;
-      } catch (e) {
-        console.error('Load admin tests error:', e);
-      }
-    }
-
-    async function deleteTest(id) {
-      if (!confirm('Delete this mock test?')) return;
-      try {
-        await deleteDoc(doc(db, 'tests', id));
-        showToast('Test deleted');
-        loadTests();
-        loadAdminTests();
-      } catch (e) {
-        showToast(e.message, 'error');
-      }
-    }
-
-    // ─── Test Viewer ───
-    function openTest(id, title, subject, link, duration) {
-      var modal = $('#test-modal');
-      var titleEl = $('#test-modal-title');
-      var subjectEl = $('#test-modal-subject');
-      var iframe = $('#test-iframe');
-      var external = $('#test-external-link');
-      var timerEl = $('#test-modal-timer');
-
-      if (titleEl) titleEl.textContent = title;
-      if (subjectEl) subjectEl.textContent = subject;
-      if (external) external.href = link;
-
-      var embedUrl = link;
-      var driveIdx = link.indexOf('drive.google.com/file/d/');
-      if (driveIdx !== -1) {
-        var after = link.substring(driveIdx + 24);
-        var slashIdx = after.indexOf('/');
-        var fileId = slashIdx !== -1 ? after.substring(0, slashIdx) : after;
-        var qIdx = fileId.indexOf('?');
-        if (qIdx !== -1) fileId = fileId.substring(0, qIdx);
-        embedUrl = 'https://drive.google.com/file/d/' + fileId + '/preview';
-      }
-      if (iframe) iframe.src = embedUrl;
-      if (modal) modal.classList.add('open');
-
-      var remaining = (duration || 60) * 60;
-      if (state.testTimerInterval) clearInterval(state.testTimerInterval);
-      function updateTestTimer() {
-        var m = Math.floor(remaining / 60).toString().padStart(2, '0');
-        var s = (remaining % 60).toString().padStart(2, '0');
-        if (timerEl) timerEl.textContent = m + ':' + s;
-        if (remaining <= 300 && timerEl) timerEl.style.color = 'var(--app-danger)';
-        if (remaining <= 0) {
-          clearInterval(state.testTimerInterval);
-          if (timerEl) timerEl.textContent = "TIME UP";
-        }
-        remaining--;
-      }
-      updateTestTimer();
-      state.testTimerInterval = setInterval(updateTestTimer, 1000);
-    }
-
-    function closeTest() {
-      var modal = $('#test-modal');
-      var iframe = $('#test-iframe');
-      if (modal) modal.classList.remove('open');
-      if (iframe) iframe.src = '';
-      if (state.testTimerInterval) {
-        clearInterval(state.testTimerInterval);
-        state.testTimerInterval = null;
-      }
-    }
-
-    // ─── Tab Router ───
-    function switchTab(tab) {
-      state.tab = tab;
-      $$('.nav-btn').forEach(function(btn) {
-        btn.classList.toggle('active-tab', btn.dataset.tab === tab);
+        html += '</div>' +
+          '<a href="tel:' + escapeHtml(h.mobile) + '" class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-bold mb-3 active:scale-95 transition-transform" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text);text-decoration:none">' +
+          '<i class="fa-solid fa-phone" style="color:var(--app-success)"></i><span>' + escapeHtml(h.mobile) + '</span></a>' +
+          '<div class="p-3 rounded-xl border text-sm leading-relaxed" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted);white-space:pre-wrap;word-wrap:break-word">' + escapeHtml(h.content) + '</div>' +
+          '</div>';
       });
-      $$('.tab-view').forEach(function(v) { v.classList.remove('active'); });
-      var target = $('#tab-' + tab);
-      if (target) {
-        target.classList.add('active');
-        target.querySelectorAll('.animate-fade-up').forEach(function(el) {
-          el.style.animation = 'none';
-          void el.offsetHeight;
-          el.style.animation = '';
-        });
-      }
-      var scroll = $('#main-scroll');
-      if (scroll) scroll.scrollTop = 0;
-      if (tab === 'home') loadNotices();
-      if (tab === 'classes') loadLectures();
-      if (tab === 'tests') loadTests();
-    }
+      container.innerHTML = html;
+    } catch (e) { container.innerHTML = '<p class="text-sm text-center py-8" style="color:var(--app-text-dim)">Unable to load homework.</p>'; }
+  }
+  async function deleteHomework(id) {
+    if (!confirm('Delete this homework entry?')) return;
+    try { await deleteDoc(doc(db, 'summerHomework', id)); showToast('Homework deleted'); loadHomework(); }
+    catch (e) { showToast(e.message, 'error'); }
+  }
 
-    // ─── Sidebar ───
-    function toggleSidebar() {
-      state.sidebarOpen = !state.sidebarOpen;
-      var sidebar = $('#sidebar');
-      var overlay = $('#sidebar-overlay');
-      if (sidebar) sidebar.classList.toggle('open', state.sidebarOpen);
-      if (overlay) overlay.classList.toggle('open', state.sidebarOpen);
-    }
+  // ─── Admin Widget Publishers ───
+  async function publishFormula(e) {
+    e.preventDefault();
+    await addDoc(collection(db, 'formulaOfDay'), { title: $('#formula-title').value, formula: $('#formula-math').value, description: $('#formula-desc').value, createdAt: new Date().toISOString() });
+    $('#formula-form').reset();
+    showToast('Formula of the Day updated!');
+  }
+  async function publishWord(e) {
+    e.preventDefault();
+    await addDoc(collection(db, 'wordOfDay'), { word: $('#word-en').value, hindiMeaning: $('#word-hi').value, synonyms: $('#word-syn').value, example: $('#word-ex').value, createdAt: new Date().toISOString() });
+    $('#word-form').reset();
+    showToast('Word of the Day updated!');
+  }
+  async function publishHomework(e) {
+    e.preventDefault();
+    await addDoc(collection(db, 'summerHomework'), { subject: $('#hw-subject').value, teacher: $('#hw-teacher').value, mobile: $('#hw-mobile').value, content: $('#hw-content').value, createdAt: new Date().toISOString() });
+    $('#homework-form').reset();
+    showToast('Summer homework published!');
+    loadHomework();
+  }
 
-    // ─── Auth View Switcher ───
-    function showLogin() {
-      var loginBox = $('#login-box');
-      var regBox = $('#register-box');
-      if (loginBox) { loginBox.classList.remove('hidden'); }
-      if (regBox) { regBox.classList.add('hidden'); }
-    }
+  // ─── Init ───
+  function init() {
+    applyTheme(state.theme);
 
-    function showRegister() {
-      var loginBox = $('#login-box');
-      var regBox = $('#register-box');
-      if (loginBox) { loginBox.classList.add('hidden'); }
-      if (regBox) { regBox.classList.remove('hidden'); }
-    }
+    $('#login-form')?.addEventListener('submit', handleLogin);
+    $('#register-form')?.addEventListener('submit', handleRegister);
+    $('#google-login')?.addEventListener('click', function() { handleGoogleAuth(false); });
+    $('#google-register')?.addEventListener('click', function() { handleGoogleAuth(true); });
 
-    // ─── Admin ───
-    function openAdmin() {
-      var panel = $('#admin-panel');
-      if (panel) panel.classList.add('open');
-      toggleSidebar();
-      var currentDate = $('#current-exam-date');
-      if (currentDate) currentDate.textContent = state.examDate.toLocaleDateString();
-      loadAdminTests();
-    }
+    $$('.nav-btn').forEach(function(btn) { btn.addEventListener('click', function() { switchTab(btn.dataset.tab); }); });
 
-    function closeAdmin() {
-      var panel = $('#admin-panel');
-      if (panel) panel.classList.remove('open');
-    }
+    $('#menu-btn')?.addEventListener('click', toggleSidebar);
+    $('#sidebar-overlay')?.addEventListener('click', toggleSidebar);
 
-    // ─── Edit Profile ───
-    function openEditModal() {
-      var modal = $('#edit-modal');
-      if (modal) modal.classList.add('open');
-    }
+    $('#edit-profile-btn')?.addEventListener('click', openEditModal);
+    $('#edit-form')?.addEventListener('submit', saveProfile);
 
-    function closeEditModal() {
-      var modal = $('#edit-modal');
-      if (modal) modal.classList.remove('open');
-    }
+    $('#notice-form')?.addEventListener('submit', publishNotice);
+    $('#lecture-form')?.addEventListener('submit', addLecture);
+    $('#test-form')?.addEventListener('submit', addMockTest);
+    $('#datesheet-form')?.addEventListener('submit', addDateSheet);
+    $('#yt-search-form')?.addEventListener('submit', searchYouTube);
+    $('#formula-form')?.addEventListener('submit', publishFormula);
+    $('#word-form')?.addEventListener('submit', publishWord);
+    $('#homework-form')?.addEventListener('submit', publishHomework);
 
-    async function saveProfile(e) {
+    // PWA Install
+    window.addEventListener('beforeinstallprompt', function(e) {
       e.preventDefault();
-      if (!state.user) return;
-      var data = {
-        name: $('#edit-name').value,
-        class: $('#edit-class').value,
-        subjects: $('#edit-subjects').value,
-        seatNumber: $('#edit-seat').value,
-      };
-      await setDoc(doc(db, 'users', state.user.uid), data, { merge: true });
-      state.profile = Object.assign({}, state.profile, data);
-      renderProfile();
-      closeEditModal();
-      showToast('Profile updated!');
+      state.installPrompt = e;
+      var container = $('#install-container');
+      if (container) container.classList.remove('hidden');
+    });
+
+    // Service Worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(function() {});
     }
 
-    // ─── Admin Forms ───
-    async function publishNotice(e) {
-      e.preventDefault();
-      await addDoc(collection(db, 'notices'), {
-        title: $('#notice-title').value,
-        body: $('#notice-body').value,
-        priority: $('#notice-priority').value,
-        createdAt: new Date().toISOString()
-      });
-      $('#notice-form').reset();
-      showToast('Notice published!');
-    }
-
-    async function addLecture(e) {
-      e.preventDefault();
-      await addDoc(collection(db, 'lectures'), {
-        title: $('#lec-title').value,
-        subject: $('#lec-subject').value,
-        chapter: $('#lec-chapter').value,
-        url: $('#lec-url').value,
-        progress: 0, current: 0, total: 12, duration: '40 min',
-        createdAt: new Date().toISOString()
-      });
-      $('#lecture-form').reset();
-      showToast('Lecture added!');
-    }
-
-    async function addMockTest(e) {
-      e.preventDefault();
-      await addDoc(collection(db, 'tests'), {
-        title: $('#test-title').value,
-        subject: $('#test-subject').value,
-        description: $('#test-desc').value,
-        link: $('#test-link').value,
-        duration: parseInt($('#test-duration').value) || 60,
-        marks: parseInt($('#test-marks').value) || 100,
-        createdAt: new Date().toISOString()
-      });
-      $('#test-form').reset();
-      showToast('Mock test added!');
-      loadAdminTests();
-    }
-
-    async function updateExamDate(e) {
-      e.preventDefault();
-      var date = $('#exam-date-input').value;
-      if (!date) return;
-      await setDoc(doc(db, 'settings', 'global'), { examDate: date }, { merge: true });
-      state.examDate = new Date(date + 'T09:00:00');
-      var currentDate = $('#current-exam-date');
-      if (currentDate) currentDate.textContent = state.examDate.toLocaleDateString();
-      showToast('Exam date updated!');
-    }
-
-    // ─── Video Modal ───
-    function playVideo(id, title) {
-      var modalTitle = $('#modal-title');
-      var iframe = $('#video-iframe');
-      if (modalTitle) modalTitle.textContent = title;
-      if (iframe) iframe.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1';
-      var modal = $('#video-modal');
-      if (modal) modal.classList.add('open');
-    }
-
-    function closeVideo() {
-      var modal = $('#video-modal');
-      var iframe = $('#video-iframe');
-      if (modal) modal.classList.remove('open');
-      if (iframe) iframe.src = '';
-    }
-
-    // ─── Logout ───
-    async function logout() {
-      await signOut(auth);
-      state.user = null;
-      state.profile = null;
-      var appShell = $('#app-shell');
-      var authScreen = $('#auth-screen');
-      if (appShell) { appShell.classList.add('hidden'); appShell.classList.remove('flex'); }
-      if (authScreen) { authScreen.classList.remove('hidden', 'hidden-auth'); }
-      showToast('Logged out');
-    }
-
-    // ─── Init ───
-    function init() {
-      applyTheme(state.theme);
-
-      $('#login-form')?.addEventListener('submit', handleLogin);
-      $('#register-form')?.addEventListener('submit', handleRegister);
-      $('#google-login')?.addEventListener('click', function() { handleGoogleAuth(false); });
-      $('#google-register')?.addEventListener('click', function() { handleGoogleAuth(true); });
-
-      $$('.nav-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() { switchTab(btn.dataset.tab); });
-      });
-
-      $('#menu-btn')?.addEventListener('click', toggleSidebar);
-      $('#sidebar-overlay')?.addEventListener('click', toggleSidebar);
-
-      $('#edit-profile-btn')?.addEventListener('click', openEditModal);
-      $('#edit-form')?.addEventListener('submit', saveProfile);
-
-      $('#notice-form')?.addEventListener('submit', publishNotice);
-      $('#lecture-form')?.addEventListener('submit', addLecture);
-      $('#test-form')?.addEventListener('submit', addMockTest);
-      $('#exam-form')?.addEventListener('submit', updateExamDate);
-
-      onAuthStateChanged(auth, async function(user) {
-        if (user) {
-          state.user = user;
-          var authScreen = $('#auth-screen');
-          if (authScreen) authScreen.classList.add('hidden-auth');
-          setTimeout(function() {
-            if (authScreen) authScreen.classList.add('hidden');
-            var appShell = $('#app-shell');
-            appShell?.classList.remove('hidden');
-            appShell?.classList.add('flex');
-            loadProfile(user.uid);
-            loadNotices();
-            updateTimer();
-            setInterval(updateTimer, 60000);
-          }, 500);
-        } else {
-          var authScreen = $('#auth-screen');
-          authScreen?.classList.remove('hidden', 'hidden-auth');
+    onAuthStateChanged(auth, async function(user) {
+      if (user) {
+        state.user = user;
+        var authScreen = $('#auth-screen');
+        if (authScreen) authScreen.classList.add('hidden-auth');
+        setTimeout(function() {
+          if (authScreen) authScreen.classList.add('hidden');
           var appShell = $('#app-shell');
-          appShell?.classList.add('hidden');
-          appShell?.classList.remove('flex');
-        }
-      });
+          appShell?.classList.remove('hidden');
+          appShell?.classList.add('flex');
+          loadProfile(user.uid);
+          loadNotices();
+          loadDateSheet();
+          updateTimer();
+          setInterval(updateTimer, 30000);
+        }, 500);
+      } else {
+        var authScreen = $('#auth-screen');
+        authScreen?.classList.remove('hidden', 'hidden-auth');
+        var appShell = $('#app-shell');
+        appShell?.classList.add('hidden');
+        appShell?.classList.remove('flex');
+      }
+    });
+  }
 
-      getDoc(doc(db, 'settings', 'global')).then(function(snap) {
-        if (snap.exists() && snap.data().examDate) {
-          state.examDate = new Date(snap.data().examDate + 'T09:00:00');
-        }
-      }).catch(function() {});
-    }
+  // ─── Expose App API ───
+  window.App = {
+    setTheme: applyTheme, logout: logout, playVideo: playVideo, closeVideo: closeVideo,
+    openAdmin: openAdmin, closeAdmin: closeAdmin, openEditModal: openEditModal, closeEditModal: closeEditModal,
+    toggleSidebar: toggleSidebar, openTest: openTest, closeTest: closeTest, deleteTest: deleteTest,
+    deleteDateSheet: deleteDateSheet, showLogin: showLogin, showRegister: showRegister,
+    openCalculator: openCalculator, closeCalculator: closeCalculator, calcInput: calcInput,
+    openNotepad: openNotepad, closeNotepad: closeNotepad, saveNotepad: saveNotepad, clearNotepad: clearNotepad,
+    openTodo: openTodo, closeTodo: closeTodo, addTodo: addTodo, toggleTodo: toggleTodo, deleteTodo: deleteTodo,
+    openTerms: openTerms, closeTerms: closeTerms, openAbout: openAbout, closeAbout: closeAbout,
+    installApp: installApp, filterSubject: filterSubject,
+    openHomework: openHomework, closeHomework: closeHomework, filterHomework: filterHomework, deleteHomework: deleteHomework,
+  };
 
-    // ─── Expose App API ───
-    window.App = {
-      setTheme: applyTheme,
-      logout: logout,
-      playVideo: playVideo,
-      closeVideo: closeVideo,
-      openAdmin: openAdmin,
-      closeAdmin: closeAdmin,
-      openEditModal: openEditModal,
-      closeEditModal: closeEditModal,
-      toggleSidebar: toggleSidebar,
-      openTest: openTest,
-      closeTest: closeTest,
-      deleteTest: deleteTest,
-      showLogin: showLogin,
-      showRegister: showRegister,
-    };
-
-    init();
-  </script>
+  init();
+</script>
 </body>
-</html>'''
-
-with open('/mnt/agents/output/dark_eio_upboard.html', 'w', encoding='utf-8') as f:
-    f.write(html_content)
-
-print("File saved successfully!")
-print(f"Size: {len(html_content)} characters")
+</html>
