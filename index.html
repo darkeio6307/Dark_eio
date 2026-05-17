@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
-  <meta name="theme-color" content="#09090b">
-  <meta name="description" content="studyPro - UP Board Class 12 Study & Mock Tests">
+  <meta name="theme-color" content="#0a0a0f">
+  <meta name="description" content="studyPro - UP Board Class 12 Study App & Mock Tests">
   <title>studyPro — UP Board Class 12</title>
   <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
@@ -29,27 +30,43 @@
     }
   </script>
   <style>
-    :root, .theme-light {
+    :root, .theme-golden {
+      --app-bg: #0a0a0f;
+      --app-surface: #12121a;
+      --app-surface2: #1a1a25;
+      --app-surface-rgb: 18,18,26;
+      --app-border: #2a2a3a;
+      --app-text: #f0f0f5;
+      --app-text-muted: #b0b0c0;
+      --app-text-dim: #7a7a8a;
+      --app-accent: #D4AF37;
+      --app-accent-soft: rgba(212,175,55,0.12);
+      --app-danger: #ef4444;
+      --app-success: #22c55e;
+    }
+    .theme-light {
       --app-bg:#f8fafc; --app-surface:#ffffff; --app-surface2:#f1f5f9; --app-surface-rgb:255,255,255;
       --app-border:#e2e8f0; --app-text:#0f172a; --app-text-muted:#475569; --app-text-dim:#94a3b8;
-      --app-accent:#0f172a; --app-accent-soft:rgba(15,23,42,0.08); --app-danger:#dc2626; --app-success:#16a34a;
+      --app-accent:#D4AF37; --app-accent-soft:rgba(212,175,55,0.1); --app-danger:#dc2626; --app-success:#16a34a;
     }
     .theme-dark {
       --app-bg:#09090b; --app-surface:#121214; --app-surface2:#1c1c1f; --app-surface-rgb:18,18,20;
       --app-border:#27272a; --app-text:#e4e4e7; --app-text-muted:#a1a1aa; --app-text-dim:#71717a;
-      --app-accent:#e4e4e7; --app-accent-soft:rgba(228,228,231,0.08); --app-danger:#ef4444; --app-success:#22c55e;
-    }
-    .theme-golden {
-      --app-bg:#3d2b00; --app-surface:#4d3500; --app-surface2:#5c3d00; --app-surface-rgb:77,53,0;
-      --app-border:#8a6a00; --app-text:#FFD700; --app-text-muted:#F0E68C; --app-text-dim:#DAA520;
-      --app-accent:#FFD700; --app-accent-soft:rgba(255,215,0,0.18); --app-danger:#ef4444; --app-success:#22c55e;
+      --app-accent:#D4AF37; --app-accent-soft:rgba(212,175,55,0.1); --app-danger:#ef4444; --app-success:#22c55e;
     }
     .theme-golden body {
-      background: linear-gradient(135deg, #4d3500 0%, #3d2b00 50%, #2a1f00 100%);
+      background: linear-gradient(135deg, #12121a 0%, #0a0a0f 50%, #08080e 100%);
     }
     .theme-golden .app-card {
-      border-color: rgba(255, 215, 0, 0.15);
-      box-shadow: 0 4px 24px rgba(255, 215, 0, 0.06);
+      border-color: rgba(212,175,55,0.1);
+      box-shadow: 0 4px 24px rgba(212,175,55,0.04);
+    }
+    .theme-golden .gold-shimmer {
+      background: linear-gradient(135deg, #D4AF37 0%, #f5e6c8 50%, #C0C0C0 100%);
+      background-size: 200% 200%;
+      animation: shimmer 3s ease infinite;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
     html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:var(--app-bg);color:var(--app-text);overscroll-behavior-y:none;touch-action:manipulation}
@@ -60,7 +77,7 @@
     .app-input{background:var(--app-surface);border:1.5px solid var(--app-border);color:var(--app-text);border-radius:14px;padding:13px 16px;font-size:14px;width:100%;transition:all .25s cubic-bezier(.4,0,.2,1);outline:none}
     .app-input:focus{border-color:var(--app-accent);box-shadow:0 0 0 4px var(--app-accent-soft)}
     .app-input::placeholder{color:var(--app-text-dim)}
-    .app-btn{background:var(--app-accent);color:var(--app-bg);font-weight:700;border-radius:14px;padding:14px;font-size:14px;border:none;cursor:pointer;transition:all .2s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden}
+    .app-btn{background:var(--app-accent);color:#1a1100;font-weight:700;border-radius:14px;padding:14px;font-size:14px;border:none;cursor:pointer;transition:all .2s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden}
     .app-btn:active{transform:scale(.97)}
     .app-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
     .app-btn-outline{background:transparent;color:var(--app-text);border:1.5px solid var(--app-border)}
@@ -107,10 +124,9 @@
     @keyframes skeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
     #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(120px);z-index:300;opacity:0;transition:all .4s cubic-bezier(.4,0,.2,1);pointer-events:none}
     #toast.show{transform:translateX(-50%) translateY(0);opacity:1}
-    .theme-golden .gold-shimmer{background:linear-gradient(135deg,#FFD700 0%,#f5e6c8 50%,#FFD700 100%);background-size:200% 200%;animation:shimmer 3s ease infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
     @keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-    .theme-golden .app-btn{background:linear-gradient(135deg,#FFD700,#D4AF37);color:#1a1100}
-    .theme-golden .nav-btn.active-tab{color:#FFD700}
+    .theme-golden .app-btn{background:linear-gradient(135deg,#D4AF37,#C0C0C0);color:#1a1100}
+    .theme-golden .nav-btn.active-tab{color:#D4AF37}
     .pb-safe{padding-bottom:env(safe-area-inset-bottom)}
     @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
     .glass-header{background:rgba(var(--app-surface-rgb),.8);backdrop-filter:blur(16px) saturate(1.5);-webkit-backdrop-filter:blur(16px) saturate(1.5)}
@@ -120,15 +136,15 @@
     .progress-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);animation:progress-shine 2s ease infinite}
     @keyframes progress-shine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
     .sub-tab-btn{white-space:nowrap;padding:8px 16px;border-radius:12px;font-size:12px;font-weight:700;border:1.5px solid var(--app-border);background:var(--app-surface);color:var(--app-text-dim);transition:all .2s;cursor:pointer}
-    .sub-tab-btn.active{background:var(--app-accent);color:var(--app-bg);border-color:var(--app-accent)}
+    .sub-tab-btn.active{background:var(--app-accent);color:#1a1100;border-color:var(--app-accent)}
     .glow-soon{animation:glowSoon 2s ease-in-out infinite}
-    @keyframes glowSoon{0%,100%{box-shadow:0 0 5px rgba(255,215,0,.3)}50%{box-shadow:0 0 20px rgba(255,215,0,.6)}}
+    @keyframes glowSoon{0%,100%{box-shadow:0 0 5px rgba(212,175,55,.3)}50%{box-shadow:0 0 20px rgba(212,175,55,.6)}}
     .calc-btn{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:12px;border:1px solid var(--app-border);background:var(--app-surface2);color:var(--app-text);font-weight:700;font-size:18px;cursor:pointer;transition:all .15s}
-    .calc-btn:active{transform:scale(.95);background:var(--app-accent);color:var(--app-bg)}
+    .calc-btn:active{transform:scale(.95);background:var(--app-accent);color:#1a1100}
     .calc-btn-op{background:var(--app-accent-soft);color:var(--app-accent)}
     .calc-display{width:100%;background:var(--app-surface);border:1.5px solid var(--app-border);border-radius:14px;padding:16px;font-size:24px;font-weight:700;text-align:right;color:var(--app-text);font-family:'Space Grotesk',monospace;overflow-x:auto}
     .hw-tab-btn{white-space:nowrap;padding:8px 16px;border-radius:12px;font-size:12px;font-weight:700;border:1.5px solid var(--app-border);background:var(--app-surface);color:var(--app-text-dim);transition:all .2s;cursor:pointer}
-    .hw-tab-btn.active{background:var(--app-accent);color:var(--app-bg);border-color:var(--app-accent)}
+    .hw-tab-btn.active{background:var(--app-accent);color:#1a1100;border-color:var(--app-accent)}
     .transition-all-300{transition:all .3s cubic-bezier(.4,0,.2,1)}
     .btn-scale:active{transform:scale(.97)}
     #firebase-error{position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;padding:24px;background:var(--app-bg)}
@@ -136,9 +152,21 @@
     .stagger-children > * {transition: opacity .3s ease, transform .3s ease}
     .stagger-children:hover > * {opacity: 0.7}
     .stagger-children > *:hover {opacity: 1}
+    /* Homework content pre-wrap */
+    .hw-content { white-space: pre-wrap; word-wrap: break-word; }
+    /* Profile avatar */
+    .profile-avatar-img { object-fit: cover; border-radius: 50%; }
+    /* Badges */
+    .badge-scholar { background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(192,192,192,0.1)); border-color: rgba(212,175,55,0.3); color: #D4AF37; }
+    .badge-early { background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.05)); border-color: rgba(34,197,94,0.3); color: #22c55e; }
+    .badge-hard { background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(59,130,246,0.05)); border-color: rgba(59,130,246,0.3); color: #3b82f6; }
+    .admin-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+    .admin-delete-btn { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(239,68,68,0.2); background: rgba(239,68,68,0.1); color: var(--app-danger); cursor: pointer; transition: all .2s; }
+    .admin-delete-btn:hover { background: rgba(239,68,68,0.2); }
+    .admin-delete-btn:active { transform: scale(0.92); }
   </style>
 </head>
-<body class="theme-dark antialiased">
+<body class="theme-golden antialiased">
 
 <!-- Firebase Load Error Screen -->
 <div id="firebase-error">
@@ -159,7 +187,7 @@
       <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg transition-all-300" style="background:var(--app-accent-soft);border:1px solid var(--app-border)">
         <i class="fa-solid fa-graduation-cap text-2xl" style="color:var(--app-accent)"></i>
       </div>
-      <h1 class="text-4xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">studyPro</h1>
+      <h1 class="text-4xl font-extrabold tracking-tight font-display gold-shimmer">studyPro</h1>
       <p class="text-sm font-medium" style="color:var(--app-text-muted)">UP Board Class 12 &bull; Study & Mock Tests</p>
     </div>
 
@@ -243,7 +271,7 @@
   <main id="main-scroll" class="flex-1 relative">
 
     <!-- HOME TAB -->
-    <section id="tab-home" class="tab-view active p-5 space-y-5 pb-28">
+    <section id="tab-home" class="tab-view active p-5 space-y-5 pb-24">
       <div class="animate-fade-up">
         <p class="text-[11px] font-bold uppercase tracking-wider mb-1" style="color:var(--app-text-dim)">Welcome back</p>
         <h2 id="home-welcome" class="text-3xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">Student</h2>
@@ -251,8 +279,8 @@
 
       <div class="app-card p-5 animate-fade-up delay-1 shadow-sm transition-all-300">
         <div class="flex items-center gap-2.5 mb-4">
-          <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2)">
-            <i class="fa-solid fa-bullhorn text-amber-500 text-sm"></i>
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.2)">
+            <i class="fa-solid fa-bullhorn text-sm" style="color:#D4AF37"></i>
           </div>
           <h3 class="font-bold text-sm" style="color:var(--app-text)">Notice Board</h3>
           <span class="ml-auto text-[10px] font-bold px-2.5 py-1 rounded-full" style="background:rgba(239,68,68,0.1);color:var(--app-danger);border:1px solid rgba(239,68,68,0.2)">URGENT</span>
@@ -334,7 +362,7 @@
     </section>
 
     <!-- CLASSES & MOCK TESTS TAB -->
-    <section id="tab-classes" class="tab-view p-5 space-y-4 pb-28">
+    <section id="tab-classes" class="tab-view p-5 space-y-4 pb-24">
       <div class="flex items-center justify-between mb-1">
         <div>
           <h2 class="text-2xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">Study</h2>
@@ -361,7 +389,7 @@
     </section>
 
     <!-- MEDIA TAB -->
-    <section id="tab-media" class="tab-view p-5 space-y-4 pb-28">
+    <section id="tab-media" class="tab-view p-5 space-y-4 pb-24">
       <div class="mb-2">
         <h2 class="text-2xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">Media</h2>
         <p class="text-xs mt-0.5" style="color:var(--app-text-dim)">Search YouTube for study breaks</p>
@@ -379,17 +407,44 @@
     </section>
 
     <!-- PROFILE TAB -->
-    <section id="tab-profile" class="tab-view p-5 space-y-6 pb-28">
-      <div class="text-center py-8">
-        <div class="w-24 h-24 rounded-full mx-auto flex items-center justify-center border-2 mb-4 shadow-xl relative transition-all-300" style="background:var(--app-surface2);border-color:var(--app-border)">
-          <span id="profile-avatar" class="text-3xl font-extrabold font-display" style="color:var(--app-text)">S</span>
+    <section id="tab-profile" class="tab-view p-5 space-y-6 pb-24">
+      <div class="text-center py-6">
+        <div class="w-24 h-24 rounded-full mx-auto mb-4 shadow-xl relative transition-all-300 overflow-hidden" style="background:var(--app-surface2);border:2px solid var(--app-border)">
+          <img id="profile-photo" src="" alt="" class="profile-avatar-img w-full h-full hidden">
+          <span id="profile-avatar" class="text-3xl font-extrabold font-display flex items-center justify-center w-full h-full" style="color:var(--app-accent)">S</span>
           <div class="absolute bottom-0 right-0 w-7 h-7 rounded-full border-2 flex items-center justify-center" style="background:var(--app-success);border-color:var(--app-surface)">
             <i class="fa-solid fa-check text-white text-[10px]"></i>
           </div>
         </div>
         <h2 id="profile-name" class="text-2xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">Student</h2>
         <p id="profile-class" class="text-sm mt-1 font-medium" style="color:var(--app-text-muted)">Class 12 &bull; UP Board</p>
+        <p id="profile-bio" class="text-xs mt-2 italic max-w-xs mx-auto" style="color:var(--app-text-dim)">Class 12 UP Board student preparing for excellence.</p>
       </div>
+
+      <!-- Badges & Stats -->
+      <div class="app-card p-5 shadow-sm transition-all-300">
+        <p class="text-[11px] font-bold uppercase tracking-wider mb-3" style="color:var(--app-text-dim)">Badges & Stats</p>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="badge badge-scholar"><i class="fa-solid fa-medal"></i> Class 12 Scholar</span>
+          <span class="badge badge-early"><i class="fa-solid fa-seedling"></i> Early Adopter</span>
+          <span class="badge badge-hard"><i class="fa-solid fa-fire"></i> Hard Worker</span>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="p-3 rounded-xl border text-center" style="background:var(--app-surface2);border-color:var(--app-border)">
+            <p id="profile-target" class="text-lg font-extrabold font-display" style="color:var(--app-accent)">95%</p>
+            <p class="text-[10px] font-bold uppercase tracking-wide mt-1" style="color:var(--app-text-dim)">Target</p>
+          </div>
+          <div class="p-3 rounded-xl border text-center" style="background:var(--app-surface2);border-color:var(--app-border)">
+            <p id="profile-city" class="text-lg font-extrabold font-display" style="color:var(--app-text)">LKH</p>
+            <p class="text-[10px] font-bold uppercase tracking-wide mt-1" style="color:var(--app-text-dim)">City</p>
+          </div>
+          <div class="p-3 rounded-xl border text-center" style="background:var(--app-surface2);border-color:var(--app-border)">
+            <p id="profile-phone" class="text-[11px] font-extrabold font-display truncate" style="color:var(--app-text)">--</p>
+            <p class="text-[10px] font-bold uppercase tracking-wide mt-1" style="color:var(--app-text-dim)">Phone</p>
+          </div>
+        </div>
+      </div>
+
       <div class="app-card divide-y overflow-hidden shadow-sm transition-all-300" style="border-color:var(--app-border)">
         <div class="flex items-center justify-between p-4 transition-all-300 hover:opacity-80">
           <div class="flex items-center gap-3">
@@ -442,16 +497,18 @@
     <button type="button" data-tab="profile" class="nav-btn transition-all-300" aria-label="Profile"><i class="fa-solid fa-user"></i><span>Profile</span></button>
   </nav>
 </div>
+
+
 <!-- SIDEBAR -->
 <div id="sidebar-overlay"></div>
 <div id="sidebar" class="pb-safe">
   <div class="p-6 border-b flex items-center gap-3" style="border-color:var(--app-border)">
-    <div class="w-11 h-11 rounded-xl flex items-center justify-center border shadow-md transition-all-300" style="background:var(--app-surface2);border-color:var(--app-border)">
+    <div class="w-11 h-11 rounded-xl flex items-center justify-center border shadow-md transition-all-300" style="background:var(--app-accent-soft);border-color:var(--app-border)">
       <i class="fa-solid fa-bolt text-xl" style="color:var(--app-accent)"></i>
     </div>
     <div>
       <h3 class="font-bold text-lg font-display" style="color:var(--app-text)">studyPro</h3>
-      <p class="text-[11px] font-medium" style="color:var(--app-text-dim)">v3.0 &bull; UP Board Class 12</p>
+      <p class="text-[11px] font-medium" style="color:var(--app-text-dim)">v5.0 &bull; UP Board Class 12</p>
     </div>
   </div>
 
@@ -460,11 +517,11 @@
     <div>
       <p class="text-[11px] font-bold uppercase tracking-wider mb-3" style="color:var(--app-text-dim)">Appearance</p>
       <div class="flex items-center gap-4">
-        <button type="button" onclick="App.setTheme('light')" class="theme-pill active transition-all-300" id="pill-light" style="background:#f8fafc;border-color:#cbd5e1" title="Light"></button>
+        <button type="button" onclick="App.setTheme('golden')" class="theme-pill active transition-all-300" id="pill-golden" style="background:linear-gradient(135deg,#D4AF37,#C0C0C0);border-color:#D4AF37" title="Golden Silver"></button>
         <button type="button" onclick="App.setTheme('dark')" class="theme-pill transition-all-300" id="pill-dark" style="background:#09090b;border-color:#27272a" title="Dark"></button>
-        <button type="button" onclick="App.setTheme('golden')" class="theme-pill transition-all-300" id="pill-golden" style="background:linear-gradient(135deg,#FFD700,#1a1100);border-color:#FFD700" title="Golden"></button>
+        <button type="button" onclick="App.setTheme('light')" class="theme-pill transition-all-300" id="pill-light" style="background:#f8fafc;border-color:#cbd5e1" title="Light"></button>
       </div>
-      <p id="theme-label" class="text-xs mt-2.5 font-semibold" style="color:var(--app-text-muted)">Dark Mode</p>
+      <p id="theme-label" class="text-xs mt-2.5 font-semibold" style="color:var(--app-text-muted)">Golden Silver</p>
     </div>
 
     <!-- Install App -->
@@ -494,7 +551,7 @@
     <div>
       <p class="text-[11px] font-bold uppercase tracking-wider mb-3" style="color:var(--app-text-dim)">Vacation</p>
       <button type="button" onclick="App.openHomework()" class="w-full flex items-center gap-3 p-3 rounded-xl border text-sm font-medium transition-all-300 active:scale-95 hover:opacity-80" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">
-        <i class="fa-solid fa-sun w-5 text-center" style="color:#f59e0b"></i><span>Summer Homework</span>
+        <i class="fa-solid fa-sun w-5 text-center" style="color:#D4AF37"></i><span>Summer Homework</span>
       </button>
     </div>
 
@@ -541,6 +598,11 @@
       </div>
       <div><label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Subjects</label><input type="text" id="edit-subjects" class="app-input" placeholder="Hindi, English, Physics..."></div>
       <div><label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Exam Seat Number</label><input type="text" id="edit-seat" class="app-input" placeholder="UP-2027-XXXXX"></div>
+      <div><label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Short Bio</label><textarea id="edit-bio" class="app-input h-16 resize-none" placeholder="A short bio about yourself..."></textarea></div>
+      <div><label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Target Percentage</label><input type="text" id="edit-target" class="app-input" placeholder="e.g. 95%"></div>
+      <div><label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">City / Location</label><input type="text" id="edit-city" class="app-input" placeholder="e.g. Lakhimpur Kheri"></div>
+      <div><label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Phone Number</label><input type="tel" id="edit-phone" class="app-input" placeholder="+91 XXXXX XXXXX"></div>
+      <div><label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Profile Picture URL</label><input type="url" id="edit-photo" class="app-input" placeholder="https://... (Google photo or custom URL)"></div>
       <button type="submit" class="app-btn w-full mt-2 transition-all-300">Save Changes</button>
     </form>
   </div>
@@ -553,10 +615,12 @@
       <button type="button" onclick="App.closeAdmin()" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-90 transition-all-300" style="background:var(--app-surface2);border:1px solid var(--app-border)">
         <i class="fa-solid fa-arrow-left text-sm" style="color:var(--app-text-muted)"></i>
       </button>
-      <span class="font-extrabold text-lg tracking-tight font-display" style="color:var(--app-text)">Admin</span>
+      <span class="font-extrabold text-lg tracking-tight font-display" style="color:var(--app-text)">Admin Dashboard</span>
     </div>
   </header>
-  <main id="admin-scroll" class="flex-1 overflow-y-auto p-5 space-y-6 pb-28">
+  <main id="admin-scroll" class="flex-1 overflow-y-auto p-5 space-y-6 pb-24">
+
+    <!-- Push Notice -->
     <div class="app-card p-5 shadow-sm transition-all-300">
       <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-bullhorn" style="color:var(--app-danger)"></i> Push Notice</h3>
       <form id="notice-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
@@ -567,6 +631,7 @@
       </form>
     </div>
 
+    <!-- Add Lecture -->
     <div class="app-card p-5 shadow-sm transition-all-300">
       <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-video" style="color:var(--app-success)"></i> Add Lecture</h3>
       <form id="lecture-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
@@ -575,11 +640,12 @@
           <option value="Hindi">Hindi</option><option value="English">English</option><option value="Mathematics">Mathematics</option><option value="Physics">Physics</option><option value="Chemistry">Chemistry</option>
         </select>
         <input type="text" id="lec-chapter" class="app-input" placeholder="Chapter (e.g. Ch. 7)" required>
-        <input type="url" id="lec-url" class="app-input" placeholder="Video URL (optional)">
+        <input type="url" id="lec-url" class="app-input" placeholder="Video URL (YouTube or Drive)">
         <button type="submit" class="app-btn w-full transition-all-300">Add Lecture</button>
       </form>
     </div>
 
+    <!-- Add Mock Test -->
     <div class="app-card p-5 shadow-sm transition-all-300">
       <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-file-circle-check" style="color:#8b5cf6"></i> Add Mock Test</h3>
       <form id="test-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
@@ -598,6 +664,7 @@
       </form>
     </div>
 
+    <!-- Add Exam Date -->
     <div class="app-card p-5 shadow-sm transition-all-300">
       <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-calendar-plus" style="color:var(--app-accent)"></i> Add Exam Date</h3>
       <form id="datesheet-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
@@ -614,6 +681,7 @@
       </form>
     </div>
 
+    <!-- Formula of the Day -->
     <div class="app-card p-5 shadow-sm transition-all-300">
       <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-square-root-variable" style="color:#3b82f6"></i> Formula of the Day</h3>
       <form id="formula-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
@@ -624,6 +692,7 @@
       </form>
     </div>
 
+    <!-- Word of the Day -->
     <div class="app-card p-5 shadow-sm transition-all-300">
       <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-spell-check" style="color:#8b5cf6"></i> Word of the Day</h3>
       <form id="word-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
@@ -635,8 +704,9 @@
       </form>
     </div>
 
+    <!-- Push Summer Homework -->
     <div class="app-card p-5 shadow-sm transition-all-300">
-      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-sun" style="color:#f59e0b"></i> Push Summer Homework</h3>
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-sun" style="color:#D4AF37"></i> Push Summer Homework</h3>
       <form id="homework-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
         <select id="hw-subject" class="app-input">
           <option value="Hindi">Hindi</option><option value="English">English</option><option value="Mathematics">Mathematics</option><option value="Physics">Physics</option><option value="Chemistry">Chemistry</option>
@@ -648,16 +718,43 @@
       </form>
     </div>
 
+    <!-- Manage Notices (Admin Delete) -->
+    <div class="app-card p-5 shadow-sm transition-all-300">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-bullhorn" style="color:var(--app-danger)"></i> Manage Notices</h3>
+      <div id="admin-notices-list" class="space-y-3"><p class="text-xs text-center py-4" style="color:var(--app-text-dim)">Loading notices...</p></div>
+    </div>
+
+    <!-- Manage Lectures (Admin Delete) -->
+    <div class="app-card p-5 shadow-sm transition-all-300">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-video" style="color:var(--app-success)"></i> Manage Lectures</h3>
+      <div id="admin-lectures-list" class="space-y-3"><p class="text-xs text-center py-4" style="color:var(--app-text-dim)">Loading lectures...</p></div>
+    </div>
+
+    <!-- Manage Homework (Admin Delete) -->
+    <div class="app-card p-5 shadow-sm transition-all-300">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-sun" style="color:#D4AF37"></i> Manage Homework</h3>
+      <div id="admin-homework-list" class="space-y-3"><p class="text-xs text-center py-4" style="color:var(--app-text-dim)">Loading homework...</p></div>
+    </div>
+
+    <!-- Manage Formulas (Admin Delete) -->
+    <div class="app-card p-5 shadow-sm transition-all-300">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-square-root-variable" style="color:#3b82f6"></i> Manage Formulas</h3>
+      <div id="admin-formulas-list" class="space-y-3"><p class="text-xs text-center py-4" style="color:var(--app-text-dim)">Loading formulas...</p></div>
+    </div>
+
+    <!-- Manage Mock Tests -->
     <div class="app-card p-5 shadow-sm transition-all-300">
       <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-list-check" style="color:var(--app-accent)"></i> Manage Mock Tests</h3>
       <div id="admin-tests-list" class="space-y-3"><p class="text-xs text-center py-4" style="color:var(--app-text-dim)">Loading tests...</p></div>
     </div>
 
+    <!-- Manage Date Sheet -->
     <div class="app-card p-5 shadow-sm transition-all-300">
-      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-calendar-days" style="color:var(--app-accent)"></i> Exam Date Sheet</h3>
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-calendar-days" style="color:var(--app-accent)"></i> Manage Date Sheet</h3>
       <div id="admin-datesheet-list" class="space-y-3"><p class="text-xs text-center py-4" style="color:var(--app-text-dim)">Loading dates...</p></div>
     </div>
 
+    <!-- User Stats -->
     <div class="app-card p-5 shadow-sm transition-all-300">
       <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-users" style="color:var(--app-success)"></i> User Stats</h3>
       <div class="grid grid-cols-2 gap-3">
@@ -695,7 +792,7 @@
       <button type="button" onclick="App.filterHomework('Physics')" class="hw-tab-btn transition-all-300" data-hw="Physics">Phy</button>
       <button type="button" onclick="App.filterHomework('Chemistry')" class="hw-tab-btn transition-all-300" data-hw="Chemistry">Che</button>
     </div>
-    <div id="homework-list" class="p-5 space-y-4 pb-28"></div>
+    <div id="homework-list" class="p-5 space-y-4 pb-24"></div>
   </main>
 </div>
 
@@ -710,6 +807,26 @@
   <div class="flex-1 flex items-center justify-center p-4" style="background:#000">
     <div class="w-full aspect-video rounded-2xl overflow-hidden border shadow-2xl transition-all-300" style="border-color:var(--app-border)">
       <iframe id="video-iframe" class="w-full h-full" frameborder="0" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- LECTURE VIDEO MODAL -->
+<div id="lecture-modal" class="modal-overlay" onclick="if(event.target===this)App.closeLecture()">
+  <div class="modal-content p-0 space-y-0" style="max-width:640px">
+    <div class="shrink-0 h-14 flex items-center justify-between px-5 border-b" style="border-color:var(--app-border)">
+      <h3 id="lecture-modal-title" class="text-sm font-bold truncate pr-4" style="color:var(--app-text)">Watch Lecture</h3>
+      <button type="button" onclick="App.closeLecture()" class="w-9 h-9 rounded-full flex items-center justify-center active:scale-90 transition-all-300" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+        <i class="fa-solid fa-xmark" style="color:var(--app-text-muted)"></i>
+      </button>
+    </div>
+    <div class="p-5 space-y-4">
+      <div class="w-full aspect-video rounded-2xl overflow-hidden border shadow-2xl transition-all-300" style="border-color:var(--app-border);background:#000">
+        <iframe id="lecture-iframe" class="w-full h-full" frameborder="0" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe>
+      </div>
+      <a id="lecture-external-link" href="#" target="_blank" rel="noopener" class="app-btn w-full transition-all-300" style="text-decoration:none">
+        <i class="fa-solid fa-external-link-alt"></i><span>Open in New Tab</span>
+      </a>
     </div>
   </div>
 </div>
@@ -837,7 +954,7 @@
     </div>
     <div>
       <h3 class="font-bold text-xl font-display" style="color:var(--app-text)">About studyPro</h3>
-      <p class="text-xs mt-1 font-medium" style="color:var(--app-text-dim)">Version 3.0 &bull; UP Board Edition</p>
+      <p class="text-xs mt-1 font-medium" style="color:var(--app-text-dim)">Version 5.0 &bull; UP Board Edition</p>
     </div>
     <div class="p-4 rounded-xl border text-left space-y-3 transition-all-300" style="background:var(--app-surface2);border-color:var(--app-border)">
       <p class="text-sm leading-relaxed" style="color:var(--app-text-muted)">
@@ -858,12 +975,16 @@
     <span id="toast-msg" class="text-sm font-semibold" style="color:var(--app-text)">Success</span>
   </div>
 </div>
+
+
 <!-- FIREBASE & APP LOGIC -->
 <script type="module">
-  // ─── Robust Firebase Initialization ───
+  // ========== Robust Firebase Initialization ==========
   let app, auth, db, googleProvider;
   let ytApiKey = '';
   let firebaseLoaded = false;
+  const ADMIN_EMAIL = 'moharshad687@gmail.com';
+  const ADMIN_PIN = '7860';
 
   try {
     const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js");
@@ -894,7 +1015,7 @@
     throw err;
   }
 
-  // ─── Lazy-load Firebase Auth & Firestore functions ───
+  // ========== Lazy-load Firebase Auth & Firestore functions ==========
   let _authModule, _dbModule;
   async function getAuthModule() {
     if (!_authModule) _authModule = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
@@ -907,12 +1028,13 @@
 
   const state = {
     user: null, profile: null,
-    theme: localStorage.getItem('studyPro_theme') || 'dark',
+    theme: localStorage.getItem('studyPro_theme') || 'golden',
     tab: 'home', examDate: new Date('2027-02-15T09:00:00'),
     isAdmin: false, sidebarOpen: false, testTimerInterval: null,
     activeSubject: 'all', installPrompt: null,
     calcExpr: '', todos: JSON.parse(localStorage.getItem('studyPro_todos') || '[]'),
     initialized: false, timerIntervalId: null,
+    activeHomeworkSubject: 'Hindi',
   };
 
   const $ = (sel) => document.querySelector(sel);
@@ -933,9 +1055,9 @@
     $$('.theme-pill').forEach(function(p) { p.classList.remove('active'); });
     var pill = $('#pill-' + theme);
     if (pill) pill.classList.add('active');
-    var labels = { light: 'Light Mode', dark: 'Dark Mode', golden: 'Golden Luxe' };
+    var labels = { light: 'Light Mode', dark: 'Dark Mode', golden: 'Golden Silver' };
     var label = $('#theme-label');
-    if (label) label.textContent = labels[theme] || 'Dark Mode';
+    if (label) label.textContent = labels[theme] || 'Golden Silver';
   }
 
   function showToast(msg, type) {
@@ -952,7 +1074,7 @@
     setTimeout(function() { toast.classList.remove('show'); }, 3200);
   }
 
-  // ─── Close All Modals & Overlays ───
+  // ========== Close All Modals & Overlays ==========
   function closeAllModals() {
     $$('.modal-overlay').forEach(function(m) { m.classList.remove('open'); });
     var videoModal = $('#video-modal');
@@ -963,22 +1085,23 @@
       var tiframe = $('#test-iframe'); if (tiframe) tiframe.src = '';
       if (state.testTimerInterval) { clearInterval(state.testTimerInterval); state.testTimerInterval = null; }
     }
+    var lectureModal = $('#lecture-modal');
+    if (lectureModal) {
+      lectureModal.classList.remove('open');
+      var liframe = $('#lecture-iframe'); if (liframe) liframe.src = '';
+    }
   }
 
   function closeAllOverlays() {
     closeAllModals();
-    // Close sidebar
     state.sidebarOpen = false;
     var sidebar = $('#sidebar'), overlay = $('#sidebar-overlay');
     if (sidebar) sidebar.classList.remove('open');
     if (overlay) overlay.classList.remove('open');
-    // Close admin panel
     var adminPanel = $('#admin-panel');
     if (adminPanel) adminPanel.classList.remove('open');
-    // Close homework view
     var hwView = $('#homework-view');
     if (hwView) hwView.classList.remove('open');
-    // Close auth screen overlays
     var authScreen = $('#auth-screen');
     if (authScreen && state.user) {
       authScreen.classList.add('hidden-auth');
@@ -986,7 +1109,25 @@
     }
   }
 
-  // ─── Exam Timer: Auto-reads date sheet ───
+  // ========== Admin PIN Check ==========
+  function verifyAdminPin() {
+    var pin = prompt("Enter Admin PIN:");
+    if (pin === null) return false;
+    if (pin !== ADMIN_PIN) {
+      showToast('Incorrect Admin PIN', 'error');
+      return false;
+    }
+    return true;
+  }
+
+  function requireAdminDelete(callback) {
+    if (!state.isAdmin) return;
+    if (verifyAdminPin()) {
+      callback();
+    }
+  }
+
+  // ========== Exam Timer ==========
   async function updateTimer() {
     var timerEl = $('#exam-timer');
     var badge = $('#exam-timer-badge');
@@ -1021,7 +1162,7 @@
     }
   }
 
-  // ─── Auth ───
+  // ========== Auth ==========
   async function handleLogin(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -1032,7 +1173,7 @@
     var password = pwEl.value;
     if (!email || !password) { showToast('Please fill in all fields', 'error'); return; }
     var originalText = btn ? btn.innerHTML : '<span>Log In</span>';
-    if (btn) { btn.innerHTML = '<i class=\"fa-solid fa-circle-notch fa-spin\"></i> Logging in...'; btn.disabled = true; }
+    if (btn) { btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Logging in...'; btn.disabled = true; }
     try {
       const { signInWithEmailAndPassword } = await getAuthModule();
       await signInWithEmailAndPassword(auth, email, password);
@@ -1057,7 +1198,7 @@
     if (!email || !password || !name) { showToast('Please fill in all fields', 'error'); return; }
     if (password.length < 6) { showToast('Password must be at least 6 characters', 'error'); return; }
     var originalText = btn ? btn.innerHTML : '<span>Create Account</span>';
-    if (btn) { btn.innerHTML = '<i class=\"fa-solid fa-circle-notch fa-spin\"></i> Creating...'; btn.disabled = true; }
+    if (btn) { btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Creating...'; btn.disabled = true; }
     try {
       const { createUserWithEmailAndPassword } = await getAuthModule();
       const { setDoc, doc } = await getDbModule();
@@ -1065,7 +1206,9 @@
       await setDoc(doc(db, 'users', cred.user.uid), {
         name: name, class: cls, email: email,
         subjects: 'Hindi, English, Physics, Chemistry, Math',
-        seatNumber: 'UP-2027-88421', createdAt: new Date().toISOString(), board: 'UP'
+        seatNumber: 'UP-2027-88421', createdAt: new Date().toISOString(), board: 'UP',
+        bio: 'Class 12 UP Board student preparing for excellence.',
+        target: '95%', city: 'Lakhimpur Kheri', phone: '', photoURL: ''
       });
       showToast('Account created! Welcome!');
     } catch (err) {
@@ -1081,10 +1224,10 @@
     var btnId = isRegister ? 'google-register' : 'google-login';
     var btn = $('#' + btnId);
     var originalHtml = isRegister ?
-      '<i class=\"fa-brands fa-google\"></i><span>Sign up with Google</span>' :
-      '<i class=\"fa-brands fa-google\"></i><span>Continue with Google</span>';
+      '<i class="fa-brands fa-google"></i><span>Sign up with Google</span>' :
+      '<i class="fa-brands fa-google"></i><span>Continue with Google</span>';
     try {
-      if (btn) btn.innerHTML = '<i class=\"fa-solid fa-circle-notch fa-spin\"></i> Connecting...';
+      if (btn) btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Connecting...';
       const { signInWithPopup } = await getAuthModule();
       const { getDoc, setDoc, doc } = await getDbModule();
       var result = await signInWithPopup(auth, googleProvider);
@@ -1094,8 +1237,15 @@
         await setDoc(doc(db, 'users', user.uid), {
           name: user.displayName || 'Student', class: '12', email: user.email,
           subjects: 'Hindi, English, Physics, Chemistry, Math',
-          seatNumber: 'UP-2027-88421', createdAt: new Date().toISOString(), board: 'UP'
+          seatNumber: 'UP-2027-88421', createdAt: new Date().toISOString(), board: 'UP',
+          bio: 'Class 12 UP Board student preparing for excellence.',
+          target: '95%', city: 'Lakhimpur Kheri', phone: '', photoURL: user.photoURL || ''
         });
+      } else {
+        // Update photoURL if Google login provides one
+        if (user.photoURL) {
+          await setDoc(doc(db, 'users', user.uid), { photoURL: user.photoURL }, { merge: true });
+        }
       }
       showToast('Signed in with Google!');
     } catch (err) {
@@ -1104,13 +1254,21 @@
     }
   }
 
-  // ─── Profile ───
+  // ========== Profile ==========
   async function loadProfile(uid) {
     if (!db) return;
     try {
       const { getDoc, doc } = await getDbModule();
       var docSnap = await getDoc(doc(db, 'users', uid));
-      if (docSnap.exists()) { state.profile = docSnap.data(); renderProfile(); }
+      if (docSnap.exists()) {
+        var data = docSnap.data();
+        // Merge with user photoURL from auth if no photo in Firestore
+        if (state.user && state.user.photoURL && !data.photoURL) {
+          data.photoURL = state.user.photoURL;
+        }
+        state.profile = data;
+        renderProfile();
+      }
     } catch (e) { console.error('loadProfile error:', e); }
   }
 
@@ -1121,28 +1279,65 @@
     var cls = p.class || '12';
     var subjects = p.subjects || 'Hindi, English, Physics, Chemistry, Math';
     var seat = p.seatNumber || 'UP-2027-88421';
+    var bio = p.bio || 'Class 12 UP Board student preparing for excellence.';
+    var target = p.target || '95%';
+    var city = p.city || 'LKH';
+    var phone = p.phone || '--';
+    var photoURL = p.photoURL || (state.user && state.user.photoURL) || '';
+
     var welcomeEl = $('#home-welcome'), nameEl = $('#profile-name'), classEl = $('#profile-class');
     var emailEl = $('#profile-email'), avatarEl = $('#profile-avatar'), seatEl = $('#profile-seat');
-    var subjectsEl = $('#profile-subjects');
+    var subjectsEl = $('#profile-subjects'), bioEl = $('#profile-bio'), targetEl = $('#profile-target');
+    var cityEl = $('#profile-city'), phoneEl = $('#profile-phone');
+    var photoEl = $('#profile-photo');
+
     if (welcomeEl) welcomeEl.textContent = name.split(' ')[0];
     if (nameEl) nameEl.textContent = name;
     if (classEl) classEl.textContent = 'Class ' + cls + ' \u2022 UP Board';
     if (emailEl) emailEl.textContent = email;
-    if (avatarEl) avatarEl.textContent = name.charAt(0).toUpperCase();
+    if (bioEl) bioEl.textContent = bio;
+    if (targetEl) targetEl.textContent = target;
+    if (cityEl) cityEl.textContent = city;
+    if (phoneEl) phoneEl.textContent = phone;
+
+    // Profile photo
+    if (photoEl && photoURL) {
+      photoEl.src = photoURL;
+      photoEl.classList.remove('hidden');
+      if (avatarEl) avatarEl.classList.add('hidden');
+    } else if (photoEl) {
+      photoEl.classList.add('hidden');
+      if (avatarEl) {
+        avatarEl.classList.remove('hidden');
+        avatarEl.textContent = name.charAt(0).toUpperCase();
+      }
+    }
+
     if (seatEl) seatEl.textContent = seat;
     if (subjectsEl) subjectsEl.textContent = subjects;
-    state.isAdmin = (email === 'moharshad687@gmail.com');
+
+    // Admin check
+    state.isAdmin = (email === ADMIN_EMAIL);
     var adminBtn = $('#admin-btn-container');
     if (adminBtn) adminBtn.classList.toggle('hidden', !state.isAdmin);
+
+    // Edit form prefill
     var editName = $('#edit-name'), editClass = $('#edit-class');
     var editSubjects = $('#edit-subjects'), editSeat = $('#edit-seat');
+    var editBio = $('#edit-bio'), editTarget = $('#edit-target');
+    var editCity = $('#edit-city'), editPhone = $('#edit-phone'), editPhoto = $('#edit-photo');
     if (editName) editName.value = name;
     if (editClass) editClass.value = cls;
     if (editSubjects) editSubjects.value = subjects;
     if (editSeat) editSeat.value = seat;
+    if (editBio) editBio.value = bio;
+    if (editTarget) editTarget.value = target;
+    if (editCity) editCity.value = city === 'LKH' ? '' : city;
+    if (editPhone) editPhone.value = phone === '--' ? '' : phone;
+    if (editPhoto) editPhoto.value = photoURL;
   }
 
-  // ─── Notices ───
+  // ========== Notices ==========
   async function loadNotices() {
     var container = $('#notices-list');
     if (!container || !db) return;
@@ -1151,7 +1346,7 @@
       var q = query(collection(db, 'notices'), orderBy('createdAt', 'desc'), limit(8));
       var snapshot = await getDocs(q);
       if (snapshot.empty) {
-        container.innerHTML = '<div class=\"flex gap-3 items-start\"><div class=\"w-2 h-2 rounded-full mt-2 shrink-0\" style=\"background:var(--app-text-dim)\"></div><div><p class=\"text-sm leading-relaxed\" style=\"color:var(--app-text-muted)\">No notices yet. Check back later!</p></div></div>';
+        container.innerHTML = '<div class="flex gap-3 items-start"><div class="w-2 h-2 rounded-full mt-2 shrink-0" style="background:var(--app-text-dim)"></div><div><p class="text-sm leading-relaxed" style="color:var(--app-text-muted)">No notices yet. Check back later!</p></div></div>';
         return;
       }
       var html = '';
@@ -1159,17 +1354,17 @@
         var n = docItem.data();
         var isUrgent = n.priority === 'urgent';
         var dateStr = n.createdAt ? new Date(n.createdAt).toLocaleDateString() : 'Recently';
-        html += '<div class=\"flex gap-3 items-start slide-in\" style=\"animation-delay:' + (idx * 0.05) + 's\">';
-        html += '<div class=\"w-2 h-2 rounded-full mt-2 shrink-0 ' + (isUrgent ? 'bg-amber-500 shadow-sm shadow-amber-500/50' : '') + '\"' + (isUrgent ? '' : ' style=\"background:var(--app-text-dim)\"') + '></div>';
-        html += '<div><p class=\"text-sm leading-relaxed\" style=\"color:var(--app-text-muted)\">' + escapeHtml(n.body) + '</p>';
-        html += '<p class=\"text-[11px] mt-1 font-medium\" style=\"color:var(--app-text-dim)\">' + escapeHtml(dateStr) + '</p></div></div>';
-        if (idx < snapshot.docs.length - 1) html += '<div class=\"h-px my-2.5\" style=\"background:var(--app-border)\"></div>';
+        html += '<div class="flex gap-3 items-start slide-in" style="animation-delay:' + (idx * 0.05) + 's">';
+        html += '<div class="w-2 h-2 rounded-full mt-2 shrink-0 ' + (isUrgent ? 'bg-amber-500 shadow-sm shadow-amber-500/50' : '') + '"' + (isUrgent ? '' : ' style="background:var(--app-text-dim)"') + '></div>';
+        html += '<div><p class="text-sm leading-relaxed" style="color:var(--app-text-muted)">' + escapeHtml(n.body) + '</p>';
+        html += '<p class="text-[11px] mt-1 font-medium" style="color:var(--app-text-dim)">' + escapeHtml(dateStr) + '</p></div></div>';
+        if (idx < snapshot.docs.length - 1) html += '<div class="h-px my-2.5" style="background:var(--app-border)"></div>';
       });
       container.innerHTML = html;
     } catch (e) { console.error('Load notices error:', e); }
   }
 
-  // ─── Date Sheet ───
+  // ========== Date Sheet ==========
   async function loadDateSheet() {
     var container = $('#datesheet-list');
     var adminContainer = $('#admin-datesheet-list');
@@ -1181,7 +1376,7 @@
       var now = new Date();
       var html = '';
       if (snapshot.empty) {
-        html = '<p class=\"text-xs text-center py-4\" style=\"color:var(--app-text-dim)\">No exam dates added yet.</p>';
+        html = '<p class="text-xs text-center py-4" style="color:var(--app-text-dim)">No exam dates added yet.</p>';
       } else {
         snapshot.docs.forEach(function(docItem) {
           var d = docItem.data();
@@ -1191,25 +1386,22 @@
           var statusText = isPast ? 'Completed' : 'Upcoming';
           var subColors = { Hindi: '#f97316', English: '#8b5cf6', Mathematics: '#f59e0b', Physics: '#3b82f6', Chemistry: '#22c55e' };
           var color = subColors[d.subject] || '#3b82f6';
-          html += '<div class=\"flex items-center justify-between p-3 rounded-xl border\" style=\"background:var(--app-surface2);border-color:var(--app-border)\">';
-          html += '<div class=\"flex items-center gap-3\">';
-          html += '<div class=\"w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold\" style=\"background:' + color + '\">' + (d.subject ? d.subject.charAt(0) : 'E') + '</div>';
-          html += '<div><p class=\"text-sm font-bold\" style=\"color:var(--app-text)\">' + escapeHtml(d.name) + '</p>';
-          html += '<p class=\"text-[11px]\" style=\"color:var(--app-text-dim)\">' + escapeHtml(d.subject) + ' \u2022 ' + escapeHtml(d.shift) + ' \u2022 ' + escapeHtml(d.time) + '</p></div></div>';
-          html += '<div class=\"text-right\"><p class=\"text-xs font-bold\" style=\"color:' + statusColor + '\">' + statusText + '</p>';
-          html += '<p class=\"text-[10px]\" style=\"color:var(--app-text-dim)\">' + new Date(d.date).toLocaleDateString() + '</p></div>';
-          if (state.isAdmin) {
-            html += '<button onclick=\"App.deleteDateSheet(\'' + docItem.id + '\')\" class=\"ml-2 w-7 h-7 rounded-lg flex items-center justify-center transition-all-300 active:scale-90\" style=\"background:rgba(239,68,68,0.1)\"><i class=\"fa-solid fa-trash text-[10px]\" style=\"color:var(--app-danger)\"></i></button>';
-          }
+          html += '<div class="flex items-center justify-between p-3 rounded-xl border" style="background:var(--app-surface2);border-color:var(--app-border)">';
+          html += '<div class="flex items-center gap-3">';
+          html += '<div class="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold" style="background:' + color + '">' + (d.subject ? d.subject.charAt(0) : 'E') + '</div>';
+          html += '<div><p class="text-sm font-bold" style="color:var(--app-text)">' + escapeHtml(d.name) + '</p>';
+          html += '<p class="text-[11px]" style="color:var(--app-text-dim)">' + escapeHtml(d.subject) + ' \u2022 ' + escapeHtml(d.shift) + ' \u2022 ' + escapeHtml(d.time) + '</p></div></div>';
+          html += '<div class="text-right"><p class="text-xs font-bold" style="color:' + statusColor + '">' + statusText + '</p>';
+          html += '<p class="text-[10px]" style="color:var(--app-text-dim)">' + new Date(d.date).toLocaleDateString() + '</p></div>';
           html += '</div>';
         });
       }
       if (container) container.innerHTML = html;
-      if (adminContainer) adminContainer.innerHTML = html;
+      if (adminContainer) adminContainer.innerHTML = renderAdminDateSheetList(snapshot, now);
     } catch (e) { console.error('Load date sheet error:', e); }
   }
 
-  // ─── Lectures & Tests ───
+  // ========== Lectures & Tests ==========
   var subjectMeta = {
     Hindi: { from: 'from-orange-950/60', to: 'to-red-950/60', text: 'text-orange-400', bg: 'rgba(249,115,22,0.1)', border: 'rgba(249,115,22,0.2)', solid: '#f97316' },
     English: { from: 'from-violet-950/60', to: 'to-purple-950/60', text: 'text-violet-400', bg: 'rgba(139,92,246,0.1)', border: 'rgba(139,92,246,0.2)', solid: '#8b5cf6' },
@@ -1221,60 +1413,114 @@
   async function loadLectures() {
     var container = $('#lectures-grid');
     if (!container || !db) return;
-    container.innerHTML = '<div class=\"col-span-full space-y-4\"><div class=\"skeleton h-40 rounded-2xl\"></div><div class=\"skeleton h-40 rounded-2xl\"></div></div>';
+    container.innerHTML = '<div class="col-span-full space-y-4"><div class="skeleton h-40 rounded-2xl"></div><div class="skeleton h-40 rounded-2xl"></div></div>';
     try {
       const { collection, getDocs } = await getDbModule();
       var snapshot = await getDocs(collection(db, 'lectures'));
       var defaults = [
-        { title: 'Electric Charges & Fields', subject: 'Physics', chapter: 'Ch. 1', progress: 65, total: 12, current: 8, duration: '45 min' },
-        { title: 'The Solid State', subject: 'Chemistry', chapter: 'Ch. 1', progress: 90, total: 12, current: 11, duration: '38 min' },
-        { title: 'Relations & Functions', subject: 'Mathematics', chapter: 'Ch. 1', progress: 45, total: 12, current: 5, duration: '52 min' },
-        { title: 'Hindi Grammar - Muhavare', subject: 'Hindi', chapter: 'Ch. 5', progress: 60, total: 10, current: 6, duration: '30 min' },
-        { title: 'English Literature - Prose', subject: 'English', chapter: 'Ch. 2', progress: 75, total: 12, current: 9, duration: '40 min' },
+        { title: 'Electric Charges & Fields', subject: 'Physics', chapter: 'Ch. 1', progress: 65, total: 12, current: 8, duration: '45 min', url: '' },
+        { title: 'The Solid State', subject: 'Chemistry', chapter: 'Ch. 1', progress: 90, total: 12, current: 11, duration: '38 min', url: '' },
+        { title: 'Relations & Functions', subject: 'Mathematics', chapter: 'Ch. 1', progress: 45, total: 12, current: 5, duration: '52 min', url: '' },
+        { title: 'Hindi Grammar - Muhavare', subject: 'Hindi', chapter: 'Ch. 5', progress: 60, total: 10, current: 6, duration: '30 min', url: '' },
+        { title: 'English Literature - Prose', subject: 'English', chapter: 'Ch. 2', progress: 75, total: 12, current: 9, duration: '40 min', url: '' },
       ];
       var items = snapshot.empty ? defaults : snapshot.docs.map(function(d) { var data = d.data(); data.id = d.id; return data; });
       if (state.activeSubject !== 'all') {
         items = items.filter(function(l) { return l.subject === state.activeSubject; });
       }
       if (items.length === 0) {
-        container.innerHTML = '<p class=\"text-sm text-center py-8 col-span-full\" style=\"color:var(--app-text-dim)\">No lectures for this subject yet.</p>';
+        container.innerHTML = '<p class="text-sm text-center py-8 col-span-full" style="color:var(--app-text-dim)">No lectures for this subject yet.</p>';
         return;
       }
       var html = '';
       items.forEach(function(l, idx) { html += renderLectureCard(l, idx); });
       container.innerHTML = html;
-    } catch (e) { container.innerHTML = '<p class=\"text-sm text-center py-8\" style=\"color:var(--app-text-dim)\">Unable to load lectures.</p>'; }
+    } catch (e) { container.innerHTML = '<p class="text-sm text-center py-8" style="color:var(--app-text-dim)">Unable to load lectures.</p>'; }
   }
 
   function renderLectureCard(l, idx) {
     var color = subjectMeta[l.subject] || subjectMeta.Physics;
     var progress = l.progress || Math.round(((l.current || 0) / (l.total || 1)) * 100);
-    return '<div class=\"app-card active:scale-[0.97] transition-all-300 shadow-sm animate-fade-up\" style=\"animation-delay:' + (idx * 0.08) + 's\">' +
-      '<div class=\"h-36 bg-gradient-to-br ' + color.from + ' ' + color.to + ' flex items-center justify-center relative border-b\" style=\"border-color:var(--app-border)\">' +
-      '<i class=\"fa-solid fa-book-open text-5xl ' + color.text + ' opacity-40\"></i>' +
-      '<span class=\"absolute top-3 right-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white border border-white/10 shadow-lg backdrop-blur-sm\" style=\"background:rgba(0,0,0,0.5)\">' + escapeHtml(l.duration || '40 min') + '</span></div>' +
-      '<div class=\"p-4\"><span class=\"badge mb-2.5\" style=\"background:' + color.bg + ';color:' + color.solid + ';border-color:' + color.border + '\">' +
-      '<i class=\"fa-solid fa-circle text-[6px]\"></i> ' + escapeHtml(l.subject) + '</span>' +
-      '<h3 class=\"font-bold text-sm mb-1\" style=\"color:var(--app-text)\">' + escapeHtml(l.title) + '</h3>' +
-      '<p class=\"text-xs line-clamp-2 leading-relaxed\" style=\"color:var(--app-text-dim)\">' + escapeHtml(l.chapter) + ' \u2022 ' + escapeHtml(l.subject) + ' fundamentals.</p>' +
-      '<div class=\"mt-3.5 flex items-center gap-3\"><div class=\"progress-track flex-1\">' +
-      '<div class=\"progress-fill\" style=\"background:' + color.solid + ';width:' + progress + '%\"></div></div>' +
-      '<span class=\"text-[10px] font-mono font-bold\" style=\"color:var(--app-text-dim)\">' + (l.current || 0) + '/' + (l.total || 12) + '</span></div></div></div>';
+    var hasUrl = l.url && l.url.trim().length > 0;
+    var safeId = l.id || '';
+    var safeTitle = escapeHtml(l.title).replace(/'/g, "\\'");
+    var safeUrl = escapeHtml(l.url || '').replace(/'/g, "\\'");
+    var watchBtn = '';
+    if (hasUrl) {
+      watchBtn = '<button onclick="App.openLecture(\\'' + safeUrl + '\\',\\'' + safeTitle + '\\')" class="app-btn transition-all-300 mt-3 w-full" style="padding:10px 16px;font-size:12px;background:' + color.solid + ';color:#fff">' +
+        '<i class="fa-solid fa-play"></i><span>Watch Lecture</span></button>';
+    }
+    return '<div class="app-card active:scale-[0.97] transition-all-300 shadow-sm animate-fade-up" style="animation-delay:' + (idx * 0.08) + 's">' +
+      '<div class="h-36 bg-gradient-to-br ' + color.from + ' ' + color.to + ' flex items-center justify-center relative border-b" style="border-color:var(--app-border)">' +
+      '<i class="fa-solid fa-book-open text-5xl ' + color.text + ' opacity-40"></i>' +
+      '<span class="absolute top-3 right-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white border border-white/10 shadow-lg backdrop-blur-sm" style="background:rgba(0,0,0,0.5)">' + escapeHtml(l.duration || '40 min') + '</span></div>' +
+      '<div class="p-4"><span class="badge mb-2.5" style="background:' + color.bg + ';color:' + color.solid + ';border-color:' + color.border + '">' +
+      '<i class="fa-solid fa-circle text-[6px]"></i> ' + escapeHtml(l.subject) + '</span>' +
+      '<h3 class="font-bold text-sm mb-1" style="color:var(--app-text)">' + escapeHtml(l.title) + '</h3>' +
+      '<p class="text-xs line-clamp-2 leading-relaxed" style="color:var(--app-text-dim)">' + escapeHtml(l.chapter) + ' \u2022 ' + escapeHtml(l.subject) + ' fundamentals.</p>' +
+      '<div class="mt-3.5 flex items-center gap-3"><div class="progress-track flex-1">' +
+      '<div class="progress-fill" style="background:' + color.solid + ';width:' + progress + '%"></div></div>' +
+      '<span class="text-[10px] font-mono font-bold" style="color:var(--app-text-dim)">' + (l.current || 0) + '/' + (l.total || 12) + '</span></div>' +
+      watchBtn + '</div></div>';
+  }
+
+  // Watch Lecture Modal
+  function openLecture(url, title) {
+    closeAllModals();
+    var modal = $('#lecture-modal');
+    var titleEl = $('#lecture-modal-title');
+    var iframe = $('#lecture-iframe');
+    var linkEl = $('#lecture-external-link');
+    if (!modal) return;
+    if (titleEl) titleEl.textContent = title || 'Watch Lecture';
+    if (iframe) {
+      // Handle YouTube embed conversion
+      var embedUrl = url;
+      if (url && url.indexOf('youtube.com/watch?v=') !== -1) {
+        var vId = url.split('v=')[1];
+        if (vId) {
+          var ampIdx = vId.indexOf('&');
+          if (ampIdx !== -1) vId = vId.substring(0, ampIdx);
+          embedUrl = 'https://www.youtube.com/embed/' + vId + '?rel=0&modestbranding=1';
+        }
+      } else if (url && url.indexOf('youtu.be/') !== -1) {
+        var vId2 = url.split('youtu.be/')[1];
+        if (vId2) {
+          embedUrl = 'https://www.youtube.com/embed/' + vId2 + '?rel=0&modestbranding=1';
+        }
+      } else if (url && url.indexOf('drive.google.com/file/d/') !== -1) {
+        var after = url.substring(url.indexOf('drive.google.com/file/d/') + 24);
+        var slashIdx = after.indexOf('/');
+        var fileId = slashIdx !== -1 ? after.substring(0, slashIdx) : after;
+        var qIdx = fileId.indexOf('?');
+        if (qIdx !== -1) fileId = fileId.substring(0, qIdx);
+        embedUrl = 'https://drive.google.com/file/d/' + fileId + '/preview';
+      }
+      iframe.src = embedUrl;
+    }
+    if (linkEl) linkEl.href = url;
+    modal.classList.add('open');
+  }
+  function closeLecture() {
+    var modal = $('#lecture-modal');
+    var iframe = $('#lecture-iframe');
+    if (modal) modal.classList.remove('open');
+    if (iframe) iframe.src = '';
   }
 
   async function loadTests() {
     var container = $('#tests-grid');
     if (!container || !db) return;
-    container.innerHTML = '<div class=\"space-y-4\"><div class=\"skeleton h-32 rounded-2xl\"></div><div class=\"skeleton h-32 rounded-2xl\"></div></div>';
+    container.innerHTML = '<div class="space-y-4"><div class="skeleton h-32 rounded-2xl"></div><div class="skeleton h-32 rounded-2xl"></div></div>';
     try {
       const { collection, query, orderBy, getDocs } = await getDbModule();
       var q = query(collection(db, 'tests'), orderBy('createdAt', 'desc'));
       var snapshot = await getDocs(q);
       if (snapshot.empty) {
-        container.innerHTML = '<div class=\"text-center py-14\"><div class=\"w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4\" style=\"background:var(--app-surface2);border:1px solid var(--app-border)\">' +
-          '<i class=\"fa-solid fa-file-circle-check text-2xl\" style=\"color:var(--app-text-dim)\"></i></div>' +
-          '<p class=\"text-sm font-semibold\" style=\"color:var(--app-text-muted)\">No mock tests available yet</p>' +
-          '<p class=\"text-xs mt-1\" style=\"color:var(--app-text-dim)\">Check back after admin adds tests.</p></div>';
+        container.innerHTML = '<div class="text-center py-14"><div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style="background:var(--app-surface2);border:1px solid var(--app-border)">' +
+          '<i class="fa-solid fa-file-circle-check text-2xl" style="color:var(--app-text-dim)"></i></div>' +
+          '<p class="text-sm font-semibold" style="color:var(--app-text-muted)">No mock tests available yet</p>' +
+          '<p class="text-xs mt-1" style="color:var(--app-text-dim)">Check back after admin adds tests.</p></div>';
         return;
       }
       var html = '';
@@ -1286,26 +1532,44 @@
         var safeTitle = escapeHtml(t.title).replace(/'/g, "\\'");
         var safeSubject = escapeHtml(t.subject).replace(/'/g, "\\'");
         var safeLink = escapeHtml(t.link).replace(/'/g, "\\'");
-        html += '<div class=\"app-card p-5 animate-fade-up shadow-sm transition-all-300\" style=\"animation-delay:' + (idx * 0.08) + 's\">' +
-          '<div class=\"flex items-start justify-between gap-3 mb-3\">' +
-          '<div class=\"flex items-center gap-2.5\">' +
-          '<div class=\"w-10 h-10 rounded-xl flex items-center justify-center\" style=\"background:' + color.bg + ';border:1px solid ' + color.border + '\">' +
-          '<i class=\"fa-solid fa-file-pen text-sm\" style=\"color:' + color.solid + '\"></i></div>' +
-          '<div><span class=\"badge\" style=\"background:' + color.bg + ';color:' + color.solid + ';border-color:' + color.border + '\">' + escapeHtml(t.subject) + '</span>' +
-          '<h3 class=\"font-bold text-sm mt-1\" style=\"color:var(--app-text)\">' + escapeHtml(t.title) + '</h3></div></div>' +
-          '<span class=\"text-[10px] font-bold px-2 py-1 rounded-lg border shrink-0\" style=\"background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-dim)\">' + (t.duration || 60) + 'm</span></div>' +
-          '<p class=\"text-xs leading-relaxed mb-4 line-clamp-2\" style=\"color:var(--app-text-muted)\">' + escapeHtml(t.description || 'Practice test following UP Board pattern.') + '</p>' +
-          '<div class=\"flex items-center justify-between\">' +
-          '<span class=\"text-[11px] font-bold\" style=\"color:var(--app-text-dim)\">' + (t.marks || 100) + ' Marks</span>' +
-          '<button onclick=\"App.openTest(\'' + safeId + '\',\'' + safeTitle + '\',\'' + safeSubject + '\',\'' + safeLink + '\',' + (t.duration || 60) + ')\" class=\"app-btn transition-all-300\" style=\"padding:10px 20px;font-size:13px;background:' + color.solid + ';color:#fff\">' +
-          '<i class=\"fa-solid fa-play\"></i><span>Start Test</span></button></div></div>';
+        html += '<div class="app-card p-5 animate-fade-up shadow-sm transition-all-300" style="animation-delay:' + (idx * 0.08) + 's">' +
+          '<div class="flex items-start justify-between gap-3 mb-3">' +
+          '<div class="flex items-center gap-2.5">' +
+          '<div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:' + color.bg + ';border:1px solid ' + color.border + '">' +
+          '<i class="fa-solid fa-file-pen text-sm" style="color:' + color.solid + '"></i></div>' +
+          '<div><span class="badge" style="background:' + color.bg + ';color:' + color.solid + ';border-color:' + color.border + '">' + escapeHtml(t.subject) + '</span>' +
+          '<h3 class="font-bold text-sm mt-1" style="color:var(--app-text)">' + escapeHtml(t.title) + '</h3></div></div>' +
+          '<span class="text-[10px] font-bold px-2 py-1 rounded-lg border shrink-0" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-dim)">' + (t.duration || 60) + 'm</span></div>' +
+          '<p class="text-xs leading-relaxed mb-4 line-clamp-2" style="color:var(--app-text-muted)">' + escapeHtml(t.description || 'Practice test following UP Board pattern.') + '</p>' +
+          '<div class="flex items-center justify-between">' +
+          '<span class="text-[11px] font-bold" style="color:var(--app-text-dim)">' + (t.marks || 100) + ' Marks</span>' +
+          '<button onclick="App.openTest(\\'' + safeId + '\\',\\'' + safeTitle + '\\',\\'' + safeSubject + '\\',\\'' + safeLink + '\\',' + (t.duration || 60) + ')" class="app-btn transition-all-300" style="padding:10px 20px;font-size:13px;background:' + color.solid + ';color:#fff">' +
+          '<i class="fa-solid fa-play"></i><span>Start Test</span></button></div></div>';
       });
       if (!html) {
-        container.innerHTML = '<p class=\"text-sm text-center py-8\" style=\"color:var(--app-text-dim)\">No tests for this subject yet.</p>';
+        container.innerHTML = '<p class="text-sm text-center py-8" style="color:var(--app-text-dim)">No tests for this subject yet.</p>';
         return;
       }
       container.innerHTML = html;
-    } catch (e) { container.innerHTML = '<p class=\"text-sm text-center py-8\" style=\"color:var(--app-text-dim)\">Unable to load tests.</p>'; }
+    } catch (e) { container.innerHTML = '<p class="text-sm text-center py-8" style="color:var(--app-text-dim)">Unable to load tests.</p>'; }
+  }
+
+  // ========== Admin Manage Data ==========
+  function renderAdminDateSheetList(snapshot, now) {
+    if (!snapshot || snapshot.empty) return '<p class="text-xs text-center py-4" style="color:var(--app-text-dim)">No exam dates added yet.</p>';
+    var html = '';
+    snapshot.docs.forEach(function(docItem) {
+      var d = docItem.data();
+      html += '<div class="flex items-center justify-between p-3 rounded-xl border" style="background:var(--app-surface2);border-color:var(--app-border)">' +
+        '<div class="overflow-hidden"><p class="text-sm font-bold truncate" style="color:var(--app-text)">' + escapeHtml(d.name) + '</p>' +
+        '<p class="text-[11px]" style="color:var(--app-text-dim)">' + escapeHtml(d.subject) + ' \u2022 ' + new Date(d.date).toLocaleDateString() + '</p></div>';
+      if (state.isAdmin) {
+        html += '<button onclick="App.requireAdminDelete(function(){App.deleteDateSheet(\\'' + docItem.id + '\\');})" class="admin-delete-btn ml-2" title="Delete (Admin PIN required)">' +
+          '<i class="fa-solid fa-trash text-xs"></i></button>';
+      }
+      html += '</div>';
+    });
+    return html;
   }
 
   async function loadAdminTests() {
@@ -1315,23 +1579,121 @@
       const { collection, query, orderBy, getDocs } = await getDbModule();
       var q = query(collection(db, 'tests'), orderBy('createdAt', 'desc'));
       var snapshot = await getDocs(q);
-      if (snapshot.empty) { container.innerHTML = '<p class=\"text-xs text-center py-4\" style=\"color:var(--app-text-dim)\">No tests added yet.</p>'; return; }
+      if (snapshot.empty) { container.innerHTML = '<p class="text-xs text-center py-4" style="color:var(--app-text-dim)">No tests added yet.</p>'; return; }
       var html = '';
       snapshot.docs.forEach(function(docItem) {
         var t = docItem.data();
-        html += '<div class=\"flex items-center justify-between p-3 rounded-xl border\" style=\"background:var(--app-surface2);border-color:var(--app-border)\">' +
-          '<div class=\"overflow-hidden\"><p class=\"text-sm font-bold truncate\" style=\"color:var(--app-text)\">' + escapeHtml(t.title) + '</p>' +
-          '<p class=\"text-[11px]\" style=\"color:var(--app-text-dim)\">' + escapeHtml(t.subject) + ' \u2022 ' + (t.duration || 60) + 'm</p></div>' +
-          '<button onclick=\"App.deleteTest(\'' + docItem.id + '\')\" class=\"w-8 h-8 rounded-lg flex items-center justify-center active:scale-90 transition-all-300 shrink-0 ml-2\" style=\"background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2)\">' +
-          '<i class=\"fa-solid fa-trash text-xs\" style=\"color:var(--app-danger)\"></i></button></div>';
+        html += '<div class="flex items-center justify-between p-3 rounded-xl border" style="background:var(--app-surface2);border-color:var(--app-border)">' +
+          '<div class="overflow-hidden"><p class="text-sm font-bold truncate" style="color:var(--app-text)">' + escapeHtml(t.title) + '</p>' +
+          '<p class="text-[11px]" style="color:var(--app-text-dim)">' + escapeHtml(t.subject) + ' \u2022 ' + (t.duration || 60) + 'm</p></div>';
+        if (state.isAdmin) {
+          html += '<button onclick="App.requireAdminDelete(function(){App.deleteTest(\\'' + docItem.id + '\\');})" class="admin-delete-btn ml-2" title="Delete (Admin PIN required)">' +
+            '<i class="fa-solid fa-trash text-xs"></i></button>';
+        }
+        html += '</div>';
       });
       container.innerHTML = html;
     } catch (e) { console.error('Load admin tests error:', e); }
   }
 
+  async function loadAdminNotices() {
+    var container = $('#admin-notices-list');
+    if (!container || !db) return;
+    try {
+      const { collection, query, orderBy, getDocs } = await getDbModule();
+      var q = query(collection(db, 'notices'), orderBy('createdAt', 'desc'));
+      var snapshot = await getDocs(q);
+      if (snapshot.empty) { container.innerHTML = '<p class="text-xs text-center py-4" style="color:var(--app-text-dim)">No notices yet.</p>'; return; }
+      var html = '';
+      snapshot.docs.forEach(function(docItem) {
+        var n = docItem.data();
+        html += '<div class="flex items-center justify-between p-3 rounded-xl border" style="background:var(--app-surface2);border-color:var(--app-border)">' +
+          '<div class="overflow-hidden"><p class="text-sm font-bold truncate" style="color:var(--app-text)">' + escapeHtml(n.title || 'Untitled') + '</p>' +
+          '<p class="text-[11px]" style="color:var(--app-text-dim)">' + (n.createdAt ? new Date(n.createdAt).toLocaleDateString() : 'Recently') + '</p></div>';
+        if (state.isAdmin) {
+          html += '<button onclick="App.requireAdminDelete(function(){App.deleteNotice(\\'' + docItem.id + '\\');})" class="admin-delete-btn ml-2" title="Delete (Admin PIN required)">' +
+            '<i class="fa-solid fa-trash text-xs"></i></button>';
+        }
+        html += '</div>';
+      });
+      container.innerHTML = html;
+    } catch (e) { console.error('Load admin notices error:', e); }
+  }
+
+  async function loadAdminLectures() {
+    var container = $('#admin-lectures-list');
+    if (!container || !db) return;
+    try {
+      const { collection, getDocs } = await getDbModule();
+      var snapshot = await getDocs(collection(db, 'lectures'));
+      if (snapshot.empty) { container.innerHTML = '<p class="text-xs text-center py-4" style="color:var(--app-text-dim)">No lectures yet.</p>'; return; }
+      var html = '';
+      snapshot.docs.forEach(function(docItem) {
+        var l = docItem.data();
+        html += '<div class="flex items-center justify-between p-3 rounded-xl border" style="background:var(--app-surface2);border-color:var(--app-border)">' +
+          '<div class="overflow-hidden"><p class="text-sm font-bold truncate" style="color:var(--app-text)">' + escapeHtml(l.title) + '</p>' +
+          '<p class="text-[11px]" style="color:var(--app-text-dim)">' + escapeHtml(l.subject) + ' \u2022 ' + escapeHtml(l.chapter) + '</p></div>';
+        if (state.isAdmin) {
+          html += '<button onclick="App.requireAdminDelete(function(){App.deleteLecture(\\'' + docItem.id + '\\');})" class="admin-delete-btn ml-2" title="Delete (Admin PIN required)">' +
+            '<i class="fa-solid fa-trash text-xs"></i></button>';
+        }
+        html += '</div>';
+      });
+      container.innerHTML = html;
+    } catch (e) { console.error('Load admin lectures error:', e); }
+  }
+
+  async function loadAdminHomework() {
+    var container = $('#admin-homework-list');
+    if (!container || !db) return;
+    try {
+      const { collection, query, orderBy, getDocs } = await getDbModule();
+      var q = query(collection(db, 'summerHomework'), orderBy('createdAt', 'desc'));
+      var snapshot = await getDocs(q);
+      if (snapshot.empty) { container.innerHTML = '<p class="text-xs text-center py-4" style="color:var(--app-text-dim)">No homework entries yet.</p>'; return; }
+      var html = '';
+      snapshot.docs.forEach(function(docItem) {
+        var h = docItem.data();
+        html += '<div class="flex items-center justify-between p-3 rounded-xl border" style="background:var(--app-surface2);border-color:var(--app-border)">' +
+          '<div class="overflow-hidden"><p class="text-sm font-bold truncate" style="color:var(--app-text)">' + escapeHtml(h.teacher) + '</p>' +
+          '<p class="text-[11px]" style="color:var(--app-text-dim)">' + escapeHtml(h.subject) + ' \u2022 ' + (h.createdAt ? new Date(h.createdAt).toLocaleDateString() : 'Recently') + '</p></div>';
+        if (state.isAdmin) {
+          html += '<button onclick="App.requireAdminDelete(function(){App.deleteHomework(\\'' + docItem.id + '\\');})" class="admin-delete-btn ml-2" title="Delete (Admin PIN required)">' +
+            '<i class="fa-solid fa-trash text-xs"></i></button>';
+        }
+        html += '</div>';
+      });
+      container.innerHTML = html;
+    } catch (e) { console.error('Load admin homework error:', e); }
+  }
+
+  async function loadAdminFormulas() {
+    var container = $('#admin-formulas-list');
+    if (!container || !db) return;
+    try {
+      const { collection, query, orderBy, getDocs } = await getDbModule();
+      var q = query(collection(db, 'formulaOfDay'), orderBy('createdAt', 'desc'));
+      var snapshot = await getDocs(q);
+      if (snapshot.empty) { container.innerHTML = '<p class="text-xs text-center py-4" style="color:var(--app-text-dim)">No formulas yet.</p>'; return; }
+      var html = '';
+      snapshot.docs.forEach(function(docItem) {
+        var f = docItem.data();
+        html += '<div class="flex items-center justify-between p-3 rounded-xl border" style="background:var(--app-surface2);border-color:var(--app-border)">' +
+          '<div class="overflow-hidden"><p class="text-sm font-bold truncate" style="color:var(--app-text)">' + escapeHtml(f.title || 'Formula') + '</p>' +
+          '<p class="text-[11px] font-mono" style="color:var(--app-text-dim)">' + escapeHtml(f.formula || '') + '</p></div>';
+        if (state.isAdmin) {
+          html += '<button onclick="App.requireAdminDelete(function(){App.deleteFormula(\\'' + docItem.id + '\\');})" class="admin-delete-btn ml-2" title="Delete (Admin PIN required)">' +
+            '<i class="fa-solid fa-trash text-xs"></i></button>';
+        }
+        html += '</div>';
+      });
+      container.innerHTML = html;
+    } catch (e) { console.error('Load admin formulas error:', e); }
+  }
+
+  // Delete functions with Admin PIN check
   async function deleteTest(id) {
     if (!db) return;
-    if (!confirm('Delete this mock test?')) return;
     try {
       const { deleteDoc, doc } = await getDbModule();
       await deleteDoc(doc(db, 'tests', id));
@@ -1341,7 +1703,6 @@
 
   async function deleteDateSheet(id) {
     if (!db) return;
-    if (!confirm('Delete this exam date?')) return;
     try {
       const { deleteDoc, doc } = await getDbModule();
       await deleteDoc(doc(db, 'datesheet', id));
@@ -1349,7 +1710,43 @@
     } catch (e) { showToast(e.message || 'Delete failed', 'error'); }
   }
 
-  // ─── YouTube Search ───
+  async function deleteNotice(id) {
+    if (!db) return;
+    try {
+      const { deleteDoc, doc } = await getDbModule();
+      await deleteDoc(doc(db, 'notices', id));
+      showToast('Notice deleted'); loadNotices(); loadAdminNotices();
+    } catch (e) { showToast(e.message || 'Delete failed', 'error'); }
+  }
+
+  async function deleteLecture(id) {
+    if (!db) return;
+    try {
+      const { deleteDoc, doc } = await getDbModule();
+      await deleteDoc(doc(db, 'lectures', id));
+      showToast('Lecture deleted'); loadLectures(); loadAdminLectures();
+    } catch (e) { showToast(e.message || 'Delete failed', 'error'); }
+  }
+
+  async function deleteHomework(id) {
+    if (!db) return;
+    try {
+      const { deleteDoc, doc } = await getDbModule();
+      await deleteDoc(doc(db, 'summerHomework', id));
+      showToast('Homework deleted'); loadHomework(); loadAdminHomework();
+    } catch (e) { showToast(e.message || 'Delete failed', 'error'); }
+  }
+
+  async function deleteFormula(id) {
+    if (!db) return;
+    try {
+      const { deleteDoc, doc } = await getDbModule();
+      await deleteDoc(doc(db, 'formulaOfDay', id));
+      showToast('Formula deleted'); loadFormulaOfDay(); loadAdminFormulas();
+    } catch (e) { showToast(e.message || 'Delete failed', 'error'); }
+  }
+
+  // ========== YouTube Search ==========
   async function searchYouTube(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -1357,14 +1754,14 @@
     if (!queryEl || !resultsEl) return;
     var query = queryEl.value.trim();
     if (!query) return;
-    if (!ytApiKey) { resultsEl.innerHTML = '<div class=\"text-center py-10 text-sm\" style=\"color:var(--app-text-dim)\">YouTube search unavailable.</div>'; return; }
-    resultsEl.innerHTML = '<div class=\"col-span-full text-center py-10 text-sm\" style=\"color:var(--app-text-dim)\"><i class=\"fa-solid fa-circle-notch fa-spin mr-2\"></i> Searching...</div>';
+    if (!ytApiKey) { resultsEl.innerHTML = '<div class="text-center py-10 text-sm" style="color:var(--app-text-dim)">YouTube search unavailable.</div>'; return; }
+    resultsEl.innerHTML = '<div class="col-span-full text-center py-10 text-sm" style="color:var(--app-text-dim)"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Searching...</div>';
     try {
       var url = 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=' + encodeURIComponent(query) + '&type=video&maxResults=12&key=' + ytApiKey;
       var res = await fetch(url);
       var data = await res.json();
       if (!data.items || !data.items.length) {
-        resultsEl.innerHTML = '<div class=\"text-center py-10 text-sm\" style=\"color:var(--app-text-dim)\">No results found.</div>';
+        resultsEl.innerHTML = '<div class="text-center py-10 text-sm" style="color:var(--app-text-dim)">No results found.</div>';
         return;
       }
       var html = '';
@@ -1374,22 +1771,22 @@
         var channel = item.snippet.channelTitle;
         var thumb = (item.snippet.thumbnails && item.snippet.thumbnails.medium && item.snippet.thumbnails.medium.url) || (item.snippet.thumbnails && item.snippet.thumbnails.default && item.snippet.thumbnails.default.url) || '';
         var safeTitle = title.replace(/'/g, "\\'");
-        html += '<div onclick=\"App.playVideo(\'' + vid + '\',\'' + safeTitle + '\')\" class=\"app-card active:scale-[0.97] transition-all-300 cursor-pointer shadow-sm\">' +
-          '<div class=\"relative aspect-video\" style=\"background:var(--app-surface2)\">' +
-          '<img src=\"' + thumb + '\" alt=\"\" class=\"w-full h-full object-cover opacity-90\" loading=\"lazy\">' +
-          '<div class=\"absolute inset-0 flex items-center justify-center\" style=\"background:rgba(0,0,0,0.2)\">' +
-          '<div class=\"w-10 h-10 rounded-full flex items-center justify-center pl-0.5 shadow-lg\" style=\"background:rgba(255,255,255,0.9)\">' +
-          '<i class=\"fa-solid fa-play text-sm\" style=\"color:#000\"></i></div></div></div>' +
-          '<div class=\"p-3\"><h4 class=\"text-sm font-bold line-clamp-2 leading-snug\" style=\"color:var(--app-text)\">' + escapeHtml(title) + '</h4>' +
-          '<p class=\"text-xs mt-1\" style=\"color:var(--app-text-dim)\">' + escapeHtml(channel) + '</p></div></div>';
+        html += '<div onclick="App.playVideo(\\'' + vid + '\\',\\'' + safeTitle + '\\')" class="app-card active:scale-[0.97] transition-all-300 cursor-pointer shadow-sm">' +
+          '<div class="relative aspect-video" style="background:var(--app-surface2)">' +
+          '<img src="' + thumb + '" alt="" class="w-full h-full object-cover opacity-90" loading="lazy">' +
+          '<div class="absolute inset-0 flex items-center justify-center" style="background:rgba(0,0,0,0.2)">' +
+          '<div class="w-10 h-10 rounded-full flex items-center justify-center pl-0.5 shadow-lg" style="background:rgba(255,255,255,0.9)">' +
+          '<i class="fa-solid fa-play text-sm" style="color:#000"></i></div></div></div>' +
+          '<div class="p-3"><h4 class="text-sm font-bold line-clamp-2 leading-snug" style="color:var(--app-text)">' + escapeHtml(title) + '</h4>' +
+          '<p class="text-xs mt-1" style="color:var(--app-text-dim)">' + escapeHtml(channel) + '</p></div></div>';
       });
       resultsEl.innerHTML = html;
     } catch (err) {
-      resultsEl.innerHTML = '<div class=\"text-center py-10 text-sm\" style=\"color:var(--app-text-dim)\"><i class=\"fa-solid fa-triangle-exclamation mb-2 block text-xl\" style=\"color:var(--app-border)\"></i>Unable to load results.</div>';
+      resultsEl.innerHTML = '<div class="text-center py-10 text-sm" style="color:var(--app-text-dim)"><i class="fa-solid fa-triangle-exclamation mb-2 block text-xl" style="color:var(--app-border)"></i>Unable to load results.</div>';
     }
   }
 
-  // ─── Test Viewer ───
+  // ========== Test Viewer ==========
   function openTest(id, title, subject, link, duration) {
     closeAllModals();
     var modal = $('#test-modal'), titleEl = $('#test-modal-title'), subjectEl = $('#test-modal-subject');
@@ -1431,10 +1828,9 @@
     if (state.testTimerInterval) { clearInterval(state.testTimerInterval); state.testTimerInterval = null; }
   }
 
-  // ─── Tab Router ───
+  // ========== Tab Router ==========
   function switchTab(tab) {
     if (!tab) return;
-    // Close all overlays when switching tabs via bottom nav
     closeAllOverlays();
     state.tab = tab;
     $$('.nav-btn').forEach(function(btn) { btn.classList.toggle('active-tab', btn.dataset.tab === tab); });
@@ -1442,7 +1838,6 @@
     var target = $('#tab-' + tab);
     if (target) {
       target.classList.add('active');
-      // Re-trigger animations
       target.querySelectorAll('.animate-fade-up').forEach(function(el) { el.style.animation = 'none'; void el.offsetHeight; el.style.animation = ''; });
     }
     var scroll = $('#main-scroll');
@@ -1458,7 +1853,7 @@
     loadTests();
   }
 
-  // ─── Sidebar ───
+  // ========== Sidebar ==========
   function toggleSidebar() {
     state.sidebarOpen = !state.sidebarOpen;
     var sidebar = $('#sidebar'), overlay = $('#sidebar-overlay');
@@ -1472,7 +1867,7 @@
     if (overlay) overlay.classList.remove('open');
   }
 
-  // ─── Auth View Switcher ───
+  // ========== Auth View Switcher ==========
   function showLogin() {
     var loginBox = $('#login-box'), regBox = $('#register-box');
     if (loginBox) loginBox.classList.remove('hidden');
@@ -1484,7 +1879,7 @@
     if (regBox) regBox.classList.remove('hidden');
   }
 
-  // ─── Admin ───
+  // ========== Admin ==========
   function openAdmin() {
     closeAllModals();
     var panel = $('#admin-panel');
@@ -1493,6 +1888,10 @@
     loadAdminTests();
     loadDateSheet();
     loadStats();
+    loadAdminNotices();
+    loadAdminLectures();
+    loadAdminHomework();
+    loadAdminFormulas();
   }
   function closeAdmin() {
     var panel = $('#admin-panel');
@@ -1513,7 +1912,7 @@
     } catch (e) {}
   }
 
-  // ─── Edit Profile ───
+  // ========== Edit Profile ==========
   function openEditModal() { var modal = $('#edit-modal'); if (modal) modal.classList.add('open'); }
   function closeEditModal() { var modal = $('#edit-modal'); if (modal) modal.classList.remove('open'); }
   async function saveProfile(e) {
@@ -1523,11 +1922,17 @@
     try {
       const { updateDoc, doc } = await getDbModule();
       var nameEl = $('#edit-name'), classEl = $('#edit-class'), subjEl = $('#edit-subjects'), seatEl = $('#edit-seat');
+      var bioEl = $('#edit-bio'), targetEl = $('#edit-target'), cityEl = $('#edit-city'), phoneEl = $('#edit-phone'), photoEl = $('#edit-photo');
       var data = {
         name: nameEl ? nameEl.value : '',
         class: classEl ? classEl.value : '12',
         subjects: subjEl ? subjEl.value : '',
-        seatNumber: seatEl ? seatEl.value : ''
+        seatNumber: seatEl ? seatEl.value : '',
+        bio: bioEl ? bioEl.value : '',
+        target: targetEl ? targetEl.value : '',
+        city: cityEl ? cityEl.value : '',
+        phone: phoneEl ? phoneEl.value : '',
+        photoURL: photoEl ? photoEl.value : ''
       };
       await updateDoc(doc(db, 'users', state.user.uid), data);
       state.profile = Object.assign({}, state.profile || {}, data);
@@ -1537,7 +1942,7 @@
     } catch (e) { showToast(e.message || 'Update failed', 'error'); }
   }
 
-  // ─── Admin Forms ───
+  // ========== Admin Forms ==========
   async function publishNotice(e) {
     e.preventDefault(); e.stopPropagation();
     if (!db) return;
@@ -1547,6 +1952,7 @@
       await addDoc(collection(db, 'notices'), { title: titleEl ? titleEl.value : '', body: bodyEl ? bodyEl.value : '', priority: prioEl ? prioEl.value : 'normal', createdAt: new Date().toISOString() });
       var form = $('#notice-form'); if (form) form.reset();
       showToast('Notice published!');
+      loadAdminNotices();
     } catch (e) { showToast(e.message || 'Failed', 'error'); }
   }
   async function addLecture(e) {
@@ -1558,6 +1964,7 @@
       await addDoc(collection(db, 'lectures'), { title: titleEl ? titleEl.value : '', subject: subjEl ? subjEl.value : '', chapter: chapEl ? chapEl.value : '', url: urlEl ? urlEl.value : '', progress: 0, current: 0, total: 12, duration: '40 min', createdAt: new Date().toISOString() });
       var form = $('#lecture-form'); if (form) form.reset();
       showToast('Lecture added!');
+      loadAdminLectures();
     } catch (e) { showToast(e.message || 'Failed', 'error'); }
   }
   async function addMockTest(e) {
@@ -1586,7 +1993,7 @@
     } catch (e) { showToast(e.message || 'Failed', 'error'); }
   }
 
-  // ─── Video Modal ───
+  // ========== Video Modal ==========
   function playVideo(id, title) {
     closeAllModals();
     var modalTitle = $('#modal-title'), iframe = $('#video-iframe'), modal = $('#video-modal');
@@ -1600,7 +2007,7 @@
     if (iframe) iframe.src = '';
   }
 
-  // ─── Calculator ───
+  // ========== Calculator ==========
   function openCalculator() { var modal = $('#calc-modal'); if (modal) modal.classList.add('open'); closeSidebar(); }
   function closeCalculator() { var modal = $('#calc-modal'); if (modal) modal.classList.remove('open'); }
   function calcInput(val) {
@@ -1614,26 +2021,26 @@
     } else { state.calcExpr += val; display.textContent = state.calcExpr; }
   }
 
-  // ─── Notepad ───
+  // ========== Notepad ==========
   function openNotepad() { var modal = $('#notepad-modal'); if (modal) modal.classList.add('open'); var area = $('#notepad-area'); if (area) area.value = localStorage.getItem('studyPro_notes') || ''; closeSidebar(); }
   function closeNotepad() { var modal = $('#notepad-modal'); if (modal) modal.classList.remove('open'); }
   function saveNotepad() { var area = $('#notepad-area'); if (area) { localStorage.setItem('studyPro_notes', area.value); showToast('Notes saved!'); } }
   function clearNotepad() { var area = $('#notepad-area'); if (area) { area.value = ''; localStorage.setItem('studyPro_notes', ''); showToast('Notes cleared!'); } }
 
-  // ─── Todo ───
+  // ========== Todo ==========
   function openTodo() { var modal = $('#todo-modal'); if (modal) modal.classList.add('open'); renderTodos(); closeSidebar(); }
   function closeTodo() { var modal = $('#todo-modal'); if (modal) modal.classList.remove('open'); }
   function renderTodos() {
     var list = $('#todo-list');
     if (!list) return;
-    if (state.todos.length === 0) { list.innerHTML = '<p class=\"text-xs text-center py-4\" style=\"color:var(--app-text-dim)\">No tasks yet. Add one above!</p>'; return; }
+    if (state.todos.length === 0) { list.innerHTML = '<p class="text-xs text-center py-4" style="color:var(--app-text-dim)">No tasks yet. Add one above!</p>'; return; }
     var html = '';
     state.todos.forEach(function(todo, idx) {
-      html += '<div class=\"flex items-center gap-3 p-3 rounded-xl border transition-all-300\" style=\"background:var(--app-surface2);border-color:var(--app-border)\">' +
-        '<button onclick=\"App.toggleTodo(' + idx + ')\" class=\"w-5 h-5 rounded border flex items-center justify-center shrink-0 transition-all-300\" style=\"border-color:var(--app-border);background:' + (todo.done ? 'var(--app-success)' : 'transparent') + '\">' +
-        (todo.done ? '<i class=\"fa-solid fa-check text-white text-[10px]\"></i>' : '') + '</button>' +
-        '<span class=\"text-sm flex-1 ' + (todo.done ? 'line-through' : '') + '\" style=\"color:' + (todo.done ? 'var(--app-text-dim)' : 'var(--app-text)') + '\">' + escapeHtml(todo.text) + '</span>' +
-        '<button onclick=\"App.deleteTodo(' + idx + ')\" class=\"w-7 h-7 rounded-lg flex items-center justify-center transition-all-300 active:scale-90\" style=\"background:rgba(239,68,68,0.1)\"><i class=\"fa-solid fa-xmark text-xs\" style=\"color:var(--app-danger)\"></i></button></div>';
+      html += '<div class="flex items-center gap-3 p-3 rounded-xl border transition-all-300" style="background:var(--app-surface2);border-color:var(--app-border)">' +
+        '<button onclick="App.toggleTodo(' + idx + ')" class="w-5 h-5 rounded border flex items-center justify-center shrink-0 transition-all-300" style="border-color:var(--app-border);background:' + (todo.done ? 'var(--app-success)' : 'transparent') + '">' +
+        (todo.done ? '<i class="fa-solid fa-check text-white text-[10px]"></i>' : '') + '</button>' +
+        '<span class="text-sm flex-1 ' + (todo.done ? 'line-through' : '') + '" style="color:' + (todo.done ? 'var(--app-text-dim)' : 'var(--app-text)') + '">' + escapeHtml(todo.text) + '</span>' +
+        '<button onclick="App.deleteTodo(' + idx + ')" class="w-7 h-7 rounded-lg flex items-center justify-center transition-all-300 active:scale-90" style="background:rgba(239,68,68,0.1)"><i class="fa-solid fa-xmark text-xs" style="color:var(--app-danger)"></i></button></div>';
     });
     list.innerHTML = html;
   }
@@ -1648,19 +2055,19 @@
   function toggleTodo(idx) { if (state.todos[idx]) { state.todos[idx].done = !state.todos[idx].done; localStorage.setItem('studyPro_todos', JSON.stringify(state.todos)); renderTodos(); } }
   function deleteTodo(idx) { state.todos.splice(idx, 1); localStorage.setItem('studyPro_todos', JSON.stringify(state.todos)); renderTodos(); }
 
-  // ─── Terms & About ───
+  // ========== Terms & About ==========
   function openTerms() { var modal = $('#terms-modal'); if (modal) modal.classList.add('open'); closeSidebar(); }
   function closeTerms() { var modal = $('#terms-modal'); if (modal) modal.classList.remove('open'); }
   function openAbout() { var modal = $('#about-modal'); if (modal) modal.classList.add('open'); closeSidebar(); }
   function closeAbout() { var modal = $('#about-modal'); if (modal) modal.classList.remove('open'); }
 
-  // ─── PWA Install ───
+  // ========== PWA Install ==========
   function installApp() {
     if (state.installPrompt) { state.installPrompt.prompt(); }
     else { showToast('Install not available. Add to home screen manually.', 'info'); }
   }
 
-  // ─── Logout ───
+  // ========== Logout ==========
   async function logout() {
     closeAllOverlays();
     if (state.testTimerInterval) { clearInterval(state.testTimerInterval); state.testTimerInterval = null; }
@@ -1677,7 +2084,7 @@
     showToast('Logged out');
   }
 
-  // ─── Dashboard Widgets ───
+  // ========== Dashboard Widgets ==========
   async function loadFormulaOfDay() {
     var container = $('#formula-widget');
     if (!container || !db) return;
@@ -1686,15 +2093,15 @@
       var q = query(collection(db, 'formulaOfDay'), orderBy('createdAt', 'desc'), limit(1));
       var snapshot = await getDocs(q);
       if (snapshot.empty) {
-        container.innerHTML = '<p class=\"text-sm text-center py-2\" style=\"color:var(--app-text-dim)\">No formula set yet.</p>';
+        container.innerHTML = '<p class="text-sm text-center py-2" style="color:var(--app-text-dim)">No formula set yet.</p>';
         return;
       }
       var data = snapshot.docs[0].data();
-      container.innerHTML = '<div class=\"p-3 rounded-xl border transition-all-300\" style=\"background:var(--app-surface2);border-color:var(--app-border)\">' +
-        '<p class=\"text-xs font-bold uppercase tracking-wider mb-1\" style=\"color:var(--app-text-dim)\">' + escapeHtml(data.title || 'Formula') + '</p>' +
-        '<p class=\"text-lg font-extrabold font-display my-1\" style=\"color:var(--app-accent)\">' + escapeHtml(data.formula) + '</p>' +
-        '<p class=\"text-xs leading-relaxed\" style=\"color:var(--app-text-muted)\">' + escapeHtml(data.description || '') + '</p></div>';
-    } catch (e) { container.innerHTML = '<p class=\"text-sm text-center py-2\" style=\"color:var(--app-text-dim)\">Unable to load formula.</p>'; }
+      container.innerHTML = '<div class="p-3 rounded-xl border transition-all-300" style="background:var(--app-surface2);border-color:var(--app-border)">' +
+        '<p class="text-xs font-bold uppercase tracking-wider mb-1" style="color:var(--app-text-dim)">' + escapeHtml(data.title || 'Formula') + '</p>' +
+        '<p class="text-lg font-extrabold font-display my-1 gold-shimmer">' + escapeHtml(data.formula) + '</p>' +
+        '<p class="text-xs leading-relaxed" style="color:var(--app-text-muted)">' + escapeHtml(data.description || '') + '</p></div>';
+    } catch (e) { container.innerHTML = '<p class="text-sm text-center py-2" style="color:var(--app-text-dim)">Unable to load formula.</p>'; }
   }
 
   async function loadWordOfDay() {
@@ -1705,17 +2112,17 @@
       var q = query(collection(db, 'wordOfDay'), orderBy('createdAt', 'desc'), limit(1));
       var snapshot = await getDocs(q);
       if (snapshot.empty) {
-        container.innerHTML = '<p class=\"text-sm text-center py-2\" style=\"color:var(--app-text-dim)\">No word set yet.</p>';
+        container.innerHTML = '<p class="text-sm text-center py-2" style="color:var(--app-text-dim)">No word set yet.</p>';
         return;
       }
       var data = snapshot.docs[0].data();
-      var syn = data.synonyms ? '<p class=\"text-[11px] mt-1.5\"><span style=\"color:var(--app-text-dim)\">Synonyms: </span><span style=\"color:var(--app-text-muted)\">' + escapeHtml(data.synonyms) + '</span></p>' : '';
-      var ex = data.example ? '<p class=\"text-[11px] mt-1 italic\" style=\"color:var(--app-text-muted)\">\"' + escapeHtml(data.example) + '\"</p>' : '';
-      container.innerHTML = '<div class=\"p-3 rounded-xl border transition-all-300\" style=\"background:var(--app-surface2);border-color:var(--app-border)\">' +
-        '<div class=\"flex items-baseline gap-2 mb-1\"><p class=\"text-lg font-extrabold font-display\" style=\"color:var(--app-accent)\">' + escapeHtml(data.word) + '</p>' +
-        '<p class=\"text-xs font-medium\" style=\"color:var(--app-text-muted)\">' + escapeHtml(data.hindiMeaning || '') + '</p></div>' +
+      var syn = data.synonyms ? '<p class="text-[11px] mt-1.5"><span style="color:var(--app-text-dim)">Synonyms: </span><span style="color:var(--app-text-muted)">' + escapeHtml(data.synonyms) + '</span></p>' : '';
+      var ex = data.example ? '<p class="text-[11px] mt-1 italic" style="color:var(--app-text-muted)">"' + escapeHtml(data.example) + '"</p>' : '';
+      container.innerHTML = '<div class="p-3 rounded-xl border transition-all-300" style="background:var(--app-surface2);border-color:var(--app-border)">' +
+        '<div class="flex items-baseline gap-2 mb-1"><p class="text-lg font-extrabold font-display gold-shimmer">' + escapeHtml(data.word) + '</p>' +
+        '<p class="text-xs font-medium" style="color:var(--app-text-muted)">' + escapeHtml(data.hindiMeaning || '') + '</p></div>' +
         syn + ex + '</div>';
-    } catch (e) { container.innerHTML = '<p class=\"text-sm text-center py-2\" style=\"color:var(--app-text-dim)\">Unable to load word.</p>'; }
+    } catch (e) { container.innerHTML = '<p class="text-sm text-center py-2" style="color:var(--app-text-dim)">Unable to load word.</p>'; }
   }
 
   async function loadUpcomingTestAlert() {
@@ -1730,28 +2137,27 @@
         var q2 = query(collection(db, 'tests'), orderBy('createdAt', 'desc'), limit(1));
         var snap2 = await getDocs(q2);
         if (snap2.empty) {
-          container.innerHTML = '<p class=\"text-sm text-center py-2\" style=\"color:var(--app-text-dim)\">No tests scheduled yet.</p>';
+          container.innerHTML = '<p class="text-sm text-center py-2" style="color:var(--app-text-dim)">No tests scheduled yet.</p>';
           return;
         }
         var t = snap2.docs[0].data();
-        container.innerHTML = '<div class=\"p-3 rounded-xl border transition-all-300\" style=\"background:var(--app-surface2);border-color:var(--app-border)\">' +
-          '<p class=\"text-sm font-bold\" style=\"color:var(--app-text)\">' + escapeHtml(t.title) + '</p>' +
-          '<p class=\"text-xs mt-1\" style=\"color:var(--app-text-muted)\">' + escapeHtml(t.subject) + ' \u2022 ' + (t.testDate || 'Date TBD') + '</p>' +
-          '<p class=\"text-[11px] mt-1.5 line-clamp-2\" style=\"color:var(--app-text-dim)\">' + escapeHtml(t.description || 'No syllabus details.') + '</p></div>';
+        container.innerHTML = '<div class="p-3 rounded-xl border transition-all-300" style="background:var(--app-surface2);border-color:var(--app-border)">' +
+          '<p class="text-sm font-bold" style="color:var(--app-text)">' + escapeHtml(t.title) + '</p>' +
+          '<p class="text-xs mt-1" style="color:var(--app-text-muted)">' + escapeHtml(t.subject) + ' \u2022 ' + (t.testDate || 'Date TBD') + '</p>' +
+          '<p class="text-[11px] mt-1.5 line-clamp-2" style="color:var(--app-text-dim)">' + escapeHtml(t.description || 'No syllabus details.') + '</p></div>';
         return;
       }
       var t = snapshot.docs[0].data();
-      container.innerHTML = '<div class=\"p-3 rounded-xl border transition-all-300\" style=\"background:rgba(239,68,68,0.05);border-color:rgba(239,68,68,0.2)\">' +
-        '<div class=\"flex items-center gap-2 mb-1\"><i class=\"fa-solid fa-bell text-[10px]\" style=\"color:var(--app-danger)\"></i>' +
-        '<p class=\"text-xs font-bold uppercase tracking-wider\" style=\"color:var(--app-danger)\">Next Test</p></div>' +
-        '<p class=\"text-sm font-bold\" style=\"color:var(--app-text)\">' + escapeHtml(t.title) + '</p>' +
-        '<p class=\"text-xs mt-0.5\" style=\"color:var(--app-text-muted)\">' + escapeHtml(t.subject) + ' \u2022 ' + escapeHtml(t.testDate) + ' \u2022 ' + (t.duration || 60) + ' min</p>' +
-        '<p class=\"text-[11px] mt-1.5 line-clamp-2\" style=\"color:var(--app-text-dim)\">' + escapeHtml(t.description || 'Prepare well!') + '</p></div>';
-    } catch (e) { container.innerHTML = '<p class=\"text-sm text-center py-2\" style=\"color:var(--app-text-dim)\">Unable to load alerts.</p>'; }
+      container.innerHTML = '<div class="p-3 rounded-xl border transition-all-300" style="background:rgba(239,68,68,0.05);border-color:rgba(239,68,68,0.2)">' +
+        '<div class="flex items-center gap-2 mb-1"><i class="fa-solid fa-bell text-[10px]" style="color:var(--app-danger)"></i>' +
+        '<p class="text-xs font-bold uppercase tracking-wider" style="color:var(--app-danger)">Next Test</p></div>' +
+        '<p class="text-sm font-bold" style="color:var(--app-text)">' + escapeHtml(t.title) + '</p>' +
+        '<p class="text-xs mt-0.5" style="color:var(--app-text-muted)">' + escapeHtml(t.subject) + ' \u2022 ' + escapeHtml(t.testDate) + ' \u2022 ' + (t.duration || 60) + ' min</p>' +
+        '<p class="text-[11px] mt-1.5 line-clamp-2" style="color:var(--app-text-dim)">' + escapeHtml(t.description || 'Prepare well!') + '</p></div>';
+    } catch (e) { container.innerHTML = '<p class="text-sm text-center py-2" style="color:var(--app-text-dim)">Unable to load alerts.</p>'; }
   }
 
-  // ─── Summer Homework ───
-  var activeHomeworkSubject = 'Hindi';
+  // ========== Summer Homework ==========
   function openHomework() {
     closeAllModals();
     var view = $('#homework-view');
@@ -1766,23 +2172,23 @@
     if (scroll) scroll.scrollTop = 0;
   }
   function filterHomework(sub) {
-    activeHomeworkSubject = sub || 'Hindi';
-    $$('.hw-tab-btn').forEach(function(btn) { btn.classList.toggle('active', btn.dataset.hw === activeHomeworkSubject); });
+    state.activeHomeworkSubject = sub || 'Hindi';
+    $$('.hw-tab-btn').forEach(function(btn) { btn.classList.toggle('active', btn.dataset.hw === state.activeHomeworkSubject); });
     loadHomework();
   }
   async function loadHomework() {
     var container = $('#homework-list');
     if (!container || !db) return;
-    container.innerHTML = '<div class=\"space-y-4\"><div class=\"skeleton h-32 rounded-2xl\"></div><div class=\"skeleton h-32 rounded-2xl\"></div></div>';
+    container.innerHTML = '<div class="space-y-4"><div class="skeleton h-32 rounded-2xl"></div><div class="skeleton h-32 rounded-2xl"></div></div>';
     try {
       const { collection, query, where, orderBy, getDocs } = await getDbModule();
-      var q = query(collection(db, 'summerHomework'), where('subject', '==', activeHomeworkSubject), orderBy('createdAt', 'desc'));
+      var q = query(collection(db, 'summerHomework'), where('subject', '==', state.activeHomeworkSubject), orderBy('createdAt', 'desc'));
       var snapshot = await getDocs(q);
       if (snapshot.empty) {
-        container.innerHTML = '<div class=\"text-center py-14\"><div class=\"w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4\" style=\"background:var(--app-surface2);border:1px solid var(--app-border)\">' +
-          '<i class=\"fa-solid fa-sun text-2xl\" style=\"color:var(--app-text-dim)\"></i></div>' +
-          '<p class=\"text-sm font-semibold\" style=\"color:var(--app-text-muted)\">No homework for ' + escapeHtml(activeHomeworkSubject) + ' yet</p>' +
-          '<p class=\"text-xs mt-1\" style=\"color:var(--app-text-dim)\">Check back later or contact your teacher.</p></div>';
+        container.innerHTML = '<div class="text-center py-14"><div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style="background:var(--app-surface2);border:1px solid var(--app-border)">' +
+          '<i class="fa-solid fa-sun text-2xl" style="color:var(--app-text-dim)"></i></div>' +
+          '<p class="text-sm font-semibold" style="color:var(--app-text-muted)">No homework for ' + escapeHtml(state.activeHomeworkSubject) + ' yet</p>' +
+          '<p class="text-xs mt-1" style="color:var(--app-text-dim)">Check back later or contact your teacher.</p></div>';
         return;
       }
       var html = '';
@@ -1790,36 +2196,27 @@
         var h = docItem.data();
         var subColors = { Hindi: '#f97316', English: '#8b5cf6', Mathematics: '#f59e0b', Physics: '#3b82f6', Chemistry: '#22c55e' };
         var color = subColors[h.subject] || '#3b82f6';
-        html += '<div class=\"app-card p-5 animate-fade-up shadow-sm transition-all-300\" style=\"animation-delay:' + (idx * 0.08) + 's\">' +
-          '<div class=\"flex items-start justify-between gap-3 mb-3\">' +
-          '<div class=\"flex items-center gap-2.5\">' +
-          '<div class=\"w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm\" style=\"background:' + color + '\">' + (h.subject ? h.subject.charAt(0) : 'H') + '</div>' +
-          '<div><p class=\"text-sm font-bold\" style=\"color:var(--app-text)\">' + escapeHtml(h.teacher) + '</p>' +
-          '<p class=\"text-[11px]\" style=\"color:var(--app-text-dim)\">' + escapeHtml(h.subject) + '</p></div></div>';
+        html += '<div class="app-card p-5 animate-fade-up shadow-sm transition-all-300" style="animation-delay:' + (idx * 0.08) + 's">' +
+          '<div class="flex items-start justify-between gap-3 mb-3">' +
+          '<div class="flex items-center gap-2.5">' +
+          '<div class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm" style="background:' + color + '">' + (h.subject ? h.subject.charAt(0) : 'H') + '</div>' +
+          '<div><p class="text-sm font-bold" style="color:var(--app-text)">' + escapeHtml(h.teacher) + '</p>' +
+          '<p class="text-[11px]" style="color:var(--app-text-dim)">' + escapeHtml(h.subject) + '</p></div></div>';
         if (state.isAdmin) {
-          html += '<button onclick=\"App.deleteHomework(\'' + docItem.id + '\')\" class=\"w-8 h-8 rounded-lg flex items-center justify-center active:scale-90 transition-all-300 shrink-0\" style=\"background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2)\">' +
-            '<i class=\"fa-solid fa-trash text-xs\" style=\"color:var(--app-danger)\"></i></button>';
+          html += '<button onclick="App.requireAdminDelete(function(){App.deleteHomework(\\'' + docItem.id + '\\');})" class="admin-delete-btn" title="Delete (Admin PIN required)">' +
+            '<i class="fa-solid fa-trash text-xs"></i></button>';
         }
         html += '</div>' +
-          '<a href=\"tel:' + escapeHtml(h.mobile) + '\" class=\"inline-flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-bold mb-3 active:scale-95 transition-all-300\" style=\"background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text);text-decoration:none\">' +
-          '<i class=\"fa-solid fa-phone\" style=\"color:var(--app-success)\"></i><span>' + escapeHtml(h.mobile) + '</span></a>' +
-          '<div class=\"p-3 rounded-xl border text-sm leading-relaxed\" style=\"background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted);white-space:pre-wrap;word-wrap:break-word\">' + escapeHtml(h.content) + '</div>' +
+          '<a href="tel:' + escapeHtml(h.mobile) + '" class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-bold mb-3 active:scale-95 transition-all-300" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text);text-decoration:none">' +
+          '<i class="fa-solid fa-phone" style="color:var(--app-success)"></i><span>' + escapeHtml(h.mobile) + '</span></a>' +
+          '<div class="p-3 rounded-xl border text-sm leading-relaxed hw-content" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">' + escapeHtml(h.content) + '</div>' +
           '</div>';
       });
       container.innerHTML = html;
-    } catch (e) { container.innerHTML = '<p class=\"text-sm text-center py-8\" style=\"color:var(--app-text-dim)\">Unable to load homework.</p>'; }
-  }
-  async function deleteHomework(id) {
-    if (!db) return;
-    if (!confirm('Delete this homework entry?')) return;
-    try {
-      const { deleteDoc, doc } = await getDbModule();
-      await deleteDoc(doc(db, 'summerHomework', id));
-      showToast('Homework deleted'); loadHomework();
-    } catch (e) { showToast(e.message || 'Delete failed', 'error'); }
+    } catch (e) { container.innerHTML = '<p class="text-sm text-center py-8" style="color:var(--app-text-dim)">Unable to load homework.</p>'; }
   }
 
-  // ─── Admin Widget Publishers ───
+  // ========== Admin Widget Publishers ==========
   async function publishFormula(e) {
     e.preventDefault(); e.stopPropagation();
     if (!db) return;
@@ -1829,6 +2226,7 @@
       await addDoc(collection(db, 'formulaOfDay'), { title: titleEl ? titleEl.value : '', formula: mathEl ? mathEl.value : '', description: descEl ? descEl.value : '', createdAt: new Date().toISOString() });
       var form = $('#formula-form'); if (form) form.reset();
       showToast('Formula of the Day updated!');
+      loadAdminFormulas();
     } catch (e) { showToast(e.message || 'Failed', 'error'); }
   }
   async function publishWord(e) {
@@ -1851,18 +2249,15 @@
       await addDoc(collection(db, 'summerHomework'), { subject: subjEl ? subjEl.value : '', teacher: teacherEl ? teacherEl.value : '', mobile: mobileEl ? mobileEl.value : '', content: contentEl ? contentEl.value : '', createdAt: new Date().toISOString() });
       var form = $('#homework-form'); if (form) form.reset();
       showToast('Summer homework published!');
-      loadHomework();
+      loadAdminHomework();
     } catch (e) { showToast(e.message || 'Failed', 'error'); }
   }
 
-  // ─── Keyboard Support ───
+  // ========== Keyboard Support ==========
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
       closeAllModals();
       closeSidebar();
-    }
-    // Close homework view on Escape
-    if (e.key === 'Escape') {
       var hwView = $('#homework-view');
       if (hwView && hwView.classList.contains('open')) closeHomework();
       var adminPanel = $('#admin-panel');
@@ -1870,14 +2265,14 @@
     }
   });
 
-  // ─── Init ───
+  // ========== Init ==========
   function init() {
     if (state.initialized) return;
     state.initialized = true;
 
     applyTheme(state.theme);
 
-    // Auth forms - robust attachment with fallback
+    // Auth forms
     var loginForm = $('#login-form');
     if (loginForm) loginForm.addEventListener('submit', handleLogin);
     var regForm = $('#register-form');
@@ -1940,7 +2335,6 @@
       getAuthModule().then(function(mod) {
         mod.onAuthStateChanged(auth, async function(user) {
           if (user) {
-            // Prevent duplicate initializations
             if (state.user && state.user.uid === user.uid) return;
             state.user = user;
             var authScreen = $('#auth-screen');
@@ -1953,7 +2347,6 @@
               loadNotices();
               loadDateSheet();
               updateTimer();
-              // Clear any existing timer interval before creating new one
               if (state.timerIntervalId) clearInterval(state.timerIntervalId);
               state.timerIntervalId = setInterval(updateTimer, 30000);
             }, 500);
@@ -1971,18 +2364,21 @@
     }
   }
 
-  // ─── Expose App API ───
+  // ========== Expose App API ==========
   window.App = {
     setTheme: applyTheme, logout: logout, playVideo: playVideo, closeVideo: closeVideo,
     openAdmin: openAdmin, closeAdmin: closeAdmin, openEditModal: openEditModal, closeEditModal: closeEditModal,
-    toggleSidebar: toggleSidebar, openTest: openTest, closeTest: closeTest, deleteTest: deleteTest,
-    deleteDateSheet: deleteDateSheet, showLogin: showLogin, showRegister: showRegister,
+    toggleSidebar: toggleSidebar, openTest: openTest, closeTest: closeTest,
+    requireAdminDelete: requireAdminDelete, deleteTest: deleteTest, deleteDateSheet: deleteDateSheet,
+    deleteNotice: deleteNotice, deleteLecture: deleteLecture, deleteHomework: deleteHomework, deleteFormula: deleteFormula,
+    showLogin: showLogin, showRegister: showRegister,
     openCalculator: openCalculator, closeCalculator: closeCalculator, calcInput: calcInput,
     openNotepad: openNotepad, closeNotepad: closeNotepad, saveNotepad: saveNotepad, clearNotepad: clearNotepad,
     openTodo: openTodo, closeTodo: closeTodo, addTodo: addTodo, toggleTodo: toggleTodo, deleteTodo: deleteTodo,
     openTerms: openTerms, closeTerms: closeTerms, openAbout: openAbout, closeAbout: closeAbout,
     installApp: installApp, filterSubject: filterSubject,
-    openHomework: openHomework, closeHomework: closeHomework, filterHomework: filterHomework, deleteHomework: deleteHomework,
+    openHomework: openHomework, closeHomework: closeHomework, filterHomework: filterHomework,
+    openLecture: openLecture, closeLecture: closeLecture,
   };
 
   // Start
