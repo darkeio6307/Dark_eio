@@ -40,9 +40,16 @@
       --app-accent:#e4e4e7; --app-accent-soft:rgba(228,228,231,0.08); --app-danger:#ef4444; --app-success:#22c55e;
     }
     .theme-golden {
-      --app-bg:#1a1100; --app-surface:#241800; --app-surface2:#2e1f00; --app-surface-rgb:36,24,0;
-      --app-border:#3d2800; --app-text:#FFD700; --app-text-muted:#D4AF37; --app-text-dim:#8a7a3a;
-      --app-accent:#FFD700; --app-accent-soft:rgba(255,215,0,0.12); --app-danger:#ef4444; --app-success:#22c55e;
+      --app-bg:#3d2b00; --app-surface:#4d3500; --app-surface2:#5c3d00; --app-surface-rgb:77,53,0;
+      --app-border:#8a6a00; --app-text:#FFD700; --app-text-muted:#F0E68C; --app-text-dim:#DAA520;
+      --app-accent:#FFD700; --app-accent-soft:rgba(255,215,0,0.18); --app-danger:#ef4444; --app-success:#22c55e;
+    }
+    .theme-golden body {
+      background: linear-gradient(135deg, #4d3500 0%, #3d2b00 50%, #2a1f00 100%);
+    }
+    .theme-golden .app-card {
+      border-color: rgba(255, 215, 0, 0.15);
+      box-shadow: 0 4px 24px rgba(255, 215, 0, 0.06);
     }
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
     html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:var(--app-bg);color:var(--app-text);overscroll-behavior-y:none;touch-action:manipulation}
@@ -64,8 +71,8 @@
     #auth-screen.hidden-auth{opacity:0;pointer-events:none;transform:scale(1.05)}
     .auth-form-box{width:100%;max-width:380px;transition:all .4s cubic-bezier(.4,0,.2,1)}
     .auth-form-box.hidden{display:none}
-    .tab-view{display:none;opacity:0;transform:translateY(16px);transition:opacity .35s cubic-bezier(.4,0,.2,1),transform .35s cubic-bezier(.4,0,.2,1)}
-    .tab-view.active{display:block;opacity:1;transform:translateY(0)}
+    .tab-view{visibility:hidden;opacity:0;transform:translateY(16px);transition:opacity .35s cubic-bezier(.4,0,.2,1),transform .35s cubic-bezier(.4,0,.2,1),visibility .35s;position:absolute;top:0;left:0;right:0;pointer-events:none}
+    .tab-view.active{visibility:visible;opacity:1;transform:translateY(0);position:relative;pointer-events:auto}
     .nav-btn{position:relative;user-select:none;-webkit-user-select:none;color:var(--app-text-dim);transition:all .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 0}
     .nav-btn i{font-size:20px;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
     .nav-btn span{font-size:10px;font-weight:600;letter-spacing:.02em}
@@ -88,6 +95,8 @@
     #test-modal.open{opacity:1;pointer-events:auto}
     #admin-panel{position:fixed;inset:0;z-index:95;background:var(--app-bg);display:none;flex-direction:column;opacity:0;transition:opacity .3s ease}
     #admin-panel.open{display:flex;opacity:1}
+    #homework-view{position:fixed;inset:0;z-index:95;background:var(--app-bg);display:none;flex-direction:column;opacity:0;transition:opacity .3s ease}
+    #homework-view.open{display:flex;opacity:1}
     @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
     .animate-fade-up{animation:fadeUp .5s cubic-bezier(.4,0,.2,1) forwards;opacity:0}
     .delay-1{animation-delay:.08s}.delay-2{animation-delay:.16s}.delay-3{animation-delay:.24s}.delay-4{animation-delay:.32s}
@@ -120,15 +129,34 @@
     .calc-display{width:100%;background:var(--app-surface);border:1.5px solid var(--app-border);border-radius:14px;padding:16px;font-size:24px;font-weight:700;text-align:right;color:var(--app-text);font-family:'Space Grotesk',monospace;overflow-x:auto}
     .hw-tab-btn{white-space:nowrap;padding:8px 16px;border-radius:12px;font-size:12px;font-weight:700;border:1.5px solid var(--app-border);background:var(--app-surface);color:var(--app-text-dim);transition:all .2s;cursor:pointer}
     .hw-tab-btn.active{background:var(--app-accent);color:var(--app-bg);border-color:var(--app-accent)}
+    .transition-all-300{transition:all .3s cubic-bezier(.4,0,.2,1)}
+    .btn-scale:active{transform:scale(.97)}
+    #firebase-error{position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;padding:24px;background:var(--app-bg)}
+    #firebase-error.visible{display:flex}
+    .stagger-children > * {transition: opacity .3s ease, transform .3s ease}
+    .stagger-children:hover > * {opacity: 0.7}
+    .stagger-children > *:hover {opacity: 1}
   </style>
 </head>
 <body class="theme-dark antialiased">
+
+<!-- Firebase Load Error Screen -->
+<div id="firebase-error">
+  <div class="text-center space-y-4 max-w-sm">
+    <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto" style="background:var(--app-accent-soft);border:1px solid var(--app-border)">
+      <i class="fa-solid fa-triangle-exclamation text-2xl" style="color:var(--app-danger)"></i>
+    </div>
+    <h2 class="text-xl font-bold font-display" style="color:var(--app-text)">Connection Error</h2>
+    <p class="text-sm" style="color:var(--app-text-muted)">Unable to connect to the studyPro servers. Please check your internet connection and try again.</p>
+    <button onclick="location.reload()" class="app-btn w-full"><i class="fa-solid fa-rotate-right"></i><span>Retry</span></button>
+  </div>
+</div>
 
 <!-- AUTH SCREEN -->
 <div id="auth-screen">
   <div class="w-full max-w-sm">
     <div class="text-center space-y-3 mb-8">
-      <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg" style="background:var(--app-accent-soft);border:1px solid var(--app-border)">
+      <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg transition-all-300" style="background:var(--app-accent-soft);border:1px solid var(--app-border)">
         <i class="fa-solid fa-graduation-cap text-2xl" style="color:var(--app-accent)"></i>
       </div>
       <h1 class="text-4xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">studyPro</h1>
@@ -140,7 +168,7 @@
         <h2 class="text-xl font-bold font-display" style="color:var(--app-text)">Welcome Back</h2>
         <p class="text-xs mt-1" style="color:var(--app-text-dim)">Log in to continue your prep</p>
       </div>
-      <button id="google-login" class="app-btn app-btn-outline w-full">
+      <button id="google-login" type="button" class="app-btn app-btn-outline w-full transition-all-300">
         <i class="fa-brands fa-google"></i><span>Continue with Google</span>
       </button>
       <div class="flex items-center gap-3">
@@ -148,13 +176,13 @@
         <span class="text-xs font-bold uppercase tracking-widest" style="color:var(--app-text-dim)">or</span>
         <div class="flex-1 h-px" style="background:var(--app-border)"></div>
       </div>
-      <form id="login-form" class="space-y-3">
+      <form id="login-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
         <input type="email" id="login-email" class="app-input" placeholder="Email address" required autocomplete="email">
         <input type="password" id="login-password" class="app-input" placeholder="Password" required autocomplete="current-password">
-        <button type="submit" id="login-submit" class="app-btn w-full mt-2"><span>Log In</span></button>
+        <button type="submit" id="login-submit" class="app-btn w-full mt-2 transition-all-300"><span>Log In</span></button>
       </form>
       <p class="text-center text-sm" style="color:var(--app-text-dim)">
-        New student? <button onclick="App.showRegister()" class="font-bold underline" style="color:var(--app-accent);background:none;border:none;cursor:pointer">Create account</button>
+        New student? <button type="button" onclick="App.showRegister()" class="font-bold underline transition-all-300 hover:opacity-80" style="color:var(--app-accent);background:none;border:none;cursor:pointer">Create account</button>
       </p>
     </div>
 
@@ -163,7 +191,7 @@
         <h2 class="text-xl font-bold font-display" style="color:var(--app-text)">Create Account</h2>
         <p class="text-xs mt-1" style="color:var(--app-text-dim)">Join studyPro for UP Board prep</p>
       </div>
-      <button id="google-register" class="app-btn app-btn-outline w-full">
+      <button id="google-register" type="button" class="app-btn app-btn-outline w-full transition-all-300">
         <i class="fa-brands fa-google"></i><span>Sign up with Google</span>
       </button>
       <div class="flex items-center gap-3">
@@ -171,22 +199,22 @@
         <span class="text-xs font-bold uppercase tracking-widest" style="color:var(--app-text-dim)">or</span>
         <div class="flex-1 h-px" style="background:var(--app-border)"></div>
       </div>
-      <form id="register-form" class="space-y-3">
+      <form id="register-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
         <input type="text" id="reg-name" class="app-input" placeholder="Full Name" required autocomplete="name">
         <input type="email" id="reg-email" class="app-input" placeholder="Email address" required autocomplete="email">
         <input type="password" id="reg-password" class="app-input" placeholder="Password (min. 6 chars)" required minlength="6" autocomplete="new-password">
         <select id="reg-class" class="app-input" style="appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 fill=%27%2371717a%27 viewBox=%270 0 16 16%27%3E%3Cpath d=%27M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z%27/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 14px center">
           <option value="12">Class 12</option><option value="11">Class 11</option><option value="10">Class 10</option>
         </select>
-        <button type="submit" id="reg-submit" class="app-btn w-full mt-2"><span>Create Account</span></button>
+        <button type="submit" id="reg-submit" class="app-btn w-full mt-2 transition-all-300"><span>Create Account</span></button>
       </form>
       <p class="text-center text-sm" style="color:var(--app-text-dim)">
-        Already have an account? <button onclick="App.showLogin()" class="font-bold underline" style="color:var(--app-accent);background:none;border:none;cursor:pointer">Log in</button>
+        Already have an account? <button type="button" onclick="App.showLogin()" class="font-bold underline transition-all-300 hover:opacity-80" style="color:var(--app-accent);background:none;border:none;cursor:pointer">Log in</button>
       </p>
     </div>
 
     <p class="text-center text-xs leading-relaxed mt-6" style="color:var(--app-text-dim)">
-      By continuing, you agree to our <a href="#" onclick="App.openTerms();return false" class="underline" style="color:var(--app-text-muted)">Terms</a> and <a href="#" class="underline" style="color:var(--app-text-muted)">Privacy Policy</a>.
+      By continuing, you agree to our <button type="button" onclick="App.openTerms();return false" class="underline" style="color:var(--app-text-muted);background:none;border:none;cursor:pointer">Terms</button> and <button type="button" onclick="return false" class="underline" style="color:var(--app-text-muted);background:none;border:none;cursor:pointer">Privacy Policy</button>.
     </p>
   </div>
 </div>
@@ -195,7 +223,7 @@
 <div id="app-shell" class="hidden h-full w-full flex-col">
   <header class="shrink-0 h-16 flex items-center justify-between px-5 z-40 border-b glass-header" style="border-color:var(--app-border)">
     <div class="flex items-center gap-3">
-      <button id="menu-btn" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-90 transition-transform" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+      <button id="menu-btn" type="button" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-90 transition-all-300" style="background:var(--app-surface2);border:1px solid var(--app-border)" aria-label="Open menu">
         <i class="fa-solid fa-bars text-sm" style="color:var(--app-text-muted)"></i>
       </button>
       <div>
@@ -203,7 +231,7 @@
         <span class="text-[10px] font-bold uppercase tracking-wider" style="color:var(--app-text-dim)">UP Board</span>
       </div>
     </div>
-    <div id="exam-timer-badge" class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border glow-soon" style="background:var(--app-surface2);border-color:var(--app-border)">
+    <div id="exam-timer-badge" class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border glow-soon transition-all-300" style="background:var(--app-surface2);border-color:var(--app-border)">
       <span class="relative flex h-2.5 w-2.5">
         <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style="background:var(--app-success)"></span>
         <span class="relative inline-flex rounded-full h-2.5 w-2.5" style="background:var(--app-success)"></span>
@@ -221,7 +249,7 @@
         <h2 id="home-welcome" class="text-3xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">Student</h2>
       </div>
 
-      <div class="app-card p-5 animate-fade-up delay-1 shadow-sm">
+      <div class="app-card p-5 animate-fade-up delay-1 shadow-sm transition-all-300">
         <div class="flex items-center gap-2.5 mb-4">
           <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2)">
             <i class="fa-solid fa-bullhorn text-amber-500 text-sm"></i>
@@ -241,7 +269,7 @@
       </div>
 
       <!-- Exam Date Sheet Card -->
-      <div class="app-card p-5 animate-fade-up delay-2 shadow-sm">
+      <div class="app-card p-5 animate-fade-up delay-2 shadow-sm transition-all-300">
         <div class="flex items-center justify-between mb-4">
           <div class="flex items-center gap-2.5">
             <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2)">
@@ -257,7 +285,7 @@
       </div>
 
       <!-- Widget 1: Formula of the Day -->
-      <div class="app-card p-5 animate-fade-up delay-3 shadow-sm">
+      <div class="app-card p-5 animate-fade-up delay-3 shadow-sm transition-all-300">
         <div class="flex items-center justify-between mb-4">
           <div class="flex items-center gap-2.5">
             <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2)">
@@ -273,7 +301,7 @@
       </div>
 
       <!-- Widget 2: Word of the Day -->
-      <div class="app-card p-5 animate-fade-up delay-4 shadow-sm">
+      <div class="app-card p-5 animate-fade-up delay-4 shadow-sm transition-all-300">
         <div class="flex items-center justify-between mb-4">
           <div class="flex items-center gap-2.5">
             <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2)">
@@ -289,7 +317,7 @@
       </div>
 
       <!-- Widget 3: Upcoming Test Alert -->
-      <div class="app-card p-5 animate-fade-up delay-5 shadow-sm">
+      <div class="app-card p-5 animate-fade-up delay-5 shadow-sm transition-all-300">
         <div class="flex items-center justify-between mb-4">
           <div class="flex items-center gap-2.5">
             <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2)">
@@ -316,12 +344,12 @@
       </div>
       <!-- Sub-tabs -->
       <div class="flex gap-2 overflow-x-auto pb-2 -mx-5 px-5" style="scrollbar-width:none;-webkit-overflow-scrolling:touch">
-        <button onclick="App.filterSubject('all')" class="sub-tab-btn active" data-sub="all">All</button>
-        <button onclick="App.filterSubject('Hindi')" class="sub-tab-btn" data-sub="Hindi">Hin</button>
-        <button onclick="App.filterSubject('English')" class="sub-tab-btn" data-sub="English">Eng</button>
-        <button onclick="App.filterSubject('Mathematics')" class="sub-tab-btn" data-sub="Mathematics">Math</button>
-        <button onclick="App.filterSubject('Physics')" class="sub-tab-btn" data-sub="Physics">Phy</button>
-        <button onclick="App.filterSubject('Chemistry')" class="sub-tab-btn" data-sub="Chemistry">Che</button>
+        <button type="button" onclick="App.filterSubject('all')" class="sub-tab-btn active transition-all-300" data-sub="all">All</button>
+        <button type="button" onclick="App.filterSubject('Hindi')" class="sub-tab-btn transition-all-300" data-sub="Hindi">Hin</button>
+        <button type="button" onclick="App.filterSubject('English')" class="sub-tab-btn transition-all-300" data-sub="English">Eng</button>
+        <button type="button" onclick="App.filterSubject('Mathematics')" class="sub-tab-btn transition-all-300" data-sub="Mathematics">Math</button>
+        <button type="button" onclick="App.filterSubject('Physics')" class="sub-tab-btn transition-all-300" data-sub="Physics">Phy</button>
+        <button type="button" onclick="App.filterSubject('Chemistry')" class="sub-tab-btn transition-all-300" data-sub="Chemistry">Che</button>
       </div>
       <div id="lectures-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
       <div class="mt-6">
@@ -338,9 +366,9 @@
         <h2 class="text-2xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">Media</h2>
         <p class="text-xs mt-0.5" style="color:var(--app-text-dim)">Search YouTube for study breaks</p>
       </div>
-      <form id="yt-search-form" class="flex gap-2 sticky top-0 z-10 py-2 -mx-5 px-5" style="background:var(--app-bg)">
+      <form id="yt-search-form" class="flex gap-2 sticky top-0 z-10 py-2 -mx-5 px-5" style="background:var(--app-bg)" onsubmit="event.preventDefault(); return false;">
         <input type="text" id="yt-query" placeholder="Search music, podcasts, vlogs..." required class="app-input flex-1" style="background:var(--app-surface)">
-        <button type="submit" class="app-btn px-4" style="width:auto"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <button type="submit" class="app-btn px-4 transition-all-300" style="width:auto"><i class="fa-solid fa-magnifying-glass"></i></button>
       </form>
       <div id="yt-results" class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
         <div class="text-center py-12 text-sm" style="color:var(--app-text-dim)">
@@ -353,7 +381,7 @@
     <!-- PROFILE TAB -->
     <section id="tab-profile" class="tab-view p-5 space-y-6 pb-28">
       <div class="text-center py-8">
-        <div class="w-24 h-24 rounded-full mx-auto flex items-center justify-center border-2 mb-4 shadow-xl relative" style="background:var(--app-surface2);border-color:var(--app-border)">
+        <div class="w-24 h-24 rounded-full mx-auto flex items-center justify-center border-2 mb-4 shadow-xl relative transition-all-300" style="background:var(--app-surface2);border-color:var(--app-border)">
           <span id="profile-avatar" class="text-3xl font-extrabold font-display" style="color:var(--app-text)">S</span>
           <div class="absolute bottom-0 right-0 w-7 h-7 rounded-full border-2 flex items-center justify-center" style="background:var(--app-success);border-color:var(--app-surface)">
             <i class="fa-solid fa-check text-white text-[10px]"></i>
@@ -362,8 +390,8 @@
         <h2 id="profile-name" class="text-2xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">Student</h2>
         <p id="profile-class" class="text-sm mt-1 font-medium" style="color:var(--app-text-muted)">Class 12 &bull; UP Board</p>
       </div>
-      <div class="app-card divide-y overflow-hidden shadow-sm" style="border-color:var(--app-border)">
-        <div class="flex items-center justify-between p-4">
+      <div class="app-card divide-y overflow-hidden shadow-sm transition-all-300" style="border-color:var(--app-border)">
+        <div class="flex items-center justify-between p-4 transition-all-300 hover:opacity-80">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl flex items-center justify-center border" style="background:var(--app-surface2);border-color:var(--app-border)">
               <i class="fa-solid fa-id-card text-xs" style="color:var(--app-text-dim)"></i>
@@ -374,7 +402,7 @@
             </div>
           </div>
         </div>
-        <div class="flex items-center justify-between p-4">
+        <div class="flex items-center justify-between p-4 transition-all-300 hover:opacity-80">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl flex items-center justify-center border" style="background:var(--app-surface2);border-color:var(--app-border)">
               <i class="fa-solid fa-book text-xs" style="color:var(--app-text-dim)"></i>
@@ -385,7 +413,7 @@
             </div>
           </div>
         </div>
-        <div class="flex items-center justify-between p-4">
+        <div class="flex items-center justify-between p-4 transition-all-300 hover:opacity-80">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl flex items-center justify-center border" style="background:var(--app-surface2);border-color:var(--app-border)">
               <i class="fa-solid fa-envelope text-xs" style="color:var(--app-text-dim)"></i>
@@ -397,10 +425,10 @@
           </div>
         </div>
       </div>
-      <button id="edit-profile-btn" class="app-btn app-btn-outline w-full">
+      <button id="edit-profile-btn" type="button" class="app-btn app-btn-outline w-full transition-all-300">
         <i class="fa-solid fa-pen-to-square"></i><span>Edit Profile</span>
       </button>
-      <button onclick="App.logout()" class="w-full py-3.5 rounded-xl text-sm font-bold uppercase tracking-wider text-[11px] border active:scale-95 transition-transform" style="background:var(--app-surface2);color:var(--app-text-dim);border-color:var(--app-border)">
+      <button type="button" onclick="App.logout()" class="w-full py-3.5 rounded-xl text-sm font-bold uppercase tracking-wider text-[11px] border active:scale-95 transition-all-300" style="background:var(--app-surface2);color:var(--app-text-dim);border-color:var(--app-border)">
         Log Out
       </button>
     </section>
@@ -408,17 +436,17 @@
 
   <!-- Bottom Nav -->
   <nav class="shrink-0 h-[72px] grid grid-cols-4 items-end pb-3 pb-safe z-40 border-t glass-header" style="border-color:var(--app-border)">
-    <button data-tab="home" class="nav-btn active-tab"><i class="fa-solid fa-house"></i><span>Home</span></button>
-    <button data-tab="classes" class="nav-btn"><i class="fa-solid fa-book-open"></i><span>Study</span></button>
-    <button data-tab="media" class="nav-btn"><i class="fa-brands fa-youtube"></i><span>Media</span></button>
-    <button data-tab="profile" class="nav-btn"><i class="fa-solid fa-user"></i><span>Profile</span></button>
+    <button type="button" data-tab="home" class="nav-btn active-tab transition-all-300" aria-label="Home"><i class="fa-solid fa-house"></i><span>Home</span></button>
+    <button type="button" data-tab="classes" class="nav-btn transition-all-300" aria-label="Study"><i class="fa-solid fa-book-open"></i><span>Study</span></button>
+    <button type="button" data-tab="media" class="nav-btn transition-all-300" aria-label="Media"><i class="fa-brands fa-youtube"></i><span>Media</span></button>
+    <button type="button" data-tab="profile" class="nav-btn transition-all-300" aria-label="Profile"><i class="fa-solid fa-user"></i><span>Profile</span></button>
   </nav>
 </div>
 <!-- SIDEBAR -->
 <div id="sidebar-overlay"></div>
 <div id="sidebar" class="pb-safe">
   <div class="p-6 border-b flex items-center gap-3" style="border-color:var(--app-border)">
-    <div class="w-11 h-11 rounded-xl flex items-center justify-center border shadow-md" style="background:var(--app-surface2);border-color:var(--app-border)">
+    <div class="w-11 h-11 rounded-xl flex items-center justify-center border shadow-md transition-all-300" style="background:var(--app-surface2);border-color:var(--app-border)">
       <i class="fa-solid fa-bolt text-xl" style="color:var(--app-accent)"></i>
     </div>
     <div>
@@ -432,16 +460,16 @@
     <div>
       <p class="text-[11px] font-bold uppercase tracking-wider mb-3" style="color:var(--app-text-dim)">Appearance</p>
       <div class="flex items-center gap-4">
-        <button onclick="App.setTheme('light')" class="theme-pill active" id="pill-light" style="background:#f8fafc;border-color:#cbd5e1" title="Light"></button>
-        <button onclick="App.setTheme('dark')" class="theme-pill" id="pill-dark" style="background:#09090b;border-color:#27272a" title="Dark"></button>
-        <button onclick="App.setTheme('golden')" class="theme-pill" id="pill-golden" style="background:linear-gradient(135deg,#FFD700,#1a1100);border-color:#FFD700" title="Golden"></button>
+        <button type="button" onclick="App.setTheme('light')" class="theme-pill active transition-all-300" id="pill-light" style="background:#f8fafc;border-color:#cbd5e1" title="Light"></button>
+        <button type="button" onclick="App.setTheme('dark')" class="theme-pill transition-all-300" id="pill-dark" style="background:#09090b;border-color:#27272a" title="Dark"></button>
+        <button type="button" onclick="App.setTheme('golden')" class="theme-pill transition-all-300" id="pill-golden" style="background:linear-gradient(135deg,#FFD700,#1a1100);border-color:#FFD700" title="Golden"></button>
       </div>
       <p id="theme-label" class="text-xs mt-2.5 font-semibold" style="color:var(--app-text-muted)">Dark Mode</p>
     </div>
 
     <!-- Install App -->
-    <div id="install-container" class="hidden">
-      <button onclick="App.installApp()" class="app-btn w-full" style="background:var(--app-success)">
+    <div id="install-container" class="hidden transition-all-300">
+      <button type="button" onclick="App.installApp()" class="app-btn w-full transition-all-300" style="background:var(--app-success)">
         <i class="fa-solid fa-download"></i><span>Install App</span>
       </button>
     </div>
@@ -450,13 +478,13 @@
     <div>
       <p class="text-[11px] font-bold uppercase tracking-wider mb-3" style="color:var(--app-text-dim)">Mini Tools</p>
       <div class="space-y-2">
-        <button onclick="App.openCalculator()" class="w-full flex items-center gap-3 p-3 rounded-xl border text-sm font-medium transition-all active:scale-95" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">
+        <button type="button" onclick="App.openCalculator()" class="w-full flex items-center gap-3 p-3 rounded-xl border text-sm font-medium transition-all-300 active:scale-95 hover:opacity-80" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">
           <i class="fa-solid fa-calculator w-5 text-center"></i><span>Scientific Calculator</span>
         </button>
-        <button onclick="App.openNotepad()" class="w-full flex items-center gap-3 p-3 rounded-xl border text-sm font-medium transition-all active:scale-95" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">
+        <button type="button" onclick="App.openNotepad()" class="w-full flex items-center gap-3 p-3 rounded-xl border text-sm font-medium transition-all-300 active:scale-95 hover:opacity-80" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">
           <i class="fa-solid fa-note-sticky w-5 text-center"></i><span>Quick Note Pad</span>
         </button>
-        <button onclick="App.openTodo()" class="w-full flex items-center gap-3 p-3 rounded-xl border text-sm font-medium transition-all active:scale-95" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">
+        <button type="button" onclick="App.openTodo()" class="w-full flex items-center gap-3 p-3 rounded-xl border text-sm font-medium transition-all-300 active:scale-95 hover:opacity-80" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">
           <i class="fa-solid fa-list-check w-5 text-center"></i><span>To-Do List</span>
         </button>
       </div>
@@ -465,7 +493,7 @@
     <!-- Summer Homework -->
     <div>
       <p class="text-[11px] font-bold uppercase tracking-wider mb-3" style="color:var(--app-text-dim)">Vacation</p>
-      <button onclick="App.openHomework()" class="w-full flex items-center gap-3 p-3 rounded-xl border text-sm font-medium transition-all active:scale-95" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">
+      <button type="button" onclick="App.openHomework()" class="w-full flex items-center gap-3 p-3 rounded-xl border text-sm font-medium transition-all-300 active:scale-95 hover:opacity-80" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">
         <i class="fa-solid fa-sun w-5 text-center" style="color:#f59e0b"></i><span>Summer Homework</span>
       </button>
     </div>
@@ -473,8 +501,8 @@
     <div class="h-px" style="background:var(--app-border)"></div>
 
     <!-- Admin Button -->
-    <div id="admin-btn-container" class="hidden">
-      <button onclick="App.openAdmin()" class="app-btn w-full" style="background:var(--app-danger)">
+    <div id="admin-btn-container" class="hidden transition-all-300">
+      <button type="button" onclick="App.openAdmin()" class="app-btn w-full transition-all-300" style="background:var(--app-danger)">
         <i class="fa-solid fa-shield-halved"></i><span>Admin Dashboard</span>
       </button>
     </div>
@@ -483,10 +511,10 @@
 
     <!-- Links -->
     <div class="space-y-1">
-      <button onclick="App.openTerms()" class="w-full flex items-center gap-3 text-sm font-medium py-2.5 px-3 rounded-xl text-left transition-colors" style="color:var(--app-text-muted)">
+      <button type="button" onclick="App.openTerms()" class="w-full flex items-center gap-3 text-sm font-medium py-2.5 px-3 rounded-xl text-left transition-all-300 hover:opacity-80" style="color:var(--app-text-muted)">
         <i class="fa-solid fa-file-contract w-5 text-center"></i><span>Terms & Conditions</span>
       </button>
-      <button onclick="App.openAbout()" class="w-full flex items-center gap-3 text-sm font-medium py-2.5 px-3 rounded-xl text-left transition-colors" style="color:var(--app-text-muted)">
+      <button type="button" onclick="App.openAbout()" class="w-full flex items-center gap-3 text-sm font-medium py-2.5 px-3 rounded-xl text-left transition-all-300 hover:opacity-80" style="color:var(--app-text-muted)">
         <i class="fa-solid fa-circle-info w-5 text-center"></i><span>About studyPro</span>
       </button>
     </div>
@@ -498,22 +526,22 @@
 </div>
 
 <!-- EDIT PROFILE MODAL -->
-<div id="edit-modal" class="modal-overlay">
+<div id="edit-modal" class="modal-overlay" onclick="if(event.target===this)App.closeEditModal()">
   <div class="modal-content p-6 space-y-5">
     <div class="flex items-center justify-between">
       <h3 class="font-bold text-lg font-display" style="color:var(--app-text)">Edit Profile</h3>
-      <button onclick="App.closeEditModal()" class="w-9 h-9 rounded-xl flex items-center justify-center active:scale-90 transition-transform" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+      <button type="button" onclick="App.closeEditModal()" class="w-9 h-9 rounded-xl flex items-center justify-center active:scale-90 transition-all-300" style="background:var(--app-surface2);border:1px solid var(--app-border)">
         <i class="fa-solid fa-xmark" style="color:var(--app-text-muted)"></i>
       </button>
     </div>
-    <form id="edit-form" class="space-y-3">
+    <form id="edit-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
       <div><label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Name</label><input type="text" id="edit-name" class="app-input" required></div>
       <div><label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Class</label>
         <select id="edit-class" class="app-input"><option value="12">Class 12</option><option value="11">Class 11</option><option value="10">Class 10</option></select>
       </div>
       <div><label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Subjects</label><input type="text" id="edit-subjects" class="app-input" placeholder="Hindi, English, Physics..."></div>
       <div><label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Exam Seat Number</label><input type="text" id="edit-seat" class="app-input" placeholder="UP-2027-XXXXX"></div>
-      <button type="submit" class="app-btn w-full mt-2">Save Changes</button>
+      <button type="submit" class="app-btn w-full mt-2 transition-all-300">Save Changes</button>
     </form>
   </div>
 </div>
@@ -522,39 +550,39 @@
 <div id="admin-panel" class="pb-safe">
   <header class="shrink-0 h-16 flex items-center justify-between px-5 border-b glass-header" style="border-color:var(--app-border);background:var(--app-surface)">
     <div class="flex items-center gap-3">
-      <button onclick="App.closeAdmin()" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-90 transition-transform" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+      <button type="button" onclick="App.closeAdmin()" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-90 transition-all-300" style="background:var(--app-surface2);border:1px solid var(--app-border)">
         <i class="fa-solid fa-arrow-left text-sm" style="color:var(--app-text-muted)"></i>
       </button>
       <span class="font-extrabold text-lg tracking-tight font-display" style="color:var(--app-text)">Admin</span>
     </div>
   </header>
   <main id="admin-scroll" class="flex-1 overflow-y-auto p-5 space-y-6 pb-28">
-    <div class="app-card p-5 shadow-sm">
+    <div class="app-card p-5 shadow-sm transition-all-300">
       <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-bullhorn" style="color:var(--app-danger)"></i> Push Notice</h3>
-      <form id="notice-form" class="space-y-3">
+      <form id="notice-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
         <input type="text" id="notice-title" class="app-input" placeholder="Notice title..." required>
         <textarea id="notice-body" class="app-input h-24 resize-none" placeholder="Notice body text..." required></textarea>
         <select id="notice-priority" class="app-input"><option value="normal">Normal</option><option value="urgent">Urgent</option></select>
-        <button type="submit" class="app-btn w-full">Publish Notice</button>
+        <button type="submit" class="app-btn w-full transition-all-300">Publish Notice</button>
       </form>
     </div>
 
-    <div class="app-card p-5 shadow-sm">
+    <div class="app-card p-5 shadow-sm transition-all-300">
       <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-video" style="color:var(--app-success)"></i> Add Lecture</h3>
-      <form id="lecture-form" class="space-y-3">
+      <form id="lecture-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
         <input type="text" id="lec-title" class="app-input" placeholder="Lecture title..." required>
         <select id="lec-subject" class="app-input">
           <option value="Hindi">Hindi</option><option value="English">English</option><option value="Mathematics">Mathematics</option><option value="Physics">Physics</option><option value="Chemistry">Chemistry</option>
         </select>
         <input type="text" id="lec-chapter" class="app-input" placeholder="Chapter (e.g. Ch. 7)" required>
         <input type="url" id="lec-url" class="app-input" placeholder="Video URL (optional)">
-        <button type="submit" class="app-btn w-full">Add Lecture</button>
+        <button type="submit" class="app-btn w-full transition-all-300">Add Lecture</button>
       </form>
     </div>
 
-    <div class="app-card p-5 shadow-sm">
+    <div class="app-card p-5 shadow-sm transition-all-300">
       <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-file-circle-check" style="color:#8b5cf6"></i> Add Mock Test</h3>
-      <form id="test-form" class="space-y-3">
+      <form id="test-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
         <input type="text" id="test-title" class="app-input" placeholder="Test title..." required>
         <select id="test-subject" class="app-input">
           <option value="Hindi">Hindi</option><option value="English">English</option><option value="Mathematics">Mathematics</option><option value="Physics">Physics</option><option value="Chemistry">Chemistry</option>
@@ -566,13 +594,13 @@
           <input type="number" id="test-duration" class="app-input" placeholder="Duration (min)" min="1" value="60">
           <input type="number" id="test-marks" class="app-input" placeholder="Max Marks" min="1" value="100">
         </div>
-        <button type="submit" class="app-btn w-full">Add Mock Test</button>
+        <button type="submit" class="app-btn w-full transition-all-300">Add Mock Test</button>
       </form>
     </div>
 
-    <div class="app-card p-5 shadow-sm">
+    <div class="app-card p-5 shadow-sm transition-all-300">
       <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-calendar-plus" style="color:var(--app-accent)"></i> Add Exam Date</h3>
-      <form id="datesheet-form" class="space-y-3">
+      <form id="datesheet-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
         <input type="text" id="ds-name" class="app-input" placeholder="Exam Name (e.g. Pre-Board)" required>
         <select id="ds-subject" class="app-input">
           <option value="Hindi">Hindi</option><option value="English">English</option><option value="Mathematics">Mathematics</option><option value="Physics">Physics</option><option value="Chemistry">Chemistry</option>
@@ -582,62 +610,62 @@
           <option value="Morning">Morning Shift</option><option value="Evening">Evening Shift</option>
         </select>
         <input type="time" id="ds-time" class="app-input" required>
-        <button type="submit" class="app-btn w-full">Add to Date Sheet</button>
+        <button type="submit" class="app-btn w-full transition-all-300">Add to Date Sheet</button>
       </form>
     </div>
 
-    <div class="app-card p-5 shadow-sm">
+    <div class="app-card p-5 shadow-sm transition-all-300">
       <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-square-root-variable" style="color:#3b82f6"></i> Formula of the Day</h3>
-      <form id="formula-form" class="space-y-3">
+      <form id="formula-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
         <input type="text" id="formula-title" class="app-input" placeholder="Formula Title (e.g. Newton's Second Law)" required>
         <input type="text" id="formula-math" class="app-input" placeholder="Formula (e.g. F = ma)" required>
         <textarea id="formula-desc" class="app-input h-20 resize-none" placeholder="Brief description..."></textarea>
-        <button type="submit" class="app-btn w-full">Update Formula</button>
+        <button type="submit" class="app-btn w-full transition-all-300">Update Formula</button>
       </form>
     </div>
 
-    <div class="app-card p-5 shadow-sm">
+    <div class="app-card p-5 shadow-sm transition-all-300">
       <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-spell-check" style="color:#8b5cf6"></i> Word of the Day</h3>
-      <form id="word-form" class="space-y-3">
+      <form id="word-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
         <input type="text" id="word-en" class="app-input" placeholder="English Word" required>
         <input type="text" id="word-hi" class="app-input" placeholder="Hindi Meaning" required>
         <input type="text" id="word-syn" class="app-input" placeholder="Synonyms (comma separated)">
         <input type="text" id="word-ex" class="app-input" placeholder="Example Sentence">
-        <button type="submit" class="app-btn w-full">Update Word</button>
+        <button type="submit" class="app-btn w-full transition-all-300">Update Word</button>
       </form>
     </div>
 
-    <div class="app-card p-5 shadow-sm">
+    <div class="app-card p-5 shadow-sm transition-all-300">
       <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-sun" style="color:#f59e0b"></i> Push Summer Homework</h3>
-      <form id="homework-form" class="space-y-3">
+      <form id="homework-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
         <select id="hw-subject" class="app-input">
           <option value="Hindi">Hindi</option><option value="English">English</option><option value="Mathematics">Mathematics</option><option value="Physics">Physics</option><option value="Chemistry">Chemistry</option>
         </select>
         <input type="text" id="hw-teacher" class="app-input" placeholder="Teacher Name" required>
         <input type="tel" id="hw-mobile" class="app-input" placeholder="Teacher Mobile" required>
         <textarea id="hw-content" class="app-input h-40 resize-none" placeholder="Homework content (supports multiple lines)..." required></textarea>
-        <button type="submit" class="app-btn w-full">Publish Homework</button>
+        <button type="submit" class="app-btn w-full transition-all-300">Publish Homework</button>
       </form>
     </div>
 
-    <div class="app-card p-5 shadow-sm">
+    <div class="app-card p-5 shadow-sm transition-all-300">
       <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-list-check" style="color:var(--app-accent)"></i> Manage Mock Tests</h3>
       <div id="admin-tests-list" class="space-y-3"><p class="text-xs text-center py-4" style="color:var(--app-text-dim)">Loading tests...</p></div>
     </div>
 
-    <div class="app-card p-5 shadow-sm">
+    <div class="app-card p-5 shadow-sm transition-all-300">
       <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-calendar-days" style="color:var(--app-accent)"></i> Exam Date Sheet</h3>
       <div id="admin-datesheet-list" class="space-y-3"><p class="text-xs text-center py-4" style="color:var(--app-text-dim)">Loading dates...</p></div>
     </div>
 
-    <div class="app-card p-5 shadow-sm">
+    <div class="app-card p-5 shadow-sm transition-all-300">
       <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)"><i class="fa-solid fa-users" style="color:var(--app-success)"></i> User Stats</h3>
       <div class="grid grid-cols-2 gap-3">
-        <div class="p-4 rounded-xl border text-center" style="background:var(--app-surface2);border-color:var(--app-border)">
+        <div class="p-4 rounded-xl border text-center transition-all-300" style="background:var(--app-surface2);border-color:var(--app-border)">
           <p id="stat-users" class="text-2xl font-extrabold font-display" style="color:var(--app-text)">--</p>
           <p class="text-[10px] font-bold uppercase tracking-wide mt-1" style="color:var(--app-text-dim)">Total Users</p>
         </div>
-        <div class="p-4 rounded-xl border text-center" style="background:var(--app-surface2);border-color:var(--app-border)">
+        <div class="p-4 rounded-xl border text-center transition-all-300" style="background:var(--app-surface2);border-color:var(--app-border)">
           <p id="stat-tests" class="text-2xl font-extrabold font-display" style="color:var(--app-text)">--</p>
           <p class="text-[10px] font-bold uppercase tracking-wide mt-1" style="color:var(--app-text-dim)">Mock Tests</p>
         </div>
@@ -647,10 +675,10 @@
 </div>
 
 <!-- SUMMER HOMEWORK VIEW -->
-<div id="homework-view" class="pb-safe" style="position:fixed;inset:0;z-index:95;background:var(--app-bg);display:none;flex-direction:column;opacity:0;transition:opacity .3s ease">
+<div id="homework-view" class="pb-safe">
   <header class="shrink-0 h-16 flex items-center justify-between px-5 border-b glass-header" style="border-color:var(--app-border);background:var(--app-surface)">
     <div class="flex items-center gap-3">
-      <button onclick="App.closeHomework()" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-90 transition-transform" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+      <button type="button" onclick="App.closeHomework()" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-90 transition-all-300" style="background:var(--app-surface2);border:1px solid var(--app-border)">
         <i class="fa-solid fa-arrow-left text-sm" style="color:var(--app-text-muted)"></i>
       </button>
       <div>
@@ -661,36 +689,36 @@
   </header>
   <main id="homework-scroll" class="flex-1 overflow-y-auto">
     <div class="flex gap-2 overflow-x-auto pb-2 px-5 pt-4" style="scrollbar-width:none;-webkit-overflow-scrolling:touch">
-      <button onclick="App.filterHomework('Hindi')" class="hw-tab-btn active" data-hw="Hindi">Hin</button>
-      <button onclick="App.filterHomework('English')" class="hw-tab-btn" data-hw="English">Eng</button>
-      <button onclick="App.filterHomework('Mathematics')" class="hw-tab-btn" data-hw="Mathematics">Math</button>
-      <button onclick="App.filterHomework('Physics')" class="hw-tab-btn" data-hw="Physics">Phy</button>
-      <button onclick="App.filterHomework('Chemistry')" class="hw-tab-btn" data-hw="Chemistry">Che</button>
+      <button type="button" onclick="App.filterHomework('Hindi')" class="hw-tab-btn active transition-all-300" data-hw="Hindi">Hin</button>
+      <button type="button" onclick="App.filterHomework('English')" class="hw-tab-btn transition-all-300" data-hw="English">Eng</button>
+      <button type="button" onclick="App.filterHomework('Mathematics')" class="hw-tab-btn transition-all-300" data-hw="Mathematics">Math</button>
+      <button type="button" onclick="App.filterHomework('Physics')" class="hw-tab-btn transition-all-300" data-hw="Physics">Phy</button>
+      <button type="button" onclick="App.filterHomework('Chemistry')" class="hw-tab-btn transition-all-300" data-hw="Chemistry">Che</button>
     </div>
     <div id="homework-list" class="p-5 space-y-4 pb-28"></div>
   </main>
 </div>
 
 <!-- VIDEO MODAL -->
-<div id="video-modal">
+<div id="video-modal" onclick="if(event.target===this)App.closeVideo()">
   <div class="shrink-0 h-14 flex items-center justify-between px-4 border-b glass-header" style="border-color:var(--app-border);background:var(--app-surface)">
     <h3 id="modal-title" class="text-sm font-bold truncate pr-4" style="color:var(--app-text)">Video</h3>
-    <button onclick="App.closeVideo()" class="w-9 h-9 rounded-full flex items-center justify-center active:scale-90 transition-transform" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+    <button type="button" onclick="App.closeVideo()" class="w-9 h-9 rounded-full flex items-center justify-center active:scale-90 transition-all-300" style="background:var(--app-surface2);border:1px solid var(--app-border)">
       <i class="fa-solid fa-xmark" style="color:var(--app-text-muted)"></i>
     </button>
   </div>
   <div class="flex-1 flex items-center justify-center p-4" style="background:#000">
-    <div class="w-full aspect-video rounded-2xl overflow-hidden border shadow-2xl" style="border-color:var(--app-border)">
+    <div class="w-full aspect-video rounded-2xl overflow-hidden border shadow-2xl transition-all-300" style="border-color:var(--app-border)">
       <iframe id="video-iframe" class="w-full h-full" frameborder="0" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe>
     </div>
   </div>
 </div>
 
 <!-- TEST VIEWER MODAL -->
-<div id="test-modal">
+<div id="test-modal" onclick="if(event.target===this)App.closeTest()">
   <div class="shrink-0 h-14 flex items-center justify-between px-4 border-b glass-header" style="border-color:var(--app-border);background:var(--app-surface)">
     <div class="flex items-center gap-3 overflow-hidden">
-      <button onclick="App.closeTest()" class="w-9 h-9 rounded-full flex items-center justify-center active:scale-90 transition-transform shrink-0" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+      <button type="button" onclick="App.closeTest()" class="w-9 h-9 rounded-full flex items-center justify-center active:scale-90 transition-all-300 shrink-0" style="background:var(--app-surface2);border:1px solid var(--app-border)">
         <i class="fa-solid fa-arrow-left" style="color:var(--app-text-muted)"></i>
       </button>
       <div class="truncate">
@@ -698,94 +726,94 @@
         <p id="test-modal-subject" class="text-[11px] font-medium" style="color:var(--app-text-dim)">Subject</p>
       </div>
     </div>
-    <span id="test-modal-timer" class="text-xs font-mono font-bold px-2 py-1 rounded-lg border shrink-0" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">--:--</span>
+    <span id="test-modal-timer" class="text-xs font-mono font-bold px-2 py-1 rounded-lg border shrink-0 transition-all-300" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">--:--</span>
   </div>
   <div class="flex-1 flex flex-col">
     <div class="flex-1 relative" style="background:var(--app-bg)">
       <iframe id="test-iframe" class="w-full h-full border-0" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
     </div>
     <div class="shrink-0 p-4 border-t flex items-center justify-between gap-3" style="border-color:var(--app-border);background:var(--app-surface)">
-      <button onclick="App.closeTest()" class="app-btn app-btn-outline flex-1" style="padding:12px"><i class="fa-solid fa-xmark"></i><span>Close Test</span></button>
-      <a id="test-external-link" href="#" target="_blank" rel="noopener" class="app-btn flex-1" style="padding:12px;text-decoration:none"><i class="fa-solid fa-external-link-alt"></i><span>Open in Drive</span></a>
+      <button type="button" onclick="App.closeTest()" class="app-btn app-btn-outline flex-1 transition-all-300" style="padding:12px"><i class="fa-solid fa-xmark"></i><span>Close Test</span></button>
+      <a id="test-external-link" href="#" target="_blank" rel="noopener" class="app-btn flex-1 transition-all-300" style="padding:12px;text-decoration:none"><i class="fa-solid fa-external-link-alt"></i><span>Open in Drive</span></a>
     </div>
   </div>
 </div>
 
 <!-- CALCULATOR MODAL -->
-<div id="calc-modal" class="modal-overlay">
+<div id="calc-modal" class="modal-overlay" onclick="if(event.target===this)App.closeCalculator()">
   <div class="modal-content p-5 space-y-4" style="max-width:360px">
     <div class="flex items-center justify-between">
       <h3 class="font-bold text-lg font-display" style="color:var(--app-text)">Calculator</h3>
-      <button onclick="App.closeCalculator()" class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+      <button type="button" onclick="App.closeCalculator()" class="w-9 h-9 rounded-xl flex items-center justify-center transition-all-300" style="background:var(--app-surface2);border:1px solid var(--app-border)">
         <i class="fa-solid fa-xmark" style="color:var(--app-text-muted)"></i>
       </button>
     </div>
-    <div id="calc-display" class="calc-display">0</div>
+    <div id="calc-display" class="calc-display transition-all-300">0</div>
     <div class="grid grid-cols-4 gap-2">
-      <button onclick="App.calcInput('C')" class="calc-btn" style="background:var(--app-danger);color:#fff;border-color:var(--app-danger)">C</button>
-      <button onclick="App.calcInput('(')" class="calc-btn calc-btn-op">(</button>
-      <button onclick="App.calcInput(')')" class="calc-btn calc-btn-op">)</button>
-      <button onclick="App.calcInput('/')" class="calc-btn calc-btn-op">&divide;</button>
-      <button onclick="App.calcInput('7')" class="calc-btn">7</button>
-      <button onclick="App.calcInput('8')" class="calc-btn">8</button>
-      <button onclick="App.calcInput('9')" class="calc-btn">9</button>
-      <button onclick="App.calcInput('*')" class="calc-btn calc-btn-op">&times;</button>
-      <button onclick="App.calcInput('4')" class="calc-btn">4</button>
-      <button onclick="App.calcInput('5')" class="calc-btn">5</button>
-      <button onclick="App.calcInput('6')" class="calc-btn">6</button>
-      <button onclick="App.calcInput('-')" class="calc-btn calc-btn-op">&minus;</button>
-      <button onclick="App.calcInput('1')" class="calc-btn">1</button>
-      <button onclick="App.calcInput('2')" class="calc-btn">2</button>
-      <button onclick="App.calcInput('3')" class="calc-btn">3</button>
-      <button onclick="App.calcInput('+')" class="calc-btn calc-btn-op">+</button>
-      <button onclick="App.calcInput('0')" class="calc-btn">0</button>
-      <button onclick="App.calcInput('.')" class="calc-btn">.</button>
-      <button onclick="App.calcInput('del')" class="calc-btn calc-btn-op"><i class="fa-solid fa-delete-left text-sm"></i></button>
-      <button onclick="App.calcInput('=')" class="calc-btn" style="background:var(--app-success);color:#fff;border-color:var(--app-success)">=</button>
+      <button type="button" onclick="App.calcInput('C')" class="calc-btn transition-all-300" style="background:var(--app-danger);color:#fff;border-color:var(--app-danger)">C</button>
+      <button type="button" onclick="App.calcInput('(')" class="calc-btn calc-btn-op transition-all-300">(</button>
+      <button type="button" onclick="App.calcInput(')')" class="calc-btn calc-btn-op transition-all-300">)</button>
+      <button type="button" onclick="App.calcInput('/')" class="calc-btn calc-btn-op transition-all-300">&divide;</button>
+      <button type="button" onclick="App.calcInput('7')" class="calc-btn transition-all-300">7</button>
+      <button type="button" onclick="App.calcInput('8')" class="calc-btn transition-all-300">8</button>
+      <button type="button" onclick="App.calcInput('9')" class="calc-btn transition-all-300">9</button>
+      <button type="button" onclick="App.calcInput('*')" class="calc-btn calc-btn-op transition-all-300">&times;</button>
+      <button type="button" onclick="App.calcInput('4')" class="calc-btn transition-all-300">4</button>
+      <button type="button" onclick="App.calcInput('5')" class="calc-btn transition-all-300">5</button>
+      <button type="button" onclick="App.calcInput('6')" class="calc-btn transition-all-300">6</button>
+      <button type="button" onclick="App.calcInput('-')" class="calc-btn calc-btn-op transition-all-300">&minus;</button>
+      <button type="button" onclick="App.calcInput('1')" class="calc-btn transition-all-300">1</button>
+      <button type="button" onclick="App.calcInput('2')" class="calc-btn transition-all-300">2</button>
+      <button type="button" onclick="App.calcInput('3')" class="calc-btn transition-all-300">3</button>
+      <button type="button" onclick="App.calcInput('+')" class="calc-btn calc-btn-op transition-all-300">+</button>
+      <button type="button" onclick="App.calcInput('0')" class="calc-btn transition-all-300">0</button>
+      <button type="button" onclick="App.calcInput('.')" class="calc-btn transition-all-300">.</button>
+      <button type="button" onclick="App.calcInput('del')" class="calc-btn calc-btn-op transition-all-300"><i class="fa-solid fa-delete-left text-sm"></i></button>
+      <button type="button" onclick="App.calcInput('=')" class="calc-btn transition-all-300" style="background:var(--app-success);color:#fff;border-color:var(--app-success)">=</button>
     </div>
   </div>
 </div>
 
 <!-- NOTEPAD MODAL -->
-<div id="notepad-modal" class="modal-overlay">
+<div id="notepad-modal" class="modal-overlay" onclick="if(event.target===this)App.closeNotepad()">
   <div class="modal-content p-5 space-y-4" style="max-width:420px">
     <div class="flex items-center justify-between">
       <h3 class="font-bold text-lg font-display" style="color:var(--app-text)">Quick Notes</h3>
-      <button onclick="App.closeNotepad()" class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+      <button type="button" onclick="App.closeNotepad()" class="w-9 h-9 rounded-xl flex items-center justify-center transition-all-300" style="background:var(--app-surface2);border:1px solid var(--app-border)">
         <i class="fa-solid fa-xmark" style="color:var(--app-text-muted)"></i>
       </button>
     </div>
-    <textarea id="notepad-area" class="app-input h-64 resize-none" placeholder="Type your quick notes here..."></textarea>
+    <textarea id="notepad-area" class="app-input h-64 resize-none transition-all-300" placeholder="Type your quick notes here..."></textarea>
     <div class="flex gap-2">
-      <button onclick="App.saveNotepad()" class="app-btn flex-1"><i class="fa-solid fa-floppy-disk"></i><span>Save</span></button>
-      <button onclick="App.clearNotepad()" class="app-btn app-btn-outline flex-1"><i class="fa-solid fa-trash"></i><span>Clear</span></button>
+      <button type="button" onclick="App.saveNotepad()" class="app-btn flex-1 transition-all-300"><i class="fa-solid fa-floppy-disk"></i><span>Save</span></button>
+      <button type="button" onclick="App.clearNotepad()" class="app-btn app-btn-outline flex-1 transition-all-300"><i class="fa-solid fa-trash"></i><span>Clear</span></button>
     </div>
   </div>
 </div>
 
 <!-- TODO MODAL -->
-<div id="todo-modal" class="modal-overlay">
+<div id="todo-modal" class="modal-overlay" onclick="if(event.target===this)App.closeTodo()">
   <div class="modal-content p-5 space-y-4" style="max-width:420px">
     <div class="flex items-center justify-between">
       <h3 class="font-bold text-lg font-display" style="color:var(--app-text)">To-Do List</h3>
-      <button onclick="App.closeTodo()" class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+      <button type="button" onclick="App.closeTodo()" class="w-9 h-9 rounded-xl flex items-center justify-center transition-all-300" style="background:var(--app-surface2);border:1px solid var(--app-border)">
         <i class="fa-solid fa-xmark" style="color:var(--app-text-muted)"></i>
       </button>
     </div>
     <div class="flex gap-2">
       <input type="text" id="todo-input" class="app-input flex-1" placeholder="Add a task...">
-      <button onclick="App.addTodo()" class="app-btn px-4" style="width:auto"><i class="fa-solid fa-plus"></i></button>
+      <button type="button" onclick="App.addTodo()" class="app-btn px-4 transition-all-300" style="width:auto"><i class="fa-solid fa-plus"></i></button>
     </div>
     <div id="todo-list" class="space-y-2 max-h-64 overflow-y-auto"></div>
   </div>
 </div>
 
 <!-- TERMS MODAL -->
-<div id="terms-modal" class="modal-overlay">
+<div id="terms-modal" class="modal-overlay" onclick="if(event.target===this)App.closeTerms()">
   <div class="modal-content p-6 space-y-4" style="max-width:480px">
     <div class="flex items-center justify-between">
       <h3 class="font-bold text-lg font-display" style="color:var(--app-text)">Terms & Conditions</h3>
-      <button onclick="App.closeTerms()" class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+      <button type="button" onclick="App.closeTerms()" class="w-9 h-9 rounded-xl flex items-center justify-center transition-all-300" style="background:var(--app-surface2);border:1px solid var(--app-border)">
         <i class="fa-solid fa-xmark" style="color:var(--app-text-muted)"></i>
       </button>
     </div>
@@ -797,21 +825,21 @@
       <p><strong style="color:var(--app-text)">5. Privacy</strong><br>We collect minimal user data necessary for app functionality. Your data is stored securely and never shared with third parties.</p>
       <p><strong style="color:var(--app-text)">6. Modifications</strong><br>We reserve the right to modify these terms at any time. Continued use constitutes acceptance of updated terms.</p>
     </div>
-    <button onclick="App.closeTerms()" class="app-btn w-full">I Understand</button>
+    <button type="button" onclick="App.closeTerms()" class="app-btn w-full transition-all-300">I Understand</button>
   </div>
 </div>
 
 <!-- ABOUT MODAL -->
-<div id="about-modal" class="modal-overlay">
+<div id="about-modal" class="modal-overlay" onclick="if(event.target===this)App.closeAbout()">
   <div class="modal-content p-6 space-y-5 text-center" style="max-width:400px">
-    <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto shadow-lg" style="background:var(--app-accent-soft);border:1px solid var(--app-border)">
+    <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto shadow-lg transition-all-300" style="background:var(--app-accent-soft);border:1px solid var(--app-border)">
       <i class="fa-solid fa-graduation-cap text-2xl" style="color:var(--app-accent)"></i>
     </div>
     <div>
       <h3 class="font-bold text-xl font-display" style="color:var(--app-text)">About studyPro</h3>
       <p class="text-xs mt-1 font-medium" style="color:var(--app-text-dim)">Version 3.0 &bull; UP Board Edition</p>
     </div>
-    <div class="p-4 rounded-xl border text-left space-y-3" style="background:var(--app-surface2);border-color:var(--app-border)">
+    <div class="p-4 rounded-xl border text-left space-y-3 transition-all-300" style="background:var(--app-surface2);border-color:var(--app-border)">
       <p class="text-sm leading-relaxed" style="color:var(--app-text-muted)">
         <strong style="color:var(--app-text)">Developed by Mohammad Arshad</strong>, a Class 12 student from <strong style="color:var(--app-text)">Lakhimpur Kheri, Uttar Pradesh</strong>.
       </p>
@@ -819,40 +847,63 @@
         studyPro is <strong style="color:var(--app-text)">Project 0</strong>, designed to revolutionize digital study notes and entertainment for UP Board students.
       </p>
     </div>
-    <button onclick="App.closeAbout()" class="app-btn w-full">Close</button>
+    <button type="button" onclick="App.closeAbout()" class="app-btn w-full transition-all-300">Close</button>
   </div>
 </div>
 
 <!-- TOAST -->
 <div id="toast">
-  <div class="px-5 py-3.5 rounded-2xl border shadow-2xl flex items-center gap-3" style="background:var(--app-surface);border-color:var(--app-border)">
+  <div class="px-5 py-3.5 rounded-2xl border shadow-2xl flex items-center gap-3 transition-all-300" style="background:var(--app-surface);border-color:var(--app-border)">
     <i id="toast-icon" class="fa-solid fa-circle-check" style="color:var(--app-success)"></i>
     <span id="toast-msg" class="text-sm font-semibold" style="color:var(--app-text)">Success</span>
   </div>
 </div>
-
 <!-- FIREBASE & APP LOGIC -->
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-  import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, deleteDoc, updateDoc, query, orderBy, limit, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  // ─── Robust Firebase Initialization ───
+  let app, auth, db, googleProvider;
+  let ytApiKey = '';
+  let firebaseLoaded = false;
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyC-psUKqTO9u5kCuA3OUqWT63Ey0IvDei4",
-    authDomain: "study-ae01d.firebaseapp.com",
-    databaseURL: "https://study-ae01d-default-rtdb.firebaseio.com",
-    projectId: "study-ae01d",
-    storageBucket: "study-ae01d.firebasestorage.app",
-    messagingSenderId: "198271524977",
-    appId: "1:198271524977:web:d54ad6d58cd6c5c4103bd0",
-    measurementId: "G-Q51PB50Q51"
-  };
+  try {
+    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js");
+    const { getAuth, GoogleAuthProvider } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
+    const { getFirestore } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-  const googleProvider = new GoogleAuthProvider();
-  const ytApiKey = "AIzaSyAra2lkY-sdBKeahyfmb4qNlpSmnBeOnkA";
+    const firebaseConfig = {
+      apiKey: "AIzaSyC-psUKqTO9u5kCuA3OUqWT63Ey0IvDei4",
+      authDomain: "study-ae01d.firebaseapp.com",
+      databaseURL: "https://study-ae01d-default-rtdb.firebaseio.com",
+      projectId: "study-ae01d",
+      storageBucket: "study-ae01d.firebasestorage.app",
+      messagingSenderId: "198271524977",
+      appId: "1:198271524977:web:d54ad6d58cd6c5c4103bd0",
+      measurementId: "G-Q51PB50Q51"
+    };
+
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    db = getFirestore(app);
+    googleProvider = new GoogleAuthProvider();
+    ytApiKey = "AIzaSyAra2lkY-sdBKeahyfmb4qNlpSmnBeOnkA";
+    firebaseLoaded = true;
+  } catch (err) {
+    console.error("Firebase init failed:", err);
+    var errorScreen = document.getElementById('firebase-error');
+    if (errorScreen) errorScreen.classList.add('visible');
+    throw err;
+  }
+
+  // ─── Lazy-load Firebase Auth & Firestore functions ───
+  let _authModule, _dbModule;
+  async function getAuthModule() {
+    if (!_authModule) _authModule = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
+    return _authModule;
+  }
+  async function getDbModule() {
+    if (!_dbModule) _dbModule = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+    return _dbModule;
+  }
 
   const state = {
     user: null, profile: null,
@@ -861,6 +912,7 @@
     isAdmin: false, sidebarOpen: false, testTimerInterval: null,
     activeSubject: 'all', installPrompt: null,
     calcExpr: '', todos: JSON.parse(localStorage.getItem('studyPro_todos') || '[]'),
+    initialized: false, timerIntervalId: null,
   };
 
   const $ = (sel) => document.querySelector(sel);
@@ -900,12 +952,47 @@
     setTimeout(function() { toast.classList.remove('show'); }, 3200);
   }
 
+  // ─── Close All Modals & Overlays ───
+  function closeAllModals() {
+    $$('.modal-overlay').forEach(function(m) { m.classList.remove('open'); });
+    var videoModal = $('#video-modal');
+    if (videoModal) { videoModal.classList.remove('open'); var iframe = $('#video-iframe'); if (iframe) iframe.src = ''; }
+    var testModal = $('#test-modal');
+    if (testModal) {
+      testModal.classList.remove('open');
+      var tiframe = $('#test-iframe'); if (tiframe) tiframe.src = '';
+      if (state.testTimerInterval) { clearInterval(state.testTimerInterval); state.testTimerInterval = null; }
+    }
+  }
+
+  function closeAllOverlays() {
+    closeAllModals();
+    // Close sidebar
+    state.sidebarOpen = false;
+    var sidebar = $('#sidebar'), overlay = $('#sidebar-overlay');
+    if (sidebar) sidebar.classList.remove('open');
+    if (overlay) overlay.classList.remove('open');
+    // Close admin panel
+    var adminPanel = $('#admin-panel');
+    if (adminPanel) adminPanel.classList.remove('open');
+    // Close homework view
+    var hwView = $('#homework-view');
+    if (hwView) hwView.classList.remove('open');
+    // Close auth screen overlays
+    var authScreen = $('#auth-screen');
+    if (authScreen && state.user) {
+      authScreen.classList.add('hidden-auth');
+      setTimeout(function() { authScreen.classList.add('hidden'); }, 600);
+    }
+  }
+
   // ─── Exam Timer: Auto-reads date sheet ───
   async function updateTimer() {
     var timerEl = $('#exam-timer');
     var badge = $('#exam-timer-badge');
-    if (!timerEl) return;
+    if (!timerEl || !db) return;
     try {
+      const { collection, query, orderBy, getDocs } = await getDbModule();
       var q = query(collection(db, 'datesheet'), orderBy('date', 'asc'));
       var snapshot = await getDocs(q);
       var now = new Date();
@@ -937,33 +1024,43 @@
   // ─── Auth ───
   async function handleLogin(e) {
     e.preventDefault();
-    var email = $('#login-email').value.trim();
-    var password = $('#login-password').value;
-    var btn = $('#login-submit');
-    var originalText = btn.innerHTML;
-    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Logging in...';
-    btn.disabled = true;
+    e.stopPropagation();
+    if (!auth) { showToast('Authentication not available', 'error'); return; }
+    var emailEl = $('#login-email'), pwEl = $('#login-password'), btn = $('#login-submit');
+    if (!emailEl || !pwEl) return;
+    var email = emailEl.value.trim();
+    var password = pwEl.value;
+    if (!email || !password) { showToast('Please fill in all fields', 'error'); return; }
+    var originalText = btn ? btn.innerHTML : '<span>Log In</span>';
+    if (btn) { btn.innerHTML = '<i class=\"fa-solid fa-circle-notch fa-spin\"></i> Logging in...'; btn.disabled = true; }
     try {
+      const { signInWithEmailAndPassword } = await getAuthModule();
       await signInWithEmailAndPassword(auth, email, password);
       showToast('Welcome back!');
     } catch (err) {
-      showToast(err.message, 'error');
-      btn.innerHTML = originalText;
-      btn.disabled = false;
+      showToast(err.message || 'Login failed', 'error');
+      if (btn) { btn.innerHTML = originalText; btn.disabled = false; }
     }
   }
 
   async function handleRegister(e) {
     e.preventDefault();
-    var email = $('#reg-email').value.trim();
-    var password = $('#reg-password').value;
-    var name = $('#reg-name').value.trim();
-    var cls = $('#reg-class').value;
+    e.stopPropagation();
+    if (!auth) { showToast('Authentication not available', 'error'); return; }
+    var emailEl = $('#reg-email'), pwEl = $('#reg-password'), nameEl = $('#reg-name'), clsEl = $('#reg-class');
     var btn = $('#reg-submit');
-    var originalText = btn.innerHTML;
-    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Creating...';
-    btn.disabled = true;
+    if (!emailEl || !pwEl || !nameEl) return;
+    var email = emailEl.value.trim();
+    var password = pwEl.value;
+    var name = nameEl.value.trim();
+    var cls = clsEl ? clsEl.value : '12';
+    if (!email || !password || !name) { showToast('Please fill in all fields', 'error'); return; }
+    if (password.length < 6) { showToast('Password must be at least 6 characters', 'error'); return; }
+    var originalText = btn ? btn.innerHTML : '<span>Create Account</span>';
+    if (btn) { btn.innerHTML = '<i class=\"fa-solid fa-circle-notch fa-spin\"></i> Creating...'; btn.disabled = true; }
     try {
+      const { createUserWithEmailAndPassword } = await getAuthModule();
+      const { setDoc, doc } = await getDbModule();
       var cred = await createUserWithEmailAndPassword(auth, email, password);
       await setDoc(doc(db, 'users', cred.user.uid), {
         name: name, class: cls, email: email,
@@ -972,17 +1069,24 @@
       });
       showToast('Account created! Welcome!');
     } catch (err) {
-      showToast(err.message, 'error');
-      btn.innerHTML = originalText;
-      btn.disabled = false;
+      showToast(err.message || 'Registration failed', 'error');
+      if (btn) { btn.innerHTML = originalText; btn.disabled = false; }
     }
   }
 
-  async function handleGoogleAuth(isRegister) {
+  async function handleGoogleAuth(e, isRegister) {
+    if (e && e.preventDefault) e.preventDefault();
+    if (e && e.stopPropagation) e.stopPropagation();
+    if (!auth || !googleProvider) { showToast('Authentication not available', 'error'); return; }
     var btnId = isRegister ? 'google-register' : 'google-login';
     var btn = $('#' + btnId);
+    var originalHtml = isRegister ?
+      '<i class=\"fa-brands fa-google\"></i><span>Sign up with Google</span>' :
+      '<i class=\"fa-brands fa-google\"></i><span>Continue with Google</span>';
     try {
-      if (btn) btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Connecting...';
+      if (btn) btn.innerHTML = '<i class=\"fa-solid fa-circle-notch fa-spin\"></i> Connecting...';
+      const { signInWithPopup } = await getAuthModule();
+      const { getDoc, setDoc, doc } = await getDbModule();
       var result = await signInWithPopup(auth, googleProvider);
       var user = result.user;
       var profileDoc = await getDoc(doc(db, 'users', user.uid));
@@ -995,18 +1099,19 @@
       }
       showToast('Signed in with Google!');
     } catch (err) {
-      showToast(err.message, 'error');
-      if (btn) {
-        if (isRegister) btn.innerHTML = '<i class="fa-brands fa-google"></i><span>Sign up with Google</span>';
-        else btn.innerHTML = '<i class="fa-brands fa-google"></i><span>Continue with Google</span>';
-      }
+      showToast(err.message || 'Google sign-in failed', 'error');
+      if (btn) btn.innerHTML = originalHtml;
     }
   }
 
   // ─── Profile ───
   async function loadProfile(uid) {
-    var docSnap = await getDoc(doc(db, 'users', uid));
-    if (docSnap.exists()) { state.profile = docSnap.data(); renderProfile(); }
+    if (!db) return;
+    try {
+      const { getDoc, doc } = await getDbModule();
+      var docSnap = await getDoc(doc(db, 'users', uid));
+      if (docSnap.exists()) { state.profile = docSnap.data(); renderProfile(); }
+    } catch (e) { console.error('loadProfile error:', e); }
   }
 
   function renderProfile() {
@@ -1040,12 +1145,13 @@
   // ─── Notices ───
   async function loadNotices() {
     var container = $('#notices-list');
-    if (!container) return;
+    if (!container || !db) return;
     try {
+      const { collection, query, orderBy, limit, getDocs } = await getDbModule();
       var q = query(collection(db, 'notices'), orderBy('createdAt', 'desc'), limit(8));
       var snapshot = await getDocs(q);
       if (snapshot.empty) {
-        container.innerHTML = '<div class="flex gap-3 items-start"><div class="w-2 h-2 rounded-full mt-2 shrink-0" style="background:var(--app-text-dim)"></div><div><p class="text-sm leading-relaxed" style="color:var(--app-text-muted)">No notices yet. Check back later!</p></div></div>';
+        container.innerHTML = '<div class=\"flex gap-3 items-start\"><div class=\"w-2 h-2 rounded-full mt-2 shrink-0\" style=\"background:var(--app-text-dim)\"></div><div><p class=\"text-sm leading-relaxed\" style=\"color:var(--app-text-muted)\">No notices yet. Check back later!</p></div></div>';
         return;
       }
       var html = '';
@@ -1053,11 +1159,11 @@
         var n = docItem.data();
         var isUrgent = n.priority === 'urgent';
         var dateStr = n.createdAt ? new Date(n.createdAt).toLocaleDateString() : 'Recently';
-        html += '<div class="flex gap-3 items-start slide-in" style="animation-delay:' + (idx * 0.05) + 's">';
-        html += '<div class="w-2 h-2 rounded-full mt-2 shrink-0 ' + (isUrgent ? 'bg-amber-500 shadow-sm shadow-amber-500/50' : '') + '"' + (isUrgent ? '' : ' style="background:var(--app-text-dim)"') + '></div>';
-        html += '<div><p class="text-sm leading-relaxed" style="color:var(--app-text-muted)">' + escapeHtml(n.body) + '</p>';
-        html += '<p class="text-[11px] mt-1 font-medium" style="color:var(--app-text-dim)">' + escapeHtml(dateStr) + '</p></div></div>';
-        if (idx < snapshot.docs.length - 1) html += '<div class="h-px my-2.5" style="background:var(--app-border)"></div>';
+        html += '<div class=\"flex gap-3 items-start slide-in\" style=\"animation-delay:' + (idx * 0.05) + 's\">';
+        html += '<div class=\"w-2 h-2 rounded-full mt-2 shrink-0 ' + (isUrgent ? 'bg-amber-500 shadow-sm shadow-amber-500/50' : '') + '\"' + (isUrgent ? '' : ' style=\"background:var(--app-text-dim)\"') + '></div>';
+        html += '<div><p class=\"text-sm leading-relaxed\" style=\"color:var(--app-text-muted)\">' + escapeHtml(n.body) + '</p>';
+        html += '<p class=\"text-[11px] mt-1 font-medium\" style=\"color:var(--app-text-dim)\">' + escapeHtml(dateStr) + '</p></div></div>';
+        if (idx < snapshot.docs.length - 1) html += '<div class=\"h-px my-2.5\" style=\"background:var(--app-border)\"></div>';
       });
       container.innerHTML = html;
     } catch (e) { console.error('Load notices error:', e); }
@@ -1067,15 +1173,17 @@
   async function loadDateSheet() {
     var container = $('#datesheet-list');
     var adminContainer = $('#admin-datesheet-list');
+    if (!db) return;
     try {
+      const { collection, query, orderBy, getDocs } = await getDbModule();
       var q = query(collection(db, 'datesheet'), orderBy('date', 'asc'));
       var snapshot = await getDocs(q);
       var now = new Date();
       var html = '';
       if (snapshot.empty) {
-        html = '<p class="text-xs text-center py-4" style="color:var(--app-text-dim)">No exam dates added yet.</p>';
+        html = '<p class=\"text-xs text-center py-4\" style=\"color:var(--app-text-dim)\">No exam dates added yet.</p>';
       } else {
-        snapshot.docs.forEach(function(docItem, idx) {
+        snapshot.docs.forEach(function(docItem) {
           var d = docItem.data();
           var examDate = new Date(d.date + 'T' + (d.time || '09:00'));
           var isPast = examDate < now;
@@ -1083,15 +1191,15 @@
           var statusText = isPast ? 'Completed' : 'Upcoming';
           var subColors = { Hindi: '#f97316', English: '#8b5cf6', Mathematics: '#f59e0b', Physics: '#3b82f6', Chemistry: '#22c55e' };
           var color = subColors[d.subject] || '#3b82f6';
-          html += '<div class="flex items-center justify-between p-3 rounded-xl border" style="background:var(--app-surface2);border-color:var(--app-border)">';
-          html += '<div class="flex items-center gap-3">';
-          html += '<div class="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold" style="background:' + color + '">' + (d.subject ? d.subject.charAt(0) : 'E') + '</div>';
-          html += '<div><p class="text-sm font-bold" style="color:var(--app-text)">' + escapeHtml(d.name) + '</p>';
-          html += '<p class="text-[11px]" style="color:var(--app-text-dim)">' + escapeHtml(d.subject) + ' &bull; ' + escapeHtml(d.shift) + ' &bull; ' + escapeHtml(d.time) + '</p></div></div>';
-          html += '<div class="text-right"><p class="text-xs font-bold" style="color:' + statusColor + '">' + statusText + '</p>';
-          html += '<p class="text-[10px]" style="color:var(--app-text-dim)">' + new Date(d.date).toLocaleDateString() + '</p></div>';
+          html += '<div class=\"flex items-center justify-between p-3 rounded-xl border\" style=\"background:var(--app-surface2);border-color:var(--app-border)\">';
+          html += '<div class=\"flex items-center gap-3\">';
+          html += '<div class=\"w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold\" style=\"background:' + color + '\">' + (d.subject ? d.subject.charAt(0) : 'E') + '</div>';
+          html += '<div><p class=\"text-sm font-bold\" style=\"color:var(--app-text)\">' + escapeHtml(d.name) + '</p>';
+          html += '<p class=\"text-[11px]\" style=\"color:var(--app-text-dim)\">' + escapeHtml(d.subject) + ' \u2022 ' + escapeHtml(d.shift) + ' \u2022 ' + escapeHtml(d.time) + '</p></div></div>';
+          html += '<div class=\"text-right\"><p class=\"text-xs font-bold\" style=\"color:' + statusColor + '\">' + statusText + '</p>';
+          html += '<p class=\"text-[10px]\" style=\"color:var(--app-text-dim)\">' + new Date(d.date).toLocaleDateString() + '</p></div>';
           if (state.isAdmin) {
-            html += '<button onclick="App.deleteDateSheet(\\'' + docItem.id + '\\')" class="w-7 h-7 rounded-lg flex items-center justify-center ml-2" style="background:rgba(239,68,68,0.1)"><i class="fa-solid fa-trash text-[10px]" style="color:var(--app-danger)"></i></button>';
+            html += '<button onclick=\"App.deleteDateSheet(\'' + docItem.id + '\')\" class=\"ml-2 w-7 h-7 rounded-lg flex items-center justify-center transition-all-300 active:scale-90\" style=\"background:rgba(239,68,68,0.1)\"><i class=\"fa-solid fa-trash text-[10px]\" style=\"color:var(--app-danger)\"></i></button>';
           }
           html += '</div>';
         });
@@ -1112,9 +1220,10 @@
 
   async function loadLectures() {
     var container = $('#lectures-grid');
-    if (!container) return;
-    container.innerHTML = '<div class="col-span-full space-y-4"><div class="skeleton h-40 rounded-2xl"></div><div class="skeleton h-40 rounded-2xl"></div></div>';
+    if (!container || !db) return;
+    container.innerHTML = '<div class=\"col-span-full space-y-4\"><div class=\"skeleton h-40 rounded-2xl\"></div><div class=\"skeleton h-40 rounded-2xl\"></div></div>';
     try {
+      const { collection, getDocs } = await getDbModule();
       var snapshot = await getDocs(collection(db, 'lectures'));
       var defaults = [
         { title: 'Electric Charges & Fields', subject: 'Physics', chapter: 'Ch. 1', progress: 65, total: 12, current: 8, duration: '45 min' },
@@ -1128,43 +1237,44 @@
         items = items.filter(function(l) { return l.subject === state.activeSubject; });
       }
       if (items.length === 0) {
-        container.innerHTML = '<p class="text-sm text-center py-8 col-span-full" style="color:var(--app-text-dim)">No lectures for this subject yet.</p>';
+        container.innerHTML = '<p class=\"text-sm text-center py-8 col-span-full\" style=\"color:var(--app-text-dim)\">No lectures for this subject yet.</p>';
         return;
       }
       var html = '';
       items.forEach(function(l, idx) { html += renderLectureCard(l, idx); });
       container.innerHTML = html;
-    } catch (e) { container.innerHTML = '<p class="text-sm text-center py-8" style="color:var(--app-text-dim)">Unable to load lectures.</p>'; }
+    } catch (e) { container.innerHTML = '<p class=\"text-sm text-center py-8\" style=\"color:var(--app-text-dim)\">Unable to load lectures.</p>'; }
   }
 
   function renderLectureCard(l, idx) {
     var color = subjectMeta[l.subject] || subjectMeta.Physics;
     var progress = l.progress || Math.round(((l.current || 0) / (l.total || 1)) * 100);
-    return '<div class="app-card active:scale-[0.97] transition-transform shadow-sm animate-fade-up" style="animation-delay:' + (idx * 0.08) + 's">' +
-      '<div class="h-36 bg-gradient-to-br ' + color.from + ' ' + color.to + ' flex items-center justify-center relative border-b" style="border-color:var(--app-border)">' +
-      '<i class="fa-solid fa-book-open text-5xl ' + color.text + ' opacity-40"></i>' +
-      '<span class="absolute top-3 right-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white border border-white/10 shadow-lg" style="background:rgba(0,0,0,0.5);backdrop-filter:blur(4px)">' + escapeHtml(l.duration || '40 min') + '</span></div>' +
-      '<div class="p-4"><span class="badge mb-2.5" style="background:' + color.bg + ';color:' + color.solid + ';border-color:' + color.border + '">' +
-      '<i class="fa-solid fa-circle text-[6px]"></i> ' + escapeHtml(l.subject) + '</span>' +
-      '<h3 class="font-bold text-sm mb-1" style="color:var(--app-text)">' + escapeHtml(l.title) + '</h3>' +
-      '<p class="text-xs line-clamp-2 leading-relaxed" style="color:var(--app-text-dim)">' + escapeHtml(l.chapter) + ' &bull; ' + escapeHtml(l.subject) + ' fundamentals.</p>' +
-      '<div class="mt-3.5 flex items-center gap-3"><div class="progress-track flex-1">' +
-      '<div class="progress-fill" style="background:' + color.solid + ';width:' + progress + '%"></div></div>' +
-      '<span class="text-[10px] font-mono font-bold" style="color:var(--app-text-dim)">' + (l.current || 0) + '/' + (l.total || 12) + '</span></div></div></div>';
+    return '<div class=\"app-card active:scale-[0.97] transition-all-300 shadow-sm animate-fade-up\" style=\"animation-delay:' + (idx * 0.08) + 's\">' +
+      '<div class=\"h-36 bg-gradient-to-br ' + color.from + ' ' + color.to + ' flex items-center justify-center relative border-b\" style=\"border-color:var(--app-border)\">' +
+      '<i class=\"fa-solid fa-book-open text-5xl ' + color.text + ' opacity-40\"></i>' +
+      '<span class=\"absolute top-3 right-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white border border-white/10 shadow-lg backdrop-blur-sm\" style=\"background:rgba(0,0,0,0.5)\">' + escapeHtml(l.duration || '40 min') + '</span></div>' +
+      '<div class=\"p-4\"><span class=\"badge mb-2.5\" style=\"background:' + color.bg + ';color:' + color.solid + ';border-color:' + color.border + '\">' +
+      '<i class=\"fa-solid fa-circle text-[6px]\"></i> ' + escapeHtml(l.subject) + '</span>' +
+      '<h3 class=\"font-bold text-sm mb-1\" style=\"color:var(--app-text)\">' + escapeHtml(l.title) + '</h3>' +
+      '<p class=\"text-xs line-clamp-2 leading-relaxed\" style=\"color:var(--app-text-dim)\">' + escapeHtml(l.chapter) + ' \u2022 ' + escapeHtml(l.subject) + ' fundamentals.</p>' +
+      '<div class=\"mt-3.5 flex items-center gap-3\"><div class=\"progress-track flex-1\">' +
+      '<div class=\"progress-fill\" style=\"background:' + color.solid + ';width:' + progress + '%\"></div></div>' +
+      '<span class=\"text-[10px] font-mono font-bold\" style=\"color:var(--app-text-dim)\">' + (l.current || 0) + '/' + (l.total || 12) + '</span></div></div></div>';
   }
 
   async function loadTests() {
     var container = $('#tests-grid');
-    if (!container) return;
-    container.innerHTML = '<div class="space-y-4"><div class="skeleton h-32 rounded-2xl"></div><div class="skeleton h-32 rounded-2xl"></div></div>';
+    if (!container || !db) return;
+    container.innerHTML = '<div class=\"space-y-4\"><div class=\"skeleton h-32 rounded-2xl\"></div><div class=\"skeleton h-32 rounded-2xl\"></div></div>';
     try {
+      const { collection, query, orderBy, getDocs } = await getDbModule();
       var q = query(collection(db, 'tests'), orderBy('createdAt', 'desc'));
       var snapshot = await getDocs(q);
       if (snapshot.empty) {
-        container.innerHTML = '<div class="text-center py-14"><div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style="background:var(--app-surface2);border:1px solid var(--app-border)">' +
-          '<i class="fa-solid fa-file-circle-check text-2xl" style="color:var(--app-text-dim)"></i></div>' +
-          '<p class="text-sm font-semibold" style="color:var(--app-text-muted)">No mock tests available yet</p>' +
-          '<p class="text-xs mt-1" style="color:var(--app-text-dim)">Check back after admin adds tests.</p></div>';
+        container.innerHTML = '<div class=\"text-center py-14\"><div class=\"w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4\" style=\"background:var(--app-surface2);border:1px solid var(--app-border)\">' +
+          '<i class=\"fa-solid fa-file-circle-check text-2xl\" style=\"color:var(--app-text-dim)\"></i></div>' +
+          '<p class=\"text-sm font-semibold\" style=\"color:var(--app-text-muted)\">No mock tests available yet</p>' +
+          '<p class=\"text-xs mt-1\" style=\"color:var(--app-text-dim)\">Check back after admin adds tests.</p></div>';
         return;
       }
       var html = '';
@@ -1176,72 +1286,85 @@
         var safeTitle = escapeHtml(t.title).replace(/'/g, "\\'");
         var safeSubject = escapeHtml(t.subject).replace(/'/g, "\\'");
         var safeLink = escapeHtml(t.link).replace(/'/g, "\\'");
-        html += '<div class="app-card p-5 animate-fade-up shadow-sm" style="animation-delay:' + (idx * 0.08) + 's">' +
-          '<div class="flex items-start justify-between gap-3 mb-3">' +
-          '<div class="flex items-center gap-2.5">' +
-          '<div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:' + color.bg + ';border:1px solid ' + color.border + '">' +
-          '<i class="fa-solid fa-file-pen text-sm" style="color:' + color.solid + '"></i></div>' +
-          '<div><span class="badge" style="background:' + color.bg + ';color:' + color.solid + ';border-color:' + color.border + '">' + escapeHtml(t.subject) + '</span>' +
-          '<h3 class="font-bold text-sm mt-1" style="color:var(--app-text)">' + escapeHtml(t.title) + '</h3></div></div>' +
-          '<span class="text-[10px] font-bold px-2 py-1 rounded-lg border shrink-0" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-dim)">' + (t.duration || 60) + 'm</span></div>' +
-          '<p class="text-xs leading-relaxed mb-4 line-clamp-2" style="color:var(--app-text-muted)">' + escapeHtml(t.description || 'Practice test following UP Board pattern.') + '</p>' +
-          '<div class="flex items-center justify-between">' +
-          '<span class="text-[11px] font-bold" style="color:var(--app-text-dim)">' + (t.marks || 100) + ' Marks</span>' +
-          '<button onclick="App.openTest(\\'' + safeId + '\\',\\'' + safeTitle + '\\',\\'' + safeSubject + '\\',\\'' + safeLink + '\\',' + (t.duration || 60) + ')" class="app-btn" style="padding:10px 20px;font-size:13px;background:' + color.solid + ';color:#fff">' +
-          '<i class="fa-solid fa-play"></i><span>Start Test</span></button></div></div>';
+        html += '<div class=\"app-card p-5 animate-fade-up shadow-sm transition-all-300\" style=\"animation-delay:' + (idx * 0.08) + 's\">' +
+          '<div class=\"flex items-start justify-between gap-3 mb-3\">' +
+          '<div class=\"flex items-center gap-2.5\">' +
+          '<div class=\"w-10 h-10 rounded-xl flex items-center justify-center\" style=\"background:' + color.bg + ';border:1px solid ' + color.border + '\">' +
+          '<i class=\"fa-solid fa-file-pen text-sm\" style=\"color:' + color.solid + '\"></i></div>' +
+          '<div><span class=\"badge\" style=\"background:' + color.bg + ';color:' + color.solid + ';border-color:' + color.border + '\">' + escapeHtml(t.subject) + '</span>' +
+          '<h3 class=\"font-bold text-sm mt-1\" style=\"color:var(--app-text)\">' + escapeHtml(t.title) + '</h3></div></div>' +
+          '<span class=\"text-[10px] font-bold px-2 py-1 rounded-lg border shrink-0\" style=\"background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-dim)\">' + (t.duration || 60) + 'm</span></div>' +
+          '<p class=\"text-xs leading-relaxed mb-4 line-clamp-2\" style=\"color:var(--app-text-muted)\">' + escapeHtml(t.description || 'Practice test following UP Board pattern.') + '</p>' +
+          '<div class=\"flex items-center justify-between\">' +
+          '<span class=\"text-[11px] font-bold\" style=\"color:var(--app-text-dim)\">' + (t.marks || 100) + ' Marks</span>' +
+          '<button onclick=\"App.openTest(\'' + safeId + '\',\'' + safeTitle + '\',\'' + safeSubject + '\',\'' + safeLink + '\',' + (t.duration || 60) + ')\" class=\"app-btn transition-all-300\" style=\"padding:10px 20px;font-size:13px;background:' + color.solid + ';color:#fff\">' +
+          '<i class=\"fa-solid fa-play\"></i><span>Start Test</span></button></div></div>';
       });
       if (!html) {
-        container.innerHTML = '<p class="text-sm text-center py-8" style="color:var(--app-text-dim)">No tests for this subject yet.</p>';
+        container.innerHTML = '<p class=\"text-sm text-center py-8\" style=\"color:var(--app-text-dim)\">No tests for this subject yet.</p>';
         return;
       }
       container.innerHTML = html;
-    } catch (e) { container.innerHTML = '<p class="text-sm text-center py-8" style="color:var(--app-text-dim)">Unable to load tests.</p>'; }
+    } catch (e) { container.innerHTML = '<p class=\"text-sm text-center py-8\" style=\"color:var(--app-text-dim)\">Unable to load tests.</p>'; }
   }
 
   async function loadAdminTests() {
     var container = $('#admin-tests-list');
-    if (!container) return;
+    if (!container || !db) return;
     try {
+      const { collection, query, orderBy, getDocs } = await getDbModule();
       var q = query(collection(db, 'tests'), orderBy('createdAt', 'desc'));
       var snapshot = await getDocs(q);
-      if (snapshot.empty) { container.innerHTML = '<p class="text-xs text-center py-4" style="color:var(--app-text-dim)">No tests added yet.</p>'; return; }
+      if (snapshot.empty) { container.innerHTML = '<p class=\"text-xs text-center py-4\" style=\"color:var(--app-text-dim)\">No tests added yet.</p>'; return; }
       var html = '';
       snapshot.docs.forEach(function(docItem) {
         var t = docItem.data();
-        html += '<div class="flex items-center justify-between p-3 rounded-xl border" style="background:var(--app-surface2);border-color:var(--app-border)">' +
-          '<div class="overflow-hidden"><p class="text-sm font-bold truncate" style="color:var(--app-text)">' + escapeHtml(t.title) + '</p>' +
-          '<p class="text-[11px]" style="color:var(--app-text-dim)">' + escapeHtml(t.subject) + ' &bull; ' + (t.duration || 60) + 'm</p></div>' +
-          '<button onclick="App.deleteTest(\\'' + docItem.id + '\\')" class="w-8 h-8 rounded-lg flex items-center justify-center active:scale-90 transition-transform shrink-0 ml-2" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2)">' +
-          '<i class="fa-solid fa-trash text-xs" style="color:var(--app-danger)"></i></button></div>';
+        html += '<div class=\"flex items-center justify-between p-3 rounded-xl border\" style=\"background:var(--app-surface2);border-color:var(--app-border)\">' +
+          '<div class=\"overflow-hidden\"><p class=\"text-sm font-bold truncate\" style=\"color:var(--app-text)\">' + escapeHtml(t.title) + '</p>' +
+          '<p class=\"text-[11px]\" style=\"color:var(--app-text-dim)\">' + escapeHtml(t.subject) + ' \u2022 ' + (t.duration || 60) + 'm</p></div>' +
+          '<button onclick=\"App.deleteTest(\'' + docItem.id + '\')\" class=\"w-8 h-8 rounded-lg flex items-center justify-center active:scale-90 transition-all-300 shrink-0 ml-2\" style=\"background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2)\">' +
+          '<i class=\"fa-solid fa-trash text-xs\" style=\"color:var(--app-danger)\"></i></button></div>';
       });
       container.innerHTML = html;
     } catch (e) { console.error('Load admin tests error:', e); }
   }
 
   async function deleteTest(id) {
+    if (!db) return;
     if (!confirm('Delete this mock test?')) return;
-    try { await deleteDoc(doc(db, 'tests', id)); showToast('Test deleted'); loadTests(); loadAdminTests(); }
-    catch (e) { showToast(e.message, 'error'); }
+    try {
+      const { deleteDoc, doc } = await getDbModule();
+      await deleteDoc(doc(db, 'tests', id));
+      showToast('Test deleted'); loadTests(); loadAdminTests();
+    } catch (e) { showToast(e.message || 'Delete failed', 'error'); }
   }
 
   async function deleteDateSheet(id) {
+    if (!db) return;
     if (!confirm('Delete this exam date?')) return;
-    try { await deleteDoc(doc(db, 'datesheet', id)); showToast('Date removed'); loadDateSheet(); updateTimer(); }
-    catch (e) { showToast(e.message, 'error'); }
+    try {
+      const { deleteDoc, doc } = await getDbModule();
+      await deleteDoc(doc(db, 'datesheet', id));
+      showToast('Date removed'); loadDateSheet(); updateTimer();
+    } catch (e) { showToast(e.message || 'Delete failed', 'error'); }
   }
 
   // ─── YouTube Search ───
   async function searchYouTube(e) {
     e.preventDefault();
-    var query = $('#yt-query').value.trim();
+    e.stopPropagation();
+    var queryEl = $('#yt-query'), resultsEl = $('#yt-results');
+    if (!queryEl || !resultsEl) return;
+    var query = queryEl.value.trim();
     if (!query) return;
-    $('#yt-results').innerHTML = '<div class="col-span-full text-center py-10 text-sm" style="color:var(--app-text-dim)"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Searching...</div>';
+    if (!ytApiKey) { resultsEl.innerHTML = '<div class=\"text-center py-10 text-sm\" style=\"color:var(--app-text-dim)\">YouTube search unavailable.</div>'; return; }
+    resultsEl.innerHTML = '<div class=\"col-span-full text-center py-10 text-sm\" style=\"color:var(--app-text-dim)\"><i class=\"fa-solid fa-circle-notch fa-spin mr-2\"></i> Searching...</div>';
     try {
       var url = 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=' + encodeURIComponent(query) + '&type=video&maxResults=12&key=' + ytApiKey;
       var res = await fetch(url);
       var data = await res.json();
       if (!data.items || !data.items.length) {
-        $('#yt-results').innerHTML = '<div class="text-center py-10 text-sm" style="color:var(--app-text-dim)">No results found.</div>';
+        resultsEl.innerHTML = '<div class=\"text-center py-10 text-sm\" style=\"color:var(--app-text-dim)\">No results found.</div>';
         return;
       }
       var html = '';
@@ -1249,34 +1372,36 @@
         var vid = item.id.videoId;
         var title = item.snippet.title;
         var channel = item.snippet.channelTitle;
-        var thumb = (item.snippet.thumbnails.medium && item.snippet.thumbnails.medium.url) || item.snippet.thumbnails.default.url;
+        var thumb = (item.snippet.thumbnails && item.snippet.thumbnails.medium && item.snippet.thumbnails.medium.url) || (item.snippet.thumbnails && item.snippet.thumbnails.default && item.snippet.thumbnails.default.url) || '';
         var safeTitle = title.replace(/'/g, "\\'");
-        html += '<div onclick="App.playVideo(\\'' + vid + '\\',\\'' + safeTitle + '\\')" class="app-card active:scale-[0.97] transition-transform cursor-pointer shadow-sm">' +
-          '<div class="relative aspect-video" style="background:var(--app-surface2)">' +
-          '<img src="' + thumb + '" alt="" class="w-full h-full object-cover opacity-90" loading="lazy">' +
-          '<div class="absolute inset-0 flex items-center justify-center" style="background:rgba(0,0,0,0.2)">' +
-          '<div class="w-10 h-10 rounded-full flex items-center justify-center pl-0.5 shadow-lg" style="background:rgba(255,255,255,0.9)">' +
-          '<i class="fa-solid fa-play text-sm" style="color:#000"></i></div></div></div>' +
-          '<div class="p-3"><h4 class="text-sm font-bold line-clamp-2 leading-snug" style="color:var(--app-text)">' + escapeHtml(title) + '</h4>' +
-          '<p class="text-xs mt-1" style="color:var(--app-text-dim)">' + escapeHtml(channel) + '</p></div></div>';
+        html += '<div onclick=\"App.playVideo(\'' + vid + '\',\'' + safeTitle + '\')\" class=\"app-card active:scale-[0.97] transition-all-300 cursor-pointer shadow-sm\">' +
+          '<div class=\"relative aspect-video\" style=\"background:var(--app-surface2)\">' +
+          '<img src=\"' + thumb + '\" alt=\"\" class=\"w-full h-full object-cover opacity-90\" loading=\"lazy\">' +
+          '<div class=\"absolute inset-0 flex items-center justify-center\" style=\"background:rgba(0,0,0,0.2)\">' +
+          '<div class=\"w-10 h-10 rounded-full flex items-center justify-center pl-0.5 shadow-lg\" style=\"background:rgba(255,255,255,0.9)\">' +
+          '<i class=\"fa-solid fa-play text-sm\" style=\"color:#000\"></i></div></div></div>' +
+          '<div class=\"p-3\"><h4 class=\"text-sm font-bold line-clamp-2 leading-snug\" style=\"color:var(--app-text)\">' + escapeHtml(title) + '</h4>' +
+          '<p class=\"text-xs mt-1\" style=\"color:var(--app-text-dim)\">' + escapeHtml(channel) + '</p></div></div>';
       });
-      $('#yt-results').innerHTML = html;
+      resultsEl.innerHTML = html;
     } catch (err) {
-      $('#yt-results').innerHTML = '<div class="text-center py-10 text-sm" style="color:var(--app-text-dim)"><i class="fa-solid fa-triangle-exclamation mb-2 block text-xl" style="color:var(--app-border)"></i>Unable to load results.</div>';
+      resultsEl.innerHTML = '<div class=\"text-center py-10 text-sm\" style=\"color:var(--app-text-dim)\"><i class=\"fa-solid fa-triangle-exclamation mb-2 block text-xl\" style=\"color:var(--app-border)\"></i>Unable to load results.</div>';
     }
   }
 
   // ─── Test Viewer ───
   function openTest(id, title, subject, link, duration) {
+    closeAllModals();
     var modal = $('#test-modal'), titleEl = $('#test-modal-title'), subjectEl = $('#test-modal-subject');
     var iframe = $('#test-iframe'), external = $('#test-external-link'), timerEl = $('#test-modal-timer');
-    if (titleEl) titleEl.textContent = title;
-    if (subjectEl) subjectEl.textContent = subject;
-    if (external) external.href = link;
-    var embedUrl = link;
-    var driveIdx = link.indexOf('drive.google.com/file/d/');
+    if (!modal) return;
+    if (titleEl) titleEl.textContent = title || 'Mock Test';
+    if (subjectEl) subjectEl.textContent = subject || 'Subject';
+    if (external) external.href = link || '#';
+    var embedUrl = link || '';
+    var driveIdx = embedUrl.indexOf('drive.google.com/file/d/');
     if (driveIdx !== -1) {
-      var after = link.substring(driveIdx + 24);
+      var after = embedUrl.substring(driveIdx + 24);
       var slashIdx = after.indexOf('/');
       var fileId = slashIdx !== -1 ? after.substring(0, slashIdx) : after;
       var qIdx = fileId.indexOf('?');
@@ -1284,7 +1409,7 @@
       embedUrl = 'https://drive.google.com/file/d/' + fileId + '/preview';
     }
     if (iframe) iframe.src = embedUrl;
-    if (modal) modal.classList.add('open');
+    modal.classList.add('open');
     var remaining = (duration || 60) * 60;
     if (state.testTimerInterval) clearInterval(state.testTimerInterval);
     function updateTestTimer() {
@@ -1308,24 +1433,27 @@
 
   // ─── Tab Router ───
   function switchTab(tab) {
+    if (!tab) return;
+    // Close all overlays when switching tabs via bottom nav
+    closeAllOverlays();
     state.tab = tab;
     $$('.nav-btn').forEach(function(btn) { btn.classList.toggle('active-tab', btn.dataset.tab === tab); });
     $$('.tab-view').forEach(function(v) { v.classList.remove('active'); });
     var target = $('#tab-' + tab);
     if (target) {
       target.classList.add('active');
+      // Re-trigger animations
       target.querySelectorAll('.animate-fade-up').forEach(function(el) { el.style.animation = 'none'; void el.offsetHeight; el.style.animation = ''; });
     }
     var scroll = $('#main-scroll');
     if (scroll) scroll.scrollTop = 0;
     if (tab === 'home') { loadNotices(); loadDateSheet(); loadFormulaOfDay(); loadWordOfDay(); loadUpcomingTestAlert(); }
     if (tab === 'classes') { loadLectures(); loadTests(); }
-    if (tab === 'media') { /* youtube loaded on search */ }
   }
 
   function filterSubject(sub) {
-    state.activeSubject = sub;
-    $$('.sub-tab-btn').forEach(function(btn) { btn.classList.toggle('active', btn.dataset.sub === sub); });
+    state.activeSubject = sub || 'all';
+    $$('.sub-tab-btn').forEach(function(btn) { btn.classList.toggle('active', btn.dataset.sub === state.activeSubject); });
     loadLectures();
     loadTests();
   }
@@ -1336,6 +1464,12 @@
     var sidebar = $('#sidebar'), overlay = $('#sidebar-overlay');
     if (sidebar) sidebar.classList.toggle('open', state.sidebarOpen);
     if (overlay) overlay.classList.toggle('open', state.sidebarOpen);
+  }
+  function closeSidebar() {
+    state.sidebarOpen = false;
+    var sidebar = $('#sidebar'), overlay = $('#sidebar-overlay');
+    if (sidebar) sidebar.classList.remove('open');
+    if (overlay) overlay.classList.remove('open');
   }
 
   // ─── Auth View Switcher ───
@@ -1352,17 +1486,25 @@
 
   // ─── Admin ───
   function openAdmin() {
+    closeAllModals();
     var panel = $('#admin-panel');
     if (panel) panel.classList.add('open');
-    toggleSidebar();
+    closeSidebar();
     loadAdminTests();
     loadDateSheet();
     loadStats();
   }
-  function closeAdmin() { var panel = $('#admin-panel'); if (panel) panel.classList.remove('open'); }
+  function closeAdmin() {
+    var panel = $('#admin-panel');
+    if (panel) panel.classList.remove('open');
+    var scroll = $('#admin-scroll');
+    if (scroll) scroll.scrollTop = 0;
+  }
 
   async function loadStats() {
+    if (!db) return;
     try {
+      const { collection, getDocs } = await getDbModule();
       var usersSnap = await getDocs(collection(db, 'users'));
       var testsSnap = await getDocs(collection(db, 'tests'));
       var usersEl = $('#stat-users'), testsEl = $('#stat-tests');
@@ -1376,50 +1518,80 @@
   function closeEditModal() { var modal = $('#edit-modal'); if (modal) modal.classList.remove('open'); }
   async function saveProfile(e) {
     e.preventDefault();
-    if (!state.user) return;
-    var data = { name: $('#edit-name').value, class: $('#edit-class').value, subjects: $('#edit-subjects').value, seatNumber: $('#edit-seat').value };
-    await updateDoc(doc(db, 'users', state.user.uid), data);
-    state.profile = Object.assign({}, state.profile, data);
-    renderProfile();
-    closeEditModal();
-    showToast('Profile updated!');
+    e.stopPropagation();
+    if (!state.user || !db) return;
+    try {
+      const { updateDoc, doc } = await getDbModule();
+      var nameEl = $('#edit-name'), classEl = $('#edit-class'), subjEl = $('#edit-subjects'), seatEl = $('#edit-seat');
+      var data = {
+        name: nameEl ? nameEl.value : '',
+        class: classEl ? classEl.value : '12',
+        subjects: subjEl ? subjEl.value : '',
+        seatNumber: seatEl ? seatEl.value : ''
+      };
+      await updateDoc(doc(db, 'users', state.user.uid), data);
+      state.profile = Object.assign({}, state.profile || {}, data);
+      renderProfile();
+      closeEditModal();
+      showToast('Profile updated!');
+    } catch (e) { showToast(e.message || 'Update failed', 'error'); }
   }
 
   // ─── Admin Forms ───
   async function publishNotice(e) {
-    e.preventDefault();
-    await addDoc(collection(db, 'notices'), { title: $('#notice-title').value, body: $('#notice-body').value, priority: $('#notice-priority').value, createdAt: new Date().toISOString() });
-    $('#notice-form').reset();
-    showToast('Notice published!');
+    e.preventDefault(); e.stopPropagation();
+    if (!db) return;
+    try {
+      const { addDoc, collection } = await getDbModule();
+      var titleEl = $('#notice-title'), bodyEl = $('#notice-body'), prioEl = $('#notice-priority');
+      await addDoc(collection(db, 'notices'), { title: titleEl ? titleEl.value : '', body: bodyEl ? bodyEl.value : '', priority: prioEl ? prioEl.value : 'normal', createdAt: new Date().toISOString() });
+      var form = $('#notice-form'); if (form) form.reset();
+      showToast('Notice published!');
+    } catch (e) { showToast(e.message || 'Failed', 'error'); }
   }
   async function addLecture(e) {
-    e.preventDefault();
-    await addDoc(collection(db, 'lectures'), { title: $('#lec-title').value, subject: $('#lec-subject').value, chapter: $('#lec-chapter').value, url: $('#lec-url').value, progress: 0, current: 0, total: 12, duration: '40 min', createdAt: new Date().toISOString() });
-    $('#lecture-form').reset();
-    showToast('Lecture added!');
+    e.preventDefault(); e.stopPropagation();
+    if (!db) return;
+    try {
+      const { addDoc, collection } = await getDbModule();
+      var titleEl = $('#lec-title'), subjEl = $('#lec-subject'), chapEl = $('#lec-chapter'), urlEl = $('#lec-url');
+      await addDoc(collection(db, 'lectures'), { title: titleEl ? titleEl.value : '', subject: subjEl ? subjEl.value : '', chapter: chapEl ? chapEl.value : '', url: urlEl ? urlEl.value : '', progress: 0, current: 0, total: 12, duration: '40 min', createdAt: new Date().toISOString() });
+      var form = $('#lecture-form'); if (form) form.reset();
+      showToast('Lecture added!');
+    } catch (e) { showToast(e.message || 'Failed', 'error'); }
   }
   async function addMockTest(e) {
-    e.preventDefault();
-    await addDoc(collection(db, 'tests'), { title: $('#test-title').value, subject: $('#test-subject').value, description: $('#test-desc').value, link: $('#test-link').value, testDate: $('#test-date').value, duration: parseInt($('#test-duration').value) || 60, marks: parseInt($('#test-marks').value) || 100, createdAt: new Date().toISOString() });
-    $('#test-form').reset();
-    showToast('Mock test added!');
-    loadAdminTests();
+    e.preventDefault(); e.stopPropagation();
+    if (!db) return;
+    try {
+      const { addDoc, collection } = await getDbModule();
+      var titleEl = $('#test-title'), subjEl = $('#test-subject'), descEl = $('#test-desc'), linkEl = $('#test-link'), dateEl = $('#test-date'), durEl = $('#test-duration'), marksEl = $('#test-marks');
+      await addDoc(collection(db, 'tests'), { title: titleEl ? titleEl.value : '', subject: subjEl ? subjEl.value : '', description: descEl ? descEl.value : '', link: linkEl ? linkEl.value : '', testDate: dateEl ? dateEl.value : '', duration: parseInt(durEl ? durEl.value : 60) || 60, marks: parseInt(marksEl ? marksEl.value : 100) || 100, createdAt: new Date().toISOString() });
+      var form = $('#test-form'); if (form) form.reset();
+      showToast('Mock test added!');
+      loadAdminTests();
+    } catch (e) { showToast(e.message || 'Failed', 'error'); }
   }
   async function addDateSheet(e) {
-    e.preventDefault();
-    await addDoc(collection(db, 'datesheet'), { name: $('#ds-name').value, subject: $('#ds-subject').value, date: $('#ds-date').value, shift: $('#ds-shift').value, time: $('#ds-time').value, createdAt: new Date().toISOString() });
-    $('#datesheet-form').reset();
-    showToast('Exam date added!');
-    loadDateSheet();
-    updateTimer();
+    e.preventDefault(); e.stopPropagation();
+    if (!db) return;
+    try {
+      const { addDoc, collection } = await getDbModule();
+      var nameEl = $('#ds-name'), subjEl = $('#ds-subject'), dateEl = $('#ds-date'), shiftEl = $('#ds-shift'), timeEl = $('#ds-time');
+      await addDoc(collection(db, 'datesheet'), { name: nameEl ? nameEl.value : '', subject: subjEl ? subjEl.value : '', date: dateEl ? dateEl.value : '', shift: shiftEl ? shiftEl.value : 'Morning', time: timeEl ? timeEl.value : '09:00', createdAt: new Date().toISOString() });
+      var form = $('#datesheet-form'); if (form) form.reset();
+      showToast('Exam date added!');
+      loadDateSheet();
+      updateTimer();
+    } catch (e) { showToast(e.message || 'Failed', 'error'); }
   }
 
   // ─── Video Modal ───
   function playVideo(id, title) {
-    var modalTitle = $('#modal-title'), iframe = $('#video-iframe');
-    if (modalTitle) modalTitle.textContent = title;
-    if (iframe) iframe.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1';
-    var modal = $('#video-modal');
+    closeAllModals();
+    var modalTitle = $('#modal-title'), iframe = $('#video-iframe'), modal = $('#video-modal');
+    if (modalTitle) modalTitle.textContent = title || 'Video';
+    if (iframe) iframe.src = 'https://www.youtube.com/embed/' + (id || '') + '?autoplay=1&rel=0&modestbranding=1';
     if (modal) modal.classList.add('open');
   }
   function closeVideo() {
@@ -1429,7 +1601,7 @@
   }
 
   // ─── Calculator ───
-  function openCalculator() { var modal = $('#calc-modal'); if (modal) modal.classList.add('open'); toggleSidebar(); }
+  function openCalculator() { var modal = $('#calc-modal'); if (modal) modal.classList.add('open'); closeSidebar(); }
   function closeCalculator() { var modal = $('#calc-modal'); if (modal) modal.classList.remove('open'); }
   function calcInput(val) {
     var display = $('#calc-display');
@@ -1443,25 +1615,25 @@
   }
 
   // ─── Notepad ───
-  function openNotepad() { var modal = $('#notepad-modal'); if (modal) modal.classList.add('open'); var area = $('#notepad-area'); if (area) area.value = localStorage.getItem('studyPro_notes') || ''; toggleSidebar(); }
+  function openNotepad() { var modal = $('#notepad-modal'); if (modal) modal.classList.add('open'); var area = $('#notepad-area'); if (area) area.value = localStorage.getItem('studyPro_notes') || ''; closeSidebar(); }
   function closeNotepad() { var modal = $('#notepad-modal'); if (modal) modal.classList.remove('open'); }
   function saveNotepad() { var area = $('#notepad-area'); if (area) { localStorage.setItem('studyPro_notes', area.value); showToast('Notes saved!'); } }
   function clearNotepad() { var area = $('#notepad-area'); if (area) { area.value = ''; localStorage.setItem('studyPro_notes', ''); showToast('Notes cleared!'); } }
 
   // ─── Todo ───
-  function openTodo() { var modal = $('#todo-modal'); if (modal) modal.classList.add('open'); renderTodos(); toggleSidebar(); }
+  function openTodo() { var modal = $('#todo-modal'); if (modal) modal.classList.add('open'); renderTodos(); closeSidebar(); }
   function closeTodo() { var modal = $('#todo-modal'); if (modal) modal.classList.remove('open'); }
   function renderTodos() {
     var list = $('#todo-list');
     if (!list) return;
-    if (state.todos.length === 0) { list.innerHTML = '<p class="text-xs text-center py-4" style="color:var(--app-text-dim)">No tasks yet. Add one above!</p>'; return; }
+    if (state.todos.length === 0) { list.innerHTML = '<p class=\"text-xs text-center py-4\" style=\"color:var(--app-text-dim)\">No tasks yet. Add one above!</p>'; return; }
     var html = '';
     state.todos.forEach(function(todo, idx) {
-      html += '<div class="flex items-center gap-3 p-3 rounded-xl border" style="background:var(--app-surface2);border-color:var(--app-border)">' +
-        '<button onclick="App.toggleTodo(' + idx + ')" class="w-5 h-5 rounded border flex items-center justify-center shrink-0" style="border-color:var(--app-border);background:' + (todo.done ? 'var(--app-success)' : 'transparent') + '">' +
-        (todo.done ? '<i class="fa-solid fa-check text-white text-[10px]"></i>' : '') + '</button>' +
-        '<span class="text-sm flex-1 ' + (todo.done ? 'line-through' : '') + '" style="color:' + (todo.done ? 'var(--app-text-dim)' : 'var(--app-text)') + '">' + escapeHtml(todo.text) + '</span>' +
-        '<button onclick="App.deleteTodo(' + idx + ')" class="w-7 h-7 rounded-lg flex items-center justify-center" style="background:rgba(239,68,68,0.1)"><i class="fa-solid fa-xmark text-xs" style="color:var(--app-danger)"></i></button></div>';
+      html += '<div class=\"flex items-center gap-3 p-3 rounded-xl border transition-all-300\" style=\"background:var(--app-surface2);border-color:var(--app-border)\">' +
+        '<button onclick=\"App.toggleTodo(' + idx + ')\" class=\"w-5 h-5 rounded border flex items-center justify-center shrink-0 transition-all-300\" style=\"border-color:var(--app-border);background:' + (todo.done ? 'var(--app-success)' : 'transparent') + '\">' +
+        (todo.done ? '<i class=\"fa-solid fa-check text-white text-[10px]\"></i>' : '') + '</button>' +
+        '<span class=\"text-sm flex-1 ' + (todo.done ? 'line-through' : '') + '\" style=\"color:' + (todo.done ? 'var(--app-text-dim)' : 'var(--app-text)') + '\">' + escapeHtml(todo.text) + '</span>' +
+        '<button onclick=\"App.deleteTodo(' + idx + ')\" class=\"w-7 h-7 rounded-lg flex items-center justify-center transition-all-300 active:scale-90\" style=\"background:rgba(239,68,68,0.1)\"><i class=\"fa-solid fa-xmark text-xs\" style=\"color:var(--app-danger)\"></i></button></div>';
     });
     list.innerHTML = html;
   }
@@ -1473,13 +1645,13 @@
     input.value = '';
     renderTodos();
   }
-  function toggleTodo(idx) { state.todos[idx].done = !state.todos[idx].done; localStorage.setItem('studyPro_todos', JSON.stringify(state.todos)); renderTodos(); }
+  function toggleTodo(idx) { if (state.todos[idx]) { state.todos[idx].done = !state.todos[idx].done; localStorage.setItem('studyPro_todos', JSON.stringify(state.todos)); renderTodos(); } }
   function deleteTodo(idx) { state.todos.splice(idx, 1); localStorage.setItem('studyPro_todos', JSON.stringify(state.todos)); renderTodos(); }
 
   // ─── Terms & About ───
-  function openTerms() { var modal = $('#terms-modal'); if (modal) modal.classList.add('open'); toggleSidebar(); }
+  function openTerms() { var modal = $('#terms-modal'); if (modal) modal.classList.add('open'); closeSidebar(); }
   function closeTerms() { var modal = $('#terms-modal'); if (modal) modal.classList.remove('open'); }
-  function openAbout() { var modal = $('#about-modal'); if (modal) modal.classList.add('open'); toggleSidebar(); }
+  function openAbout() { var modal = $('#about-modal'); if (modal) modal.classList.add('open'); closeSidebar(); }
   function closeAbout() { var modal = $('#about-modal'); if (modal) modal.classList.remove('open'); }
 
   // ─── PWA Install ───
@@ -1490,8 +1662,15 @@
 
   // ─── Logout ───
   async function logout() {
-    await signOut(auth);
-    state.user = null; state.profile = null;
+    closeAllOverlays();
+    if (state.testTimerInterval) { clearInterval(state.testTimerInterval); state.testTimerInterval = null; }
+    if (state.timerIntervalId) { clearInterval(state.timerIntervalId); state.timerIntervalId = null; }
+    if (!auth) return;
+    try {
+      const { signOut } = await getAuthModule();
+      await signOut(auth);
+    } catch (e) {}
+    state.user = null; state.profile = null; state.isAdmin = false;
     var appShell = $('#app-shell'), authScreen = $('#auth-screen');
     if (appShell) { appShell.classList.add('hidden'); appShell.classList.remove('flex'); }
     if (authScreen) { authScreen.classList.remove('hidden', 'hidden-auth'); }
@@ -1501,46 +1680,49 @@
   // ─── Dashboard Widgets ───
   async function loadFormulaOfDay() {
     var container = $('#formula-widget');
-    if (!container) return;
+    if (!container || !db) return;
     try {
+      const { collection, query, orderBy, limit, getDocs } = await getDbModule();
       var q = query(collection(db, 'formulaOfDay'), orderBy('createdAt', 'desc'), limit(1));
       var snapshot = await getDocs(q);
       if (snapshot.empty) {
-        container.innerHTML = '<p class="text-sm text-center py-2" style="color:var(--app-text-dim)">No formula set yet.</p>';
+        container.innerHTML = '<p class=\"text-sm text-center py-2\" style=\"color:var(--app-text-dim)\">No formula set yet.</p>';
         return;
       }
       var data = snapshot.docs[0].data();
-      container.innerHTML = '<div class="p-3 rounded-xl border" style="background:var(--app-surface2);border-color:var(--app-border)">' +
-        '<p class="text-xs font-bold uppercase tracking-wider mb-1" style="color:var(--app-text-dim)">' + escapeHtml(data.title || 'Formula') + '</p>' +
-        '<p class="text-lg font-extrabold font-display my-1" style="color:var(--app-accent)">' + escapeHtml(data.formula) + '</p>' +
-        '<p class="text-xs leading-relaxed" style="color:var(--app-text-muted)">' + escapeHtml(data.description || '') + '</p></div>';
-    } catch (e) { container.innerHTML = '<p class="text-sm text-center py-2" style="color:var(--app-text-dim)">Unable to load formula.</p>'; }
+      container.innerHTML = '<div class=\"p-3 rounded-xl border transition-all-300\" style=\"background:var(--app-surface2);border-color:var(--app-border)\">' +
+        '<p class=\"text-xs font-bold uppercase tracking-wider mb-1\" style=\"color:var(--app-text-dim)\">' + escapeHtml(data.title || 'Formula') + '</p>' +
+        '<p class=\"text-lg font-extrabold font-display my-1\" style=\"color:var(--app-accent)\">' + escapeHtml(data.formula) + '</p>' +
+        '<p class=\"text-xs leading-relaxed\" style=\"color:var(--app-text-muted)\">' + escapeHtml(data.description || '') + '</p></div>';
+    } catch (e) { container.innerHTML = '<p class=\"text-sm text-center py-2\" style=\"color:var(--app-text-dim)\">Unable to load formula.</p>'; }
   }
 
   async function loadWordOfDay() {
     var container = $('#word-widget');
-    if (!container) return;
+    if (!container || !db) return;
     try {
+      const { collection, query, orderBy, limit, getDocs } = await getDbModule();
       var q = query(collection(db, 'wordOfDay'), orderBy('createdAt', 'desc'), limit(1));
       var snapshot = await getDocs(q);
       if (snapshot.empty) {
-        container.innerHTML = '<p class="text-sm text-center py-2" style="color:var(--app-text-dim)">No word set yet.</p>';
+        container.innerHTML = '<p class=\"text-sm text-center py-2\" style=\"color:var(--app-text-dim)\">No word set yet.</p>';
         return;
       }
       var data = snapshot.docs[0].data();
-      var syn = data.synonyms ? '<p class="text-[11px] mt-1.5"><span style="color:var(--app-text-dim)">Synonyms: </span><span style="color:var(--app-text-muted)">' + escapeHtml(data.synonyms) + '</span></p>' : '';
-      var ex = data.example ? '<p class="text-[11px] mt-1 italic" style="color:var(--app-text-muted)">"' + escapeHtml(data.example) + '"</p>' : '';
-      container.innerHTML = '<div class="p-3 rounded-xl border" style="background:var(--app-surface2);border-color:var(--app-border)">' +
-        '<div class="flex items-baseline gap-2 mb-1"><p class="text-lg font-extrabold font-display" style="color:var(--app-accent)">' + escapeHtml(data.word) + '</p>' +
-        '<p class="text-xs font-medium" style="color:var(--app-text-muted)">' + escapeHtml(data.hindiMeaning || '') + '</p></div>' +
+      var syn = data.synonyms ? '<p class=\"text-[11px] mt-1.5\"><span style=\"color:var(--app-text-dim)\">Synonyms: </span><span style=\"color:var(--app-text-muted)\">' + escapeHtml(data.synonyms) + '</span></p>' : '';
+      var ex = data.example ? '<p class=\"text-[11px] mt-1 italic\" style=\"color:var(--app-text-muted)\">\"' + escapeHtml(data.example) + '\"</p>' : '';
+      container.innerHTML = '<div class=\"p-3 rounded-xl border transition-all-300\" style=\"background:var(--app-surface2);border-color:var(--app-border)\">' +
+        '<div class=\"flex items-baseline gap-2 mb-1\"><p class=\"text-lg font-extrabold font-display\" style=\"color:var(--app-accent)\">' + escapeHtml(data.word) + '</p>' +
+        '<p class=\"text-xs font-medium\" style=\"color:var(--app-text-muted)\">' + escapeHtml(data.hindiMeaning || '') + '</p></div>' +
         syn + ex + '</div>';
-    } catch (e) { container.innerHTML = '<p class="text-sm text-center py-2" style="color:var(--app-text-dim)">Unable to load word.</p>'; }
+    } catch (e) { container.innerHTML = '<p class=\"text-sm text-center py-2\" style=\"color:var(--app-text-dim)\">Unable to load word.</p>'; }
   }
 
   async function loadUpcomingTestAlert() {
     var container = $('#upcoming-test-widget');
-    if (!container) return;
+    if (!container || !db) return;
     try {
+      const { collection, query, orderBy, limit, where, getDocs } = await getDbModule();
       var now = new Date().toISOString().split('T')[0];
       var q = query(collection(db, 'tests'), where('testDate', '>=', now), orderBy('testDate', 'asc'), limit(1));
       var snapshot = await getDocs(q);
@@ -1548,55 +1730,59 @@
         var q2 = query(collection(db, 'tests'), orderBy('createdAt', 'desc'), limit(1));
         var snap2 = await getDocs(q2);
         if (snap2.empty) {
-          container.innerHTML = '<p class="text-sm text-center py-2" style="color:var(--app-text-dim)">No tests scheduled yet.</p>';
+          container.innerHTML = '<p class=\"text-sm text-center py-2\" style=\"color:var(--app-text-dim)\">No tests scheduled yet.</p>';
           return;
         }
         var t = snap2.docs[0].data();
-        container.innerHTML = '<div class="p-3 rounded-xl border" style="background:var(--app-surface2);border-color:var(--app-border)">' +
-          '<p class="text-sm font-bold" style="color:var(--app-text)">' + escapeHtml(t.title) + '</p>' +
-          '<p class="text-xs mt-1" style="color:var(--app-text-muted)">' + escapeHtml(t.subject) + ' &bull; ' + (t.testDate || 'Date TBD') + '</p>' +
-          '<p class="text-[11px] mt-1.5 line-clamp-2" style="color:var(--app-text-dim)">' + escapeHtml(t.description || 'No syllabus details.') + '</p></div>';
+        container.innerHTML = '<div class=\"p-3 rounded-xl border transition-all-300\" style=\"background:var(--app-surface2);border-color:var(--app-border)\">' +
+          '<p class=\"text-sm font-bold\" style=\"color:var(--app-text)\">' + escapeHtml(t.title) + '</p>' +
+          '<p class=\"text-xs mt-1\" style=\"color:var(--app-text-muted)\">' + escapeHtml(t.subject) + ' \u2022 ' + (t.testDate || 'Date TBD') + '</p>' +
+          '<p class=\"text-[11px] mt-1.5 line-clamp-2\" style=\"color:var(--app-text-dim)\">' + escapeHtml(t.description || 'No syllabus details.') + '</p></div>';
         return;
       }
       var t = snapshot.docs[0].data();
-      container.innerHTML = '<div class="p-3 rounded-xl border" style="background:rgba(239,68,68,0.05);border-color:rgba(239,68,68,0.2)">' +
-        '<div class="flex items-center gap-2 mb-1"><i class="fa-solid fa-bell text-[10px]" style="color:var(--app-danger)"></i>' +
-        '<p class="text-xs font-bold uppercase tracking-wider" style="color:var(--app-danger)">Next Test</p></div>' +
-        '<p class="text-sm font-bold" style="color:var(--app-text)">' + escapeHtml(t.title) + '</p>' +
-        '<p class="text-xs mt-0.5" style="color:var(--app-text-muted)">' + escapeHtml(t.subject) + ' &bull; ' + escapeHtml(t.testDate) + ' &bull; ' + (t.duration || 60) + ' min</p>' +
-        '<p class="text-[11px] mt-1.5 line-clamp-2" style="color:var(--app-text-dim)">' + escapeHtml(t.description || 'Prepare well!') + '</p></div>';
-    } catch (e) { container.innerHTML = '<p class="text-sm text-center py-2" style="color:var(--app-text-dim)">Unable to load alerts.</p>'; }
+      container.innerHTML = '<div class=\"p-3 rounded-xl border transition-all-300\" style=\"background:rgba(239,68,68,0.05);border-color:rgba(239,68,68,0.2)\">' +
+        '<div class=\"flex items-center gap-2 mb-1\"><i class=\"fa-solid fa-bell text-[10px]\" style=\"color:var(--app-danger)\"></i>' +
+        '<p class=\"text-xs font-bold uppercase tracking-wider\" style=\"color:var(--app-danger)\">Next Test</p></div>' +
+        '<p class=\"text-sm font-bold\" style=\"color:var(--app-text)\">' + escapeHtml(t.title) + '</p>' +
+        '<p class=\"text-xs mt-0.5\" style=\"color:var(--app-text-muted)\">' + escapeHtml(t.subject) + ' \u2022 ' + escapeHtml(t.testDate) + ' \u2022 ' + (t.duration || 60) + ' min</p>' +
+        '<p class=\"text-[11px] mt-1.5 line-clamp-2\" style=\"color:var(--app-text-dim)\">' + escapeHtml(t.description || 'Prepare well!') + '</p></div>';
+    } catch (e) { container.innerHTML = '<p class=\"text-sm text-center py-2\" style=\"color:var(--app-text-dim)\">Unable to load alerts.</p>'; }
   }
 
   // ─── Summer Homework ───
   var activeHomeworkSubject = 'Hindi';
   function openHomework() {
+    closeAllModals();
     var view = $('#homework-view');
-    if (view) { view.style.display = 'flex'; setTimeout(function() { view.style.opacity = '1'; }, 10); }
-    toggleSidebar();
+    if (view) { view.classList.add('open'); }
+    closeSidebar();
     loadHomework();
   }
   function closeHomework() {
     var view = $('#homework-view');
-    if (view) { view.style.opacity = '0'; setTimeout(function() { view.style.display = 'none'; }, 300); }
+    if (view) view.classList.remove('open');
+    var scroll = $('#homework-scroll');
+    if (scroll) scroll.scrollTop = 0;
   }
   function filterHomework(sub) {
-    activeHomeworkSubject = sub;
-    $$('.hw-tab-btn').forEach(function(btn) { btn.classList.toggle('active', btn.dataset.hw === sub); });
+    activeHomeworkSubject = sub || 'Hindi';
+    $$('.hw-tab-btn').forEach(function(btn) { btn.classList.toggle('active', btn.dataset.hw === activeHomeworkSubject); });
     loadHomework();
   }
   async function loadHomework() {
     var container = $('#homework-list');
-    if (!container) return;
-    container.innerHTML = '<div class="space-y-4"><div class="skeleton h-32 rounded-2xl"></div><div class="skeleton h-32 rounded-2xl"></div></div>';
+    if (!container || !db) return;
+    container.innerHTML = '<div class=\"space-y-4\"><div class=\"skeleton h-32 rounded-2xl\"></div><div class=\"skeleton h-32 rounded-2xl\"></div></div>';
     try {
+      const { collection, query, where, orderBy, getDocs } = await getDbModule();
       var q = query(collection(db, 'summerHomework'), where('subject', '==', activeHomeworkSubject), orderBy('createdAt', 'desc'));
       var snapshot = await getDocs(q);
       if (snapshot.empty) {
-        container.innerHTML = '<div class="text-center py-14"><div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style="background:var(--app-surface2);border:1px solid var(--app-border)">' +
-          '<i class="fa-solid fa-sun text-2xl" style="color:var(--app-text-dim)"></i></div>' +
-          '<p class="text-sm font-semibold" style="color:var(--app-text-muted)">No homework for ' + activeHomeworkSubject + ' yet</p>' +
-          '<p class="text-xs mt-1" style="color:var(--app-text-dim)">Check back later or contact your teacher.</p></div>';
+        container.innerHTML = '<div class=\"text-center py-14\"><div class=\"w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4\" style=\"background:var(--app-surface2);border:1px solid var(--app-border)\">' +
+          '<i class=\"fa-solid fa-sun text-2xl\" style=\"color:var(--app-text-dim)\"></i></div>' +
+          '<p class=\"text-sm font-semibold\" style=\"color:var(--app-text-muted)\">No homework for ' + escapeHtml(activeHomeworkSubject) + ' yet</p>' +
+          '<p class=\"text-xs mt-1\" style=\"color:var(--app-text-dim)\">Check back later or contact your teacher.</p></div>';
         return;
       }
       var html = '';
@@ -1604,77 +1790,137 @@
         var h = docItem.data();
         var subColors = { Hindi: '#f97316', English: '#8b5cf6', Mathematics: '#f59e0b', Physics: '#3b82f6', Chemistry: '#22c55e' };
         var color = subColors[h.subject] || '#3b82f6';
-        html += '<div class="app-card p-5 animate-fade-up shadow-sm" style="animation-delay:' + (idx * 0.08) + 's">' +
-          '<div class="flex items-start justify-between gap-3 mb-3">' +
-          '<div class="flex items-center gap-2.5">' +
-          '<div class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm" style="background:' + color + '">' + h.subject.charAt(0) + '</div>' +
-          '<div><p class="text-sm font-bold" style="color:var(--app-text)">' + escapeHtml(h.teacher) + '</p>' +
-          '<p class="text-[11px]" style="color:var(--app-text-dim)">' + escapeHtml(h.subject) + '</p></div></div>';
+        html += '<div class=\"app-card p-5 animate-fade-up shadow-sm transition-all-300\" style=\"animation-delay:' + (idx * 0.08) + 's\">' +
+          '<div class=\"flex items-start justify-between gap-3 mb-3\">' +
+          '<div class=\"flex items-center gap-2.5\">' +
+          '<div class=\"w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm\" style=\"background:' + color + '\">' + (h.subject ? h.subject.charAt(0) : 'H') + '</div>' +
+          '<div><p class=\"text-sm font-bold\" style=\"color:var(--app-text)\">' + escapeHtml(h.teacher) + '</p>' +
+          '<p class=\"text-[11px]\" style=\"color:var(--app-text-dim)\">' + escapeHtml(h.subject) + '</p></div></div>';
         if (state.isAdmin) {
-          html += '<button onclick="App.deleteHomework(\\'' + docItem.id + '\\')" class="w-8 h-8 rounded-lg flex items-center justify-center active:scale-90 transition-transform shrink-0" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2)">' +
-            '<i class="fa-solid fa-trash text-xs" style="color:var(--app-danger)"></i></button>';
+          html += '<button onclick=\"App.deleteHomework(\'' + docItem.id + '\')\" class=\"w-8 h-8 rounded-lg flex items-center justify-center active:scale-90 transition-all-300 shrink-0\" style=\"background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2)\">' +
+            '<i class=\"fa-solid fa-trash text-xs\" style=\"color:var(--app-danger)\"></i></button>';
         }
         html += '</div>' +
-          '<a href="tel:' + escapeHtml(h.mobile) + '" class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-bold mb-3 active:scale-95 transition-transform" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text);text-decoration:none">' +
-          '<i class="fa-solid fa-phone" style="color:var(--app-success)"></i><span>' + escapeHtml(h.mobile) + '</span></a>' +
-          '<div class="p-3 rounded-xl border text-sm leading-relaxed" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted);white-space:pre-wrap;word-wrap:break-word">' + escapeHtml(h.content) + '</div>' +
+          '<a href=\"tel:' + escapeHtml(h.mobile) + '\" class=\"inline-flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-bold mb-3 active:scale-95 transition-all-300\" style=\"background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text);text-decoration:none\">' +
+          '<i class=\"fa-solid fa-phone\" style=\"color:var(--app-success)\"></i><span>' + escapeHtml(h.mobile) + '</span></a>' +
+          '<div class=\"p-3 rounded-xl border text-sm leading-relaxed\" style=\"background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted);white-space:pre-wrap;word-wrap:break-word\">' + escapeHtml(h.content) + '</div>' +
           '</div>';
       });
       container.innerHTML = html;
-    } catch (e) { container.innerHTML = '<p class="text-sm text-center py-8" style="color:var(--app-text-dim)">Unable to load homework.</p>'; }
+    } catch (e) { container.innerHTML = '<p class=\"text-sm text-center py-8\" style=\"color:var(--app-text-dim)\">Unable to load homework.</p>'; }
   }
   async function deleteHomework(id) {
+    if (!db) return;
     if (!confirm('Delete this homework entry?')) return;
-    try { await deleteDoc(doc(db, 'summerHomework', id)); showToast('Homework deleted'); loadHomework(); }
-    catch (e) { showToast(e.message, 'error'); }
+    try {
+      const { deleteDoc, doc } = await getDbModule();
+      await deleteDoc(doc(db, 'summerHomework', id));
+      showToast('Homework deleted'); loadHomework();
+    } catch (e) { showToast(e.message || 'Delete failed', 'error'); }
   }
 
   // ─── Admin Widget Publishers ───
   async function publishFormula(e) {
-    e.preventDefault();
-    await addDoc(collection(db, 'formulaOfDay'), { title: $('#formula-title').value, formula: $('#formula-math').value, description: $('#formula-desc').value, createdAt: new Date().toISOString() });
-    $('#formula-form').reset();
-    showToast('Formula of the Day updated!');
+    e.preventDefault(); e.stopPropagation();
+    if (!db) return;
+    try {
+      const { addDoc, collection } = await getDbModule();
+      var titleEl = $('#formula-title'), mathEl = $('#formula-math'), descEl = $('#formula-desc');
+      await addDoc(collection(db, 'formulaOfDay'), { title: titleEl ? titleEl.value : '', formula: mathEl ? mathEl.value : '', description: descEl ? descEl.value : '', createdAt: new Date().toISOString() });
+      var form = $('#formula-form'); if (form) form.reset();
+      showToast('Formula of the Day updated!');
+    } catch (e) { showToast(e.message || 'Failed', 'error'); }
   }
   async function publishWord(e) {
-    e.preventDefault();
-    await addDoc(collection(db, 'wordOfDay'), { word: $('#word-en').value, hindiMeaning: $('#word-hi').value, synonyms: $('#word-syn').value, example: $('#word-ex').value, createdAt: new Date().toISOString() });
-    $('#word-form').reset();
-    showToast('Word of the Day updated!');
+    e.preventDefault(); e.stopPropagation();
+    if (!db) return;
+    try {
+      const { addDoc, collection } = await getDbModule();
+      var enEl = $('#word-en'), hiEl = $('#word-hi'), synEl = $('#word-syn'), exEl = $('#word-ex');
+      await addDoc(collection(db, 'wordOfDay'), { word: enEl ? enEl.value : '', hindiMeaning: hiEl ? hiEl.value : '', synonyms: synEl ? synEl.value : '', example: exEl ? exEl.value : '', createdAt: new Date().toISOString() });
+      var form = $('#word-form'); if (form) form.reset();
+      showToast('Word of the Day updated!');
+    } catch (e) { showToast(e.message || 'Failed', 'error'); }
   }
   async function publishHomework(e) {
-    e.preventDefault();
-    await addDoc(collection(db, 'summerHomework'), { subject: $('#hw-subject').value, teacher: $('#hw-teacher').value, mobile: $('#hw-mobile').value, content: $('#hw-content').value, createdAt: new Date().toISOString() });
-    $('#homework-form').reset();
-    showToast('Summer homework published!');
-    loadHomework();
+    e.preventDefault(); e.stopPropagation();
+    if (!db) return;
+    try {
+      const { addDoc, collection } = await getDbModule();
+      var subjEl = $('#hw-subject'), teacherEl = $('#hw-teacher'), mobileEl = $('#hw-mobile'), contentEl = $('#hw-content');
+      await addDoc(collection(db, 'summerHomework'), { subject: subjEl ? subjEl.value : '', teacher: teacherEl ? teacherEl.value : '', mobile: mobileEl ? mobileEl.value : '', content: contentEl ? contentEl.value : '', createdAt: new Date().toISOString() });
+      var form = $('#homework-form'); if (form) form.reset();
+      showToast('Summer homework published!');
+      loadHomework();
+    } catch (e) { showToast(e.message || 'Failed', 'error'); }
   }
+
+  // ─── Keyboard Support ───
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeAllModals();
+      closeSidebar();
+    }
+    // Close homework view on Escape
+    if (e.key === 'Escape') {
+      var hwView = $('#homework-view');
+      if (hwView && hwView.classList.contains('open')) closeHomework();
+      var adminPanel = $('#admin-panel');
+      if (adminPanel && adminPanel.classList.contains('open')) closeAdmin();
+    }
+  });
 
   // ─── Init ───
   function init() {
+    if (state.initialized) return;
+    state.initialized = true;
+
     applyTheme(state.theme);
 
-    $('#login-form')?.addEventListener('submit', handleLogin);
-    $('#register-form')?.addEventListener('submit', handleRegister);
-    $('#google-login')?.addEventListener('click', function() { handleGoogleAuth(false); });
-    $('#google-register')?.addEventListener('click', function() { handleGoogleAuth(true); });
+    // Auth forms - robust attachment with fallback
+    var loginForm = $('#login-form');
+    if (loginForm) loginForm.addEventListener('submit', handleLogin);
+    var regForm = $('#register-form');
+    if (regForm) regForm.addEventListener('submit', handleRegister);
+    var googleLoginBtn = $('#google-login');
+    if (googleLoginBtn) googleLoginBtn.addEventListener('click', function(ev) { ev.preventDefault(); ev.stopPropagation(); handleGoogleAuth(ev, false); });
+    var googleRegBtn = $('#google-register');
+    if (googleRegBtn) googleRegBtn.addEventListener('click', function(ev) { ev.preventDefault(); ev.stopPropagation(); handleGoogleAuth(ev, true); });
 
-    $$('.nav-btn').forEach(function(btn) { btn.addEventListener('click', function() { switchTab(btn.dataset.tab); }); });
+    // Bottom nav
+    $$('.nav-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() { switchTab(btn.dataset.tab); });
+    });
 
-    $('#menu-btn')?.addEventListener('click', toggleSidebar);
-    $('#sidebar-overlay')?.addEventListener('click', toggleSidebar);
+    // Sidebar
+    var menuBtn = $('#menu-btn');
+    if (menuBtn) menuBtn.addEventListener('click', toggleSidebar);
+    var sidebarOverlay = $('#sidebar-overlay');
+    if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
 
-    $('#edit-profile-btn')?.addEventListener('click', openEditModal);
-    $('#edit-form')?.addEventListener('submit', saveProfile);
+    // Edit profile
+    var editProfileBtn = $('#edit-profile-btn');
+    if (editProfileBtn) editProfileBtn.addEventListener('click', openEditModal);
+    var editForm = $('#edit-form');
+    if (editForm) editForm.addEventListener('submit', saveProfile);
 
-    $('#notice-form')?.addEventListener('submit', publishNotice);
-    $('#lecture-form')?.addEventListener('submit', addLecture);
-    $('#test-form')?.addEventListener('submit', addMockTest);
-    $('#datesheet-form')?.addEventListener('submit', addDateSheet);
-    $('#yt-search-form')?.addEventListener('submit', searchYouTube);
-    $('#formula-form')?.addEventListener('submit', publishFormula);
-    $('#word-form')?.addEventListener('submit', publishWord);
-    $('#homework-form')?.addEventListener('submit', publishHomework);
+    // Admin forms
+    var noticeForm = $('#notice-form');
+    if (noticeForm) noticeForm.addEventListener('submit', publishNotice);
+    var lectureForm = $('#lecture-form');
+    if (lectureForm) lectureForm.addEventListener('submit', addLecture);
+    var testForm = $('#test-form');
+    if (testForm) testForm.addEventListener('submit', addMockTest);
+    var datesheetForm = $('#datesheet-form');
+    if (datesheetForm) datesheetForm.addEventListener('submit', addDateSheet);
+    var ytSearchForm = $('#yt-search-form');
+    if (ytSearchForm) ytSearchForm.addEventListener('submit', searchYouTube);
+    var formulaForm = $('#formula-form');
+    if (formulaForm) formulaForm.addEventListener('submit', publishFormula);
+    var wordForm = $('#word-form');
+    if (wordForm) wordForm.addEventListener('submit', publishWord);
+    var hwForm = $('#homework-form');
+    if (hwForm) hwForm.addEventListener('submit', publishHomework);
 
     // PWA Install
     window.addEventListener('beforeinstallprompt', function(e) {
@@ -1689,30 +1935,40 @@
       navigator.serviceWorker.register('sw.js').catch(function() {});
     }
 
-    onAuthStateChanged(auth, async function(user) {
-      if (user) {
-        state.user = user;
-        var authScreen = $('#auth-screen');
-        if (authScreen) authScreen.classList.add('hidden-auth');
-        setTimeout(function() {
-          if (authScreen) authScreen.classList.add('hidden');
-          var appShell = $('#app-shell');
-          appShell?.classList.remove('hidden');
-          appShell?.classList.add('flex');
-          loadProfile(user.uid);
-          loadNotices();
-          loadDateSheet();
-          updateTimer();
-          setInterval(updateTimer, 30000);
-        }, 500);
-      } else {
-        var authScreen = $('#auth-screen');
-        authScreen?.classList.remove('hidden', 'hidden-auth');
-        var appShell = $('#app-shell');
-        appShell?.classList.add('hidden');
-        appShell?.classList.remove('flex');
-      }
-    });
+    // Auth state changes
+    if (auth) {
+      getAuthModule().then(function(mod) {
+        mod.onAuthStateChanged(auth, async function(user) {
+          if (user) {
+            // Prevent duplicate initializations
+            if (state.user && state.user.uid === user.uid) return;
+            state.user = user;
+            var authScreen = $('#auth-screen');
+            if (authScreen) authScreen.classList.add('hidden-auth');
+            setTimeout(function() {
+              if (authScreen) authScreen.classList.add('hidden');
+              var appShell = $('#app-shell');
+              if (appShell) { appShell.classList.remove('hidden'); appShell.classList.add('flex'); }
+              loadProfile(user.uid);
+              loadNotices();
+              loadDateSheet();
+              updateTimer();
+              // Clear any existing timer interval before creating new one
+              if (state.timerIntervalId) clearInterval(state.timerIntervalId);
+              state.timerIntervalId = setInterval(updateTimer, 30000);
+            }, 500);
+          } else {
+            state.user = null; state.profile = null; state.isAdmin = false;
+            if (state.timerIntervalId) { clearInterval(state.timerIntervalId); state.timerIntervalId = null; }
+            if (state.testTimerInterval) { clearInterval(state.testTimerInterval); state.testTimerInterval = null; }
+            var authScreen = $('#auth-screen');
+            if (authScreen) authScreen.classList.remove('hidden', 'hidden-auth');
+            var appShell = $('#app-shell');
+            if (appShell) { appShell.classList.add('hidden'); appShell.classList.remove('flex'); }
+          }
+        });
+      });
+    }
   }
 
   // ─── Expose App API ───
@@ -1729,7 +1985,12 @@
     openHomework: openHomework, closeHomework: closeHomework, filterHomework: filterHomework, deleteHomework: deleteHomework,
   };
 
-  init();
+  // Start
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 </script>
 </body>
 </html>
