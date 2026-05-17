@@ -1,534 +1,1566 @@
-<!DOCTYPE html>
+
+html_content = '''<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dark_eio - Premium Study & Entertainment</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background-color: #09090b; color: #f4f4f5; }
-        ::-webkit-scrollbar { width: 6px; hieght: 6px; }
-        ::-webkit-scrollbar-track { background: #09090b; }
-        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
-        .tab-view { display: none; }
-        .tab-view.active { display: block; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
+  <meta name="theme-color" content="#09090b">
+  <meta name="description" content="dark_eio - UP Board Class 12 Study App">
+  <title>dark_eio — UP Board Class 12</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Space Grotesk', 'sans-serif'] },
+          colors: {
+            app: {
+              bg: 'var(--app-bg)',
+              surface: 'var(--app-surface)',
+              surface2: 'var(--app-surface2)',
+              border: 'var(--app-border)',
+              text: 'var(--app-text)',
+              textMuted: 'var(--app-text-muted)',
+              textDim: 'var(--app-text-dim)',
+              accent: 'var(--app-accent)',
+              accentSoft: 'var(--app-accent-soft)',
+              danger: 'var(--app-danger)',
+              success: 'var(--app-success)',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root, .theme-light {
+      --app-bg: #f8fafc;
+      --app-surface: #ffffff;
+      --app-surface2: #f1f5f9;
+      --app-surface-rgb: 255,255,255;
+      --app-border: #e2e8f0;
+      --app-text: #0f172a;
+      --app-text-muted: #475569;
+      --app-text-dim: #94a3b8;
+      --app-accent: #0f172a;
+      --app-accent-soft: rgba(15,23,42,0.08);
+      --app-danger: #dc2626;
+      --app-success: #16a34a;
+      --app-gold: #d4af37;
+    }
+    .theme-dark {
+      --app-bg: #09090b;
+      --app-surface: #121214;
+      --app-surface2: #1c1c1f;
+      --app-surface-rgb: 18,18,20;
+      --app-border: #27272a;
+      --app-text: #e4e4e7;
+      --app-text-muted: #a1a1aa;
+      --app-text-dim: #71717a;
+      --app-accent: #e4e4e7;
+      --app-accent-soft: rgba(228,228,231,0.08);
+      --app-danger: #ef4444;
+      --app-success: #22c55e;
+      --app-gold: #d4af37;
+    }
+    .theme-golden {
+      --app-bg: #0a0805;
+      --app-surface: #14100a;
+      --app-surface2: #1e180f;
+      --app-surface-rgb: 20,16,10;
+      --app-border: #2a2214;
+      --app-text: #f5e6c8;
+      --app-text-muted: #c9b896;
+      --app-text-dim: #8a7a5a;
+      --app-accent: #d4af37;
+      --app-accent-soft: rgba(212,175,55,0.12);
+      --app-danger: #ef4444;
+      --app-success: #22c55e;
+      --app-gold: #d4af37;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body {
+      height: 100%; overflow: hidden; font-family: 'Inter', sans-serif;
+      background-color: var(--app-bg); color: var(--app-text);
+      overscroll-behavior-y: none; touch-action: manipulation;
+    }
+    #main-scroll {
+      overflow-y: auto; -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin; scrollbar-color: var(--app-border) var(--app-bg);
+    }
+    #main-scroll::-webkit-scrollbar { width: 3px; }
+    #main-scroll::-webkit-scrollbar-track { background: transparent; }
+    #main-scroll::-webkit-scrollbar-thumb { background: var(--app-border); border-radius: 4px; }
+    .app-input {
+      background: var(--app-surface); border: 1.5px solid var(--app-border);
+      color: var(--app-text); border-radius: 14px; padding: 13px 16px;
+      font-size: 14px; width: 100%; transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+      outline: none;
+    }
+    .app-input:focus {
+      border-color: var(--app-accent);
+      box-shadow: 0 0 0 4px var(--app-accent-soft);
+    }
+    .app-input::placeholder { color: var(--app-text-dim); }
+    .app-btn {
+      background: var(--app-accent); color: var(--app-bg);
+      font-weight: 700; border-radius: 14px; padding: 14px;
+      font-size: 14px; border: none; cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      position: relative; overflow: hidden;
+    }
+    .app-btn::after {
+      content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.15), transparent);
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .app-btn:hover::after { opacity: 1; }
+    .app-btn:active { transform: scale(0.97); }
+    .app-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .app-btn-outline {
+      background: transparent; color: var(--app-text);
+      border: 1.5px solid var(--app-border);
+    }
+    .app-btn-outline:active { background: var(--app-surface2); }
+    .app-card {
+      background: var(--app-surface); border: 1px solid var(--app-border);
+      border-radius: 18px; overflow: hidden;
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s ease;
+      will-change: transform;
+    }
+    .app-card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
+    .app-card:active { transform: scale(0.98); }
+    @media (hover: none) { .app-card:hover { box-shadow: none; } }
+
+    #auth-screen {
+      position: fixed; inset: 0; z-index: 100;
+      background: var(--app-bg); display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 24px;
+      transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1);
+    }
+    #auth-screen.hidden-auth {
+      opacity: 0; pointer-events: none; transform: scale(1.05);
+    }
+    .auth-form-box {
+      width: 100%; max-width: 380px;
+      transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+    }
+    .auth-form-box.hidden { display: none; }
+
+    .tab-view {
+      display: none; opacity: 0; transform: translateY(16px);
+      transition: opacity 0.35s cubic-bezier(0.4,0,0.2,1), transform 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    .tab-view.active { display: block; opacity: 1; transform: translateY(0); }
+
+    .nav-btn {
+      position: relative; user-select: none; -webkit-user-select: none;
+      color: var(--app-text-dim); transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      padding: 6px 0;
+    }
+    .nav-btn i { font-size: 20px; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+    .nav-btn span { font-size: 10px; font-weight: 600; letter-spacing: 0.02em; }
+    .nav-btn.active-tab { color: var(--app-accent); }
+    .nav-btn.active-tab i { transform: translateY(-3px) scale(1.1); }
+
+    #sidebar {
+      position: fixed; top: 0; left: 0; bottom: 0; width: 300px;
+      background: var(--app-surface); z-index: 90;
+      border-right: 1px solid var(--app-border);
+      transform: translateX(-105%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+      display: flex; flex-direction: column;
+      box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+    }
+    #sidebar.open { transform: translateX(0); }
+    #sidebar-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px); z-index: 80; opacity: 0;
+      pointer-events: none; transition: opacity 0.35s ease;
+    }
+    #sidebar-overlay.open { opacity: 1; pointer-events: auto; }
+
+    .theme-pill {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 2.5px solid transparent; cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .theme-pill.active { border-color: var(--app-accent); transform: scale(1.15); box-shadow: 0 0 0 4px var(--app-accent-soft); }
+    .theme-pill:active { transform: scale(0.9); }
+
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 150;
+      background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+      display: flex; align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: auto; }
+    .modal-content {
+      width: 100%; max-width: 420px; background: var(--app-surface);
+      border-radius: 24px; border: 1px solid var(--app-border);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.35);
+      transform: scale(0.9) translateY(20px); opacity: 0;
+      transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+      max-height: 90vh; overflow-y: auto;
+    }
+    .modal-overlay.open .modal-content { transform: scale(1) translateY(0); opacity: 1; }
+
+    #video-modal {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.95); backdrop-filter: blur(12px);
+      display: flex; flex-direction: column;
+      opacity: 0; pointer-events: none; transition: opacity 0.35s ease;
+    }
+    #video-modal.open { opacity: 1; pointer-events: auto; }
+
+    #test-modal {
+      position: fixed; inset: 0; z-index: 200;
+      background: var(--app-bg);
+      display: flex; flex-direction: column;
+      opacity: 0; pointer-events: none; transition: opacity 0.35s ease;
+    }
+    #test-modal.open { opacity: 1; pointer-events: auto; }
+
+    #admin-panel {
+      position: fixed; inset: 0; z-index: 95;
+      background: var(--app-bg); display: none;
+      flex-direction: column; opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    #admin-panel.open { display: flex; opacity: 1; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up { animation: fadeUp 0.5s cubic-bezier(0.4,0,0.2,1) forwards; opacity: 0; }
+    .delay-1 { animation-delay: 0.08s; }
+    .delay-2 { animation-delay: 0.16s; }
+    .delay-3 { animation-delay: 0.24s; }
+    .delay-4 { animation-delay: 0.32s; }
+
+    @keyframes slideInRight {
+      from { transform: translateX(30px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .slide-in { animation: slideInRight 0.4s cubic-bezier(0.4,0,0.2,1) forwards; }
+
+    .skeleton {
+      background: linear-gradient(90deg, var(--app-surface2) 25%, var(--app-border) 50%, var(--app-surface2) 75%);
+      background-size: 200% 100%; animation: skeleton 1.5s ease infinite;
+      border-radius: 8px;
+    }
+    @keyframes skeleton {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    #toast {
+      position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(120px);
+      z-index: 300; opacity: 0; transition: all 0.4s cubic-bezier(0.4,0,0.2,1); pointer-events: none;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    .theme-golden .gold-shimmer {
+      background: linear-gradient(135deg, #d4af37 0%, #f5e6c8 50%, #d4af37 100%);
+      background-size: 200% 200%; animation: shimmer 3s ease infinite;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    @keyframes shimmer {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .theme-golden .app-btn { background: linear-gradient(135deg, #d4af37, #b8941d); color: #0a0805; }
+    .theme-golden .nav-btn.active-tab { color: #d4af37; }
+
+    .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+    .glass-header {
+      background: rgba(var(--app-surface-rgb), 0.8);
+      backdrop-filter: blur(16px) saturate(1.5);
+      -webkit-backdrop-filter: blur(16px) saturate(1.5);
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+      padding: 4px 10px; border-radius: 8px; border: 1px solid;
+    }
+    .progress-track {
+      height: 6px; border-radius: 999px; overflow: hidden;
+      background: var(--app-surface2); position: relative;
+    }
+    .progress-fill {
+      height: 100%; border-radius: 999px;
+      transition: width 1s cubic-bezier(0.4,0,0.2,1);
+      position: relative; overflow: hidden;
+    }
+    .progress-fill::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: progress-shine 2s ease infinite;
+    }
+    @keyframes progress-shine {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+  </style>
 </head>
-<body class="font-sans antialiased min-h-screen pb-20 select-none">
+<body class="theme-dark antialiased">
 
-    <div id="login-screen" class="fixed inset-0 bg-[#09090b] z-50 flex flex-col items-center justify-center p-6">
-        <div class="w-full max-w-md bg-[#18181b] border border-zinc-800 p-8 rounded-2xl shadow-2xl text-center">
-            <h1 class="text-3xl font-extrabold tracking-tighter text-red-500 mb-2">dark_eio</h1>
-            <p class="text-zinc-400 text-sm mb-8">Premium Study & Entertainment Platform</p>
-            
-            <button id="btn-google-login" class="w-full flex items-center justify-center gap-3 bg-white text-black font-semibold py-3 px-4 rounded-xl hover:bg-zinc-200 transition-all duration-200">
-                <svg class="w-5 h-5" viewBox="0 0 24 24">
-                    <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.53-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-8.17z"/>
-                    <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.11 0-5.74-2.11-6.68-4.96H1.21v3.15C3.18 21.88 7.31 24 12 24z"/>
-                    <path fill="#FBBC05" d="M5.32 14.24A7.16 7.16 0 0 1 4.91 12c0-.79.13-1.57.41-2.24V6.61H1.21A11.94 11.94 0 0 0 0 12c0 1.92.45 3.74 1.21 5.39l4.11-3.15z"/>
-                    <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.18 2.12 1.21 5.39l4.11 3.15c.94-2.85 3.57-4.96 6.68-4.96z"/>
-                </svg>
-                Continue with Google
-            </button>
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- AUTHENTICATION SCREEN                              -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div id="auth-screen">
+    <div class="w-full max-w-sm">
+      <!-- Logo -->
+      <div class="text-center space-y-3 mb-8">
+        <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg"
+          style="background: var(--app-accent-soft); border: 1px solid var(--app-border);">
+          <i class="fa-solid fa-graduation-cap text-2xl" style="color: var(--app-accent);"></i>
         </div>
-    </div>
+        <h1 class="text-4xl font-extrabold tracking-tight font-display" style="color: var(--app-text);">dark_eio</h1>
+        <p class="text-sm font-medium" style="color: var(--app-text-muted);">UP Board Class 12 &bull; Study & Mock Tests</p>
+      </div>
 
-    <div id="onboarding-modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-        <div class="w-full max-w-md bg-[#18181b] border border-zinc-800 p-6 rounded-2xl">
-            <h2 class="text-xl font-bold mb-4 text-zinc-100">Complete Your Profile</h2>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs text-zinc-400 mb-1">Class</label>
-                    <input type="text" id="onboard-class" placeholder="e.g. Class 12" class="w-full bg-[#09090b] border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-red-500">
-                </div>
-                <div>
-                    <label class="block text-xs text-zinc-400 mb-1">Subjects</label>
-                    <input type="text" id="onboard-subjects" placeholder="e.g. PCM, English" class="w-full bg-[#09090b] border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-red-500">
-                </div>
-                <div>
-                    <label class="block text-xs text-zinc-400 mb-1">Exam Seat / Roll No</label>
-                    <input type="text" id="onboard-seat" placeholder="Enter Seat Number" class="w-full bg-[#09090b] border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-red-500">
-                </div>
-                <button id="btn-save-onboarding" class="w-full bg-red-600 text-white font-medium py-2.5 rounded-xl hover:bg-red-700 transition">Save Profile</button>
+      <!-- LOGIN FORM -->
+      <div id="login-box" class="auth-form-box space-y-4">
+        <div class="text-center mb-2">
+          <h2 class="text-xl font-bold font-display" style="color: var(--app-text);">Welcome Back</h2>
+          <p class="text-xs mt-1" style="color: var(--app-text-dim);">Log in to continue your prep</p>
+        </div>
+
+        <button id="google-login" class="app-btn app-btn-outline w-full">
+          <i class="fa-brands fa-google"></i>
+          <span>Continue with Google</span>
+        </button>
+
+        <div class="flex items-center gap-3">
+          <div class="flex-1 h-px" style="background: var(--app-border);"></div>
+          <span class="text-xs font-bold uppercase tracking-widest" style="color: var(--app-text-dim);">or</span>
+          <div class="flex-1 h-px" style="background: var(--app-border);"></div>
+        </div>
+
+        <form id="login-form" class="space-y-3">
+          <input type="email" id="login-email" class="app-input" placeholder="Email address" required autocomplete="email">
+          <input type="password" id="login-password" class="app-input" placeholder="Password" required autocomplete="current-password">
+          <button type="submit" id="login-submit" class="app-btn w-full mt-2">
+            <span>Log In</span>
+          </button>
+        </form>
+
+        <p class="text-center text-sm" style="color: var(--app-text-dim);">
+          New student? 
+          <button onclick="App.showRegister()" class="font-bold underline" style="color: var(--app-accent); background: none; border: none; cursor: pointer;">Create account</button>
+        </p>
+      </div>
+
+      <!-- REGISTER FORM -->
+      <div id="register-box" class="auth-form-box hidden space-y-4">
+        <div class="text-center mb-2">
+          <h2 class="text-xl font-bold font-display" style="color: var(--app-text);">Create Account</h2>
+          <p class="text-xs mt-1" style="color: var(--app-text-dim);">Join dark_eio for UP Board prep</p>
+        </div>
+
+        <button id="google-register" class="app-btn app-btn-outline w-full">
+          <i class="fa-brands fa-google"></i>
+          <span>Sign up with Google</span>
+        </button>
+
+        <div class="flex items-center gap-3">
+          <div class="flex-1 h-px" style="background: var(--app-border);"></div>
+          <span class="text-xs font-bold uppercase tracking-widest" style="color: var(--app-text-dim);">or</span>
+          <div class="flex-1 h-px" style="background: var(--app-border);"></div>
+        </div>
+
+        <form id="register-form" class="space-y-3">
+          <input type="text" id="reg-name" class="app-input" placeholder="Full Name" required autocomplete="name">
+          <input type="email" id="reg-email" class="app-input" placeholder="Email address" required autocomplete="email">
+          <input type="password" id="reg-password" class="app-input" placeholder="Password (min. 6 chars)" required minlength="6" autocomplete="new-password">
+          <select id="reg-class" class="app-input" style="appearance: none; background-image: url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 fill=%27%2371717a%27 viewBox=%270 0 16 16%27%3E%3Cpath d=%27M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z%27/%3E%3C/svg%3E'); background-repeat: no-repeat; background-position: right 14px center;">
+            <option value="12">Class 12</option>
+            <option value="11">Class 11</option>
+            <option value="10">Class 10</option>
+          </select>
+          <button type="submit" id="reg-submit" class="app-btn w-full mt-2">
+            <span>Create Account</span>
+          </button>
+        </form>
+
+        <p class="text-center text-sm" style="color: var(--app-text-dim);">
+          Already have an account? 
+          <button onclick="App.showLogin()" class="font-bold underline" style="color: var(--app-accent); background: none; border: none; cursor: pointer;">Log in</button>
+        </p>
+      </div>
+
+      <p class="text-center text-xs leading-relaxed mt-6" style="color: var(--app-text-dim);">
+        By continuing, you agree to our <a href="#" class="underline" style="color: var(--app-text-muted);">Terms</a> and <a href="#" class="underline" style="color: var(--app-text-muted);">Privacy Policy</a>.
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- APP SHELL                                          -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div id="app-shell" class="hidden h-full w-full flex-col">
+
+    <!-- Header -->
+    <header class="shrink-0 h-16 flex items-center justify-between px-5 z-40 border-b glass-header"
+      style="border-color: var(--app-border);">
+      <div class="flex items-center gap-3">
+        <button id="menu-btn" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-90 transition-transform"
+          style="background: var(--app-surface2); border: 1px solid var(--app-border);">
+          <i class="fa-solid fa-bars text-sm" style="color: var(--app-text-muted);"></i>
+        </button>
+        <div>
+          <span class="font-extrabold text-lg tracking-tight font-display block leading-none" style="color: var(--app-text);">dark_eio</span>
+          <span class="text-[10px] font-bold uppercase tracking-wider" style="color: var(--app-text-dim);">UP Board</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border" style="background: var(--app-surface2); border-color: var(--app-border);">
+        <span class="relative flex h-2.5 w-2.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style="background: var(--app-success);"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5" style="background: var(--app-success);"></span>
+        </span>
+        <span id="exam-timer" class="text-xs font-mono font-bold tracking-wide" style="color: var(--app-text-muted);">--</span>
+      </div>
+    </header>
+
+    <!-- Scrollable Main -->
+    <main id="main-scroll" class="flex-1 relative">
+
+      <!-- HOME TAB -->
+      <section id="tab-home" class="tab-view active p-5 space-y-5 pb-28">
+        <div class="animate-fade-up">
+          <p class="text-[11px] font-bold uppercase tracking-wider mb-1" style="color: var(--app-text-dim);">Welcome back</p>
+          <h2 id="home-welcome" class="text-3xl font-extrabold tracking-tight font-display" style="color: var(--app-text);">Student</h2>
+        </div>
+
+        <div class="app-card p-5 animate-fade-up delay-1 shadow-sm">
+          <div class="flex items-center gap-2.5 mb-4">
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2);">
+              <i class="fa-solid fa-bullhorn text-amber-500 text-sm"></i>
             </div>
+            <h3 class="font-bold text-sm" style="color: var(--app-text);">Notice Board</h3>
+            <span class="ml-auto text-[10px] font-bold px-2.5 py-1 rounded-full" style="background: rgba(239,68,68,0.1); color: var(--app-danger); border: 1px solid rgba(239,68,68,0.2);">URGENT</span>
+          </div>
+          <div id="notices-list" class="space-y-3">
+            <div class="flex gap-3 items-start">
+              <div class="w-2 h-2 rounded-full bg-amber-500 mt-2 shrink-0 shadow-sm shadow-amber-500/50"></div>
+              <div>
+                <p class="text-sm leading-relaxed" style="color: var(--app-text-muted);">UP Board Physics practical exam preponed to <span class="font-semibold" style="color: var(--app-text);">28th May</span>. Report to Lab-2 at 9:00 AM.</p>
+                <p class="text-[11px] mt-1 font-medium" style="color: var(--app-text-dim);">2 hours ago</p>
+              </div>
+            </div>
+          </div>
         </div>
-    </div>
 
-    <div id="app-content" class="hidden">
-        
-        <header class="sticky top-0 bg-[#09090b]/95 backdrop-blur border-b border-zinc-800 px-4 py-3 flex items-center justify-between z-40">
+        <div class="app-card p-5 animate-fade-up delay-2 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2);">
+                <i class="fa-solid fa-crosshairs text-emerald-500 text-sm"></i>
+              </div>
+              <h3 class="font-bold text-sm" style="color: var(--app-text);">Next Study Goal</h3>
+            </div>
+            <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg border uppercase tracking-wider" style="background: var(--app-surface2); color: var(--app-text-dim); border-color: var(--app-border);">Today</span>
+          </div>
+          <div id="goals-list" class="space-y-4">
             <div>
-                <span class="text-xs text-zinc-500 block font-medium">Welcome back,</span>
-                <span id="user-display-name" class="text-sm font-bold text-zinc-200">Student</span>
+              <div class="flex justify-between text-sm mb-2">
+                <span class="font-semibold" style="color: var(--app-text-muted);">Mathematics &mdash; Integration</span>
+                <span class="text-xs font-bold" style="color: var(--app-text-dim);">Ch. 7</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill bg-emerald-500" style="width: 70%;"></div>
+              </div>
             </div>
-            <div class="bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-xl text-center">
-                <span class="text-[10px] text-zinc-500 block uppercase tracking-wider font-bold">Exam Countdown</span>
-                <span id="countdown-timer" class="text-xs font-mono font-bold text-red-400">Loading Days...</span>
-            </div>
-        </header>
-
-        <div id="sidebar-drawer" class="fixed top-0 left-0 bottom-0 w-64 bg-[#18181b] border-r border-zinc-800 transform -translate-x-full transition-transform duration-300 ease-in-out z-50 p-6 flex flex-col justify-between">
-            <div>
-                <div class="flex items-center justify-between mb-8">
-                    <h3 class="text-lg font-bold text-red-500 tracking-tight">dark_eio Menu</h3>
-                    <button onclick="toggleSidebar()" class="text-zinc-400 hover:text-white">✕</button>
-                </div>
-                <nav class="space-y-4">
-                    <div class="p-3 bg-zinc-900 border border-zinc-800 rounded-xl">
-                        <span class="text-xs text-zinc-400 block mb-1">Theme Status</span>
-                        <span class="text-xs text-red-400 font-bold flex items-center gap-1.5">
-                            <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Ultra Premium Dark
-                        </span>
-                    </div>
-                    <button id="sidebar-admin-link" onclick="switchTab('admin-view'); toggleSidebar();" class="hidden w-full text-left text-sm font-medium text-amber-400 hover:text-amber-300 p-2 rounded-lg hover:bg-zinc-800 transition">⚡ Admin Controls</button>
-                </nav>
-            </div>
-            <button id="btn-logout" class="w-full bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-sm font-semibold py-2.5 rounded-xl transition">Sign Out</button>
+          </div>
         </div>
 
-        <main class="max-w-7xl mx-auto p-4">
-            
-            <section id="home-view" class="tab-view active space-y-6">
-                <div class="bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800 rounded-2xl p-6">
-                    <h2 class="text-xl font-bold tracking-tight text-white mb-1">नमस्ते, dark_eio Dashboard में आपका स्वागत है</h2>
-                    <p class="text-xs text-zinc-400">यहाँ आप अपने पढ़ाई के लेक्चर्स और मनोरंजन के लिए यूट्यूब क्लोन का मज़ा एक साथ ले सकते हैं।</p>
-                </div>
-                <div class="border border-zinc-800 rounded-2xl p-5 bg-zinc-900/50">
-                    <h3 class="text-sm font-bold text-zinc-300 uppercase tracking-wider mb-3">📌 Latest Update</h3>
-                    <div id="home-notice-box" class="text-sm text-zinc-400 italic">No updates posted yet.</div>
-                </div>
-            </section>
+        <div class="grid grid-cols-2 gap-3 animate-fade-up delay-3">
+          <div class="app-card p-5 text-center shadow-sm">
+            <p class="text-3xl font-extrabold font-display" style="color: var(--app-text);">12</p>
+            <p class="text-[11px] font-bold uppercase tracking-wide mt-1.5" style="color: var(--app-text-dim);">Pending Tasks</p>
+          </div>
+          <div class="app-card p-5 text-center shadow-sm">
+            <p class="text-3xl font-extrabold font-display" style="color: var(--app-text);">4.2h</p>
+            <p class="text-[11px] font-bold uppercase tracking-wide mt-1.5" style="color: var(--app-text-dim);">Study Streak</p>
+          </div>
+        </div>
+      </section>
 
-            <section id="lecture-view" class="tab-view space-y-4">
-                <h2 class="text-xl font-bold tracking-tight mb-4">📚 Your Online Lectures</h2>
-                <div id="lecture-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    </div>
-            </section>
+      <!-- CLASSES TAB -->
+      <section id="tab-classes" class="tab-view p-5 space-y-4 pb-28">
+        <div class="flex items-center justify-between mb-1">
+          <div>
+            <h2 class="text-2xl font-extrabold tracking-tight font-display" style="color: var(--app-text);">Classes</h2>
+            <p class="text-xs mt-0.5" style="color: var(--app-text-dim);">Video lectures &amp; notes</p>
+          </div>
+          <span class="text-[11px] font-bold px-3 py-1.5 rounded-lg border uppercase tracking-wider" style="background: var(--app-surface2); color: var(--app-text-dim); border-color: var(--app-border);">Class 12</span>
+        </div>
+        <div id="lectures-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        </div>
+      </section>
 
-            <section id="social-view" class="tab-view space-y-4">
-                <form id="yt-search-form" class="flex items-center w-full bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-                    <input type="text" id="yt-search-input" placeholder="Search entertainment/videos on YouTube..." class="w-full bg-transparent px-4 py-2.5 text-sm text-white focus:outline-none placeholder-zinc-500">
-                    <button type="submit" class="bg-zinc-800 px-5 py-2.5 hover:bg-zinc-700 transition border-l border-zinc-800">
-                        🔍
-                    </button>
-                </form>
-                <div id="yt-video-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
-                    </div>
-            </section>
+      <!-- MOCK TESTS TAB -->
+      <section id="tab-tests" class="tab-view p-5 space-y-4 pb-28">
+        <div class="mb-1">
+          <h2 class="text-2xl font-extrabold tracking-tight font-display" style="color: var(--app-text);">Mock Tests</h2>
+          <p class="text-xs mt-0.5" style="color: var(--app-text-dim);">Practice with UP Board pattern tests</p>
+        </div>
+        <div id="tests-grid" class="grid grid-cols-1 gap-4">
+        </div>
+      </section>
 
-            <section id="notice-view" class="tab-view space-y-4">
-                <h2 class="text-xl font-bold tracking-tight mb-4">🔔 Important Notice Bulletin</h2>
-                <div id="notice-list-container" class="space-y-3">
-                    </div>
-            </section>
-
-            <section id="profile-view" class="tab-view">
-                <h2 class="text-xl font-bold tracking-tight mb-6">👤 Profile Details</h2>
-                <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-4 max-w-xl">
-                    <div class="flex items-center gap-4 border-b border-zinc-800 pb-4">
-                        <div class="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center text-lg font-bold text-red-500" id="prof-avatar">U</div>
-                        <div>
-                            <h3 id="prof-name" class="font-bold text-zinc-100">Name Loading...</h3>
-                            <p id="prof-email" class="text-xs text-zinc-500">email@gmail.com</p>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4 text-sm">
-                        <div class="bg-[#09090b] p-3 rounded-xl border border-zinc-800">
-                            <span class="text-[10px] text-zinc-500 block uppercase font-bold">Class</span>
-                            <span id="prof-class" class="font-semibold text-zinc-200">-</span>
-                        </div>
-                        <div class="bg-[#09090b] p-3 rounded-xl border border-zinc-800">
-                            <span class="text-[10px] text-zinc-500 block uppercase font-bold">Subjects</span>
-                            <span id="prof-subjects" class="font-semibold text-zinc-200">-</span>
-                        </div>
-                    </div>
-                    <div class="bg-red-950/20 border border-red-900/40 p-4 rounded-xl">
-                        <span class="text-[10px] text-red-400 block uppercase font-bold tracking-wider mb-1">🎫 Exam Seat Allocation</span>
-                        <span id="prof-seat" class="text-base font-mono font-bold text-zinc-100">Not Assigned</span>
-                    </div>
-                </div>
-            </section>
-
-            <section id="admin-view" class="tab-view space-y-6">
-                <div class="border border-amber-500/30 bg-amber-500/5 p-4 rounded-xl">
-                    <h2 class="text-xl font-bold text-amber-400 flex items-center gap-2">🛡️ Admin Control Panel</h2>
-                    <p class="text-xs text-zinc-400">Welcome Mohammad Arshad. Here you can push real-time database configurations.</p>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl space-y-3">
-                        <h3 class="text-sm font-bold text-zinc-200">Upload New Lecture</h3>
-                        <input type="text" id="adm-lec-title" placeholder="Lecture Title" class="w-full bg-[#09090b] border border-zinc-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none">
-                        <input type="text" id="adm-lec-url" placeholder="Video URL (Drive / YouTube)" class="w-full bg-[#09090b] border border-zinc-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none">
-                        <input type="text" id="adm-lec-subject" placeholder="Subject" class="w-full bg-[#09090b] border border-zinc-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none">
-                        <button id="btn-adm-add-lec" class="w-full bg-amber-500 text-black font-bold py-2 rounded-lg text-sm transition hover:bg-amber-400">Push to Database</button>
-                    </div>
-
-                    <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl space-y-3">
-                        <h3 class="text-sm font-bold text-zinc-200">Publish New Notice</h3>
-                        <textarea id="adm-notice-msg" rows="4" placeholder="Type notice message here..." class="w-full bg-[#09090b] border border-zinc-800 rounded-lg p-3 text-sm text-white focus:outline-none"></textarea>
-                        <button id="btn-adm-add-notice" class="w-full bg-amber-500 text-black font-bold py-2 rounded-lg text-sm transition hover:bg-amber-400">Broadcast Notice</button>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <div id="inapp-player-modal" class="hidden fixed inset-0 bg-black/95 z-50 flex flex-col items-center justify-center p-4">
-            <div class="w-full max-w-4xl bg-[#18181b] rounded-xl overflow-hidden border border-zinc-800 relative shadow-2xl">
-                <button onclick="closeInAppPlayer()" class="absolute top-3 right-3 bg-black/60 text-white hover:bg-red-600 p-2 rounded-full transition z-10">✕</button>
-                <div class="aspect-video w-full bg-black">
-                    <iframe id="inapp-iframe" class="w-full h-full" src="" frameborder="0" allowfullscreen></iframe>
-                </div>
-                <div class="p-4 bg-zinc-900">
-                    <h3 id="inapp-player-title" class="text-sm font-bold text-zinc-200">Playing Video</h3>
-                </div>
+      <!-- PROFILE TAB -->
+      <section id="tab-profile" class="tab-view p-5 space-y-6 pb-28">
+        <div class="text-center py-8">
+          <div class="w-24 h-24 rounded-full mx-auto flex items-center justify-center border-2 mb-4 shadow-xl relative"
+            style="background: var(--app-surface2); border-color: var(--app-border);">
+            <span id="profile-avatar" class="text-3xl font-extrabold font-display" style="color: var(--app-text);">S</span>
+            <div class="absolute bottom-0 right-0 w-7 h-7 rounded-full border-2 flex items-center justify-center" style="background: var(--app-success); border-color: var(--app-surface);">
+              <i class="fa-solid fa-check text-white text-[10px]"></i>
             </div>
+          </div>
+          <h2 id="profile-name" class="text-2xl font-extrabold tracking-tight font-display" style="color: var(--app-text);">Student</h2>
+          <p id="profile-class" class="text-sm mt-1 font-medium" style="color: var(--app-text-muted);">Class 12 &bull; UP Board</p>
         </div>
 
-        <footer class="fixed bottom-0 left-0 right-0 bg-[#09090b]/95 backdrop-blur border-t border-zinc-800 flex items-center justify-around py-2 z-40">
-            <button onclick="switchTab('home-view')" class="flex flex-col items-center gap-1 text-zinc-400 focus:outline-none hover:text-white">
-                <span class="text-lg">🏠</span><span class="text-[9px] font-medium">Home</span>
-            </button>
-            <button onclick="switchTab('lecture-view')" class="flex flex-col items-center gap-1 text-zinc-400 focus:outline-none hover:text-white">
-                <span class="text-lg">📖</span><span class="text-[9px] font-medium">Lectures</span>
-            </button>
-            <button onclick="switchTab('social-view')" class="flex flex-col items-center gap-1 text-zinc-400 focus:outline-none hover:text-white">
-                <span class="text-lg">📺</span><span class="text-[9px] font-medium">Social</span>
-            </button>
-            <button onclick="switchTab('notice-view')" class="flex flex-col items-center gap-1 text-zinc-400 focus:outline-none hover:text-white">
-                <span class="text-lg">🔔</span><span class="text-[9px] font-medium">Notice</span>
-            </button>
-            <button onclick="switchTab('profile-view')" class="flex flex-col items-center gap-1 text-zinc-400 focus:outline-none hover:text-white">
-                <span class="text-lg">👤</span><span class="text-[9px] font-medium">Profile</span>
-            </button>
-            <button onclick="toggleSidebar()" class="flex flex-col items-center gap-1 text-zinc-400 focus:outline-none hover:text-white">
-                <span class="text-lg">⚙️</span><span class="text-[9px] font-medium">More</span>
-            </button>
-        </footer>
+        <div class="app-card divide-y overflow-hidden shadow-sm" style="border-color: var(--app-border);">
+          <div class="flex items-center justify-between p-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center border" style="background: var(--app-surface2); border-color: var(--app-border);">
+                <i class="fa-solid fa-id-card text-xs" style="color: var(--app-text-dim);"></i>
+              </div>
+              <div>
+                <p class="text-[11px] font-bold uppercase tracking-wider" style="color: var(--app-text-dim);">Exam Seat Number</p>
+                <p id="profile-seat" class="text-sm font-bold font-mono tracking-wide" style="color: var(--app-text);">UP-2027-88421</p>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center justify-between p-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center border" style="background: var(--app-surface2); border-color: var(--app-border);">
+                <i class="fa-solid fa-book text-xs" style="color: var(--app-text-dim);"></i>
+              </div>
+              <div>
+                <p class="text-[11px] font-bold uppercase tracking-wider" style="color: var(--app-text-dim);">Subjects</p>
+                <p id="profile-subjects" class="text-sm font-bold" style="color: var(--app-text);">Hindi, English, Physics, Chemistry, Math</p>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center justify-between p-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center border" style="background: var(--app-surface2); border-color: var(--app-border);">
+                <i class="fa-solid fa-envelope text-xs" style="color: var(--app-text-dim);"></i>
+              </div>
+              <div>
+                <p class="text-[11px] font-bold uppercase tracking-wider" style="color: var(--app-text-dim);">Email</p>
+                <p id="profile-email" class="text-sm font-bold" style="color: var(--app-text);">student@school.edu</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button id="edit-profile-btn" class="app-btn app-btn-outline w-full">
+          <i class="fa-solid fa-pen-to-square"></i>
+          <span>Edit Profile</span>
+        </button>
+
+        <button onclick="App.logout()" class="w-full py-3.5 rounded-xl text-sm font-bold uppercase tracking-wider text-[11px] border active:scale-95 transition-transform"
+          style="background: var(--app-surface2); color: var(--app-text-dim); border-color: var(--app-border);">
+          Log Out
+        </button>
+      </section>
+    </main>
+
+    <!-- Bottom Nav -->
+    <nav class="shrink-0 h-[72px] grid grid-cols-4 items-end pb-3 pb-safe z-40 border-t glass-header"
+      style="border-color: var(--app-border);">
+      <button data-tab="home" class="nav-btn active-tab">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      </button>
+      <button data-tab="classes" class="nav-btn">
+        <i class="fa-solid fa-play-circle"></i>
+        <span>Classes</span>
+      </button>
+      <button data-tab="tests" class="nav-btn">
+        <i class="fa-solid fa-file-circle-check"></i>
+        <span>Tests</span>
+      </button>
+      <button data-tab="profile" class="nav-btn">
+        <i class="fa-solid fa-user"></i>
+        <span>Profile</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SIDEBAR DRAWER                                     -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div id="sidebar-overlay"></div>
+  <div id="sidebar" class="pb-safe">
+    <div class="p-6 border-b flex items-center gap-3" style="border-color: var(--app-border);">
+      <div class="w-11 h-11 rounded-xl flex items-center justify-center border shadow-md" style="background: var(--app-surface2); border-color: var(--app-border);">
+        <i class="fa-solid fa-bolt text-xl" style="color: var(--app-accent);"></i>
+      </div>
+      <div>
+        <h3 class="font-bold text-lg font-display" style="color: var(--app-text);">dark_eio</h3>
+        <p class="text-[11px] font-medium" style="color: var(--app-text-dim);">v3.0 &bull; UP Board Class 12</p>
+      </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    <div class="flex-1 overflow-y-auto p-5 space-y-6">
+      <div>
+        <p class="text-[11px] font-bold uppercase tracking-wider mb-3" style="color: var(--app-text-dim);">Appearance</p>
+        <div class="flex items-center gap-4">
+          <button onclick="App.setTheme('light')" class="theme-pill active" id="pill-light" style="background: #f8fafc; border-color: #cbd5e1;" title="Light"></button>
+          <button onclick="App.setTheme('dark')" class="theme-pill" id="pill-dark" style="background: #09090b; border-color: #27272a;" title="Dark"></button>
+          <button onclick="App.setTheme('golden')" class="theme-pill" id="pill-golden" style="background: linear-gradient(135deg, #d4af37, #0a0805); border-color: #d4af37;" title="Golden"></button>
+        </div>
+        <p id="theme-label" class="text-xs mt-2.5 font-semibold" style="color: var(--app-text-muted);">Dark Mode</p>
+      </div>
 
-        // Firebase Setup using your exact configurations
-        const firebaseConfig = {
-            apiKey: "AIzaSyC-psUKqTO9u5kCuA3OUqWT63Ey0IvDei4",
-            authDomain: "study-ae01d.firebaseapp.com",
-            databaseURL: "https://study-ae01d-default-rtdb.firebaseio.com",
-            projectId: "study-ae01d",
-            storageBucket: "study-ae01d.firebasestorage.app",
-            messagingSenderId: "198271524977",
-            appId: "1:198271524977:web:d54ad6d58cd6c5c4103bd0",
-            measurementId: "G-Q51PB50Q51"
-        };
+      <div id="admin-btn-container" class="hidden">
+        <button onclick="App.openAdmin()" class="app-btn w-full" style="background: var(--app-danger);">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Admin Dashboard</span>
+        </button>
+      </div>
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const provider = new GoogleAuthProvider();
+      <div class="h-px" style="background: var(--app-border);"></div>
 
-        // YouTube Data API Key 
-        const ytApiKey = 'AIzaSyAra2lkY-sdBKeahyfmb4qNlpSmnBeOnkA';
+      <div class="space-y-1">
+        <a href="#" class="flex items-center gap-3 text-sm font-medium py-2.5 px-3 rounded-xl transition-colors" style="color: var(--app-text-muted);" onmouseover="this.style.background='var(--app-surface2)'" onmouseout="this.style.background='transparent'">
+          <i class="fa-solid fa-file-contract w-5 text-center"></i>
+          <span>Terms &amp; Conditions</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 text-sm font-medium py-2.5 px-3 rounded-xl transition-colors" style="color: var(--app-text-muted);" onmouseover="this.style.background='var(--app-surface2)'" onmouseout="this.style.background='transparent'">
+          <i class="fa-solid fa-lock w-5 text-center"></i>
+          <span>Privacy Policy</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 text-sm font-medium py-2.5 px-3 rounded-xl transition-colors" style="color: var(--app-text-muted);" onmouseover="this.style.background='var(--app-surface2)'" onmouseout="this.style.background='transparent'">
+          <i class="fa-solid fa-circle-info w-5 text-center"></i>
+          <span>About dark_eio</span>
+        </a>
+      </div>
+    </div>
 
-        let currentUserGlobal = null;
+    <div class="p-5 border-t" style="border-color: var(--app-border);">
+      <p class="text-[10px] text-center font-medium" style="color: var(--app-text-dim);">
+        &copy; 2026 dark_eio. Built for UP Board students.
+      </p>
+    </div>
+  </div>
 
-        // AUTH CONTROL LIFECYCLE STATE LSTENER
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                currentUserGlobal = user;
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('app-content').classList.remove('hidden');
-                document.getElementById('user-display-name').innerText = user.displayName;
-                
-                // Fetch or onboard Student details
-                const userDocRef = doc(db, "users", user.uid);
-                const userDocSnap = await getDoc(userDocRef);
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- EDIT PROFILE MODAL                                 -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div id="edit-modal" class="modal-overlay">
+    <div class="modal-content p-6 space-y-5">
+      <div class="flex items-center justify-between">
+        <h3 class="font-bold text-lg font-display" style="color: var(--app-text);">Edit Profile</h3>
+        <button onclick="App.closeEditModal()" class="w-9 h-9 rounded-xl flex items-center justify-center active:scale-90 transition-transform" style="background: var(--app-surface2); border: 1px solid var(--app-border);">
+          <i class="fa-solid fa-xmark" style="color: var(--app-text-muted);"></i>
+        </button>
+      </div>
+      <form id="edit-form" class="space-y-3">
+        <div>
+          <label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color: var(--app-text-dim);">Name</label>
+          <input type="text" id="edit-name" class="app-input" required>
+        </div>
+        <div>
+          <label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color: var(--app-text-dim);">Class</label>
+          <select id="edit-class" class="app-input">
+            <option value="12">Class 12</option>
+            <option value="11">Class 11</option>
+            <option value="10">Class 10</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color: var(--app-text-dim);">Subjects (comma separated)</label>
+          <input type="text" id="edit-subjects" class="app-input" placeholder="Hindi, English, Physics...">
+        </div>
+        <div>
+          <label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color: var(--app-text-dim);">Exam Seat Number</label>
+          <input type="text" id="edit-seat" class="app-input" placeholder="UP-2027-XXXXX">
+        </div>
+        <button type="submit" class="app-btn w-full mt-2">Save Changes</button>
+      </form>
+    </div>
+  </div>
 
-                if (!userDocSnap.exists()) {
-                    // Show onboarding setup popup modal if profile missing
-                    document.getElementById('onboarding-modal').classList.remove('hidden');
-                } else {
-                    loadUserProfileData(userDocSnap.data());
-                }
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- ADMIN PANEL                                        -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div id="admin-panel" class="pb-safe">
+    <header class="shrink-0 h-16 flex items-center justify-between px-5 border-b glass-header" style="border-color: var(--app-border); background: var(--app-surface);">
+      <div class="flex items-center gap-3">
+        <button onclick="App.closeAdmin()" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-90 transition-transform" style="background: var(--app-surface2); border: 1px solid var(--app-border);">
+          <i class="fa-solid fa-arrow-left text-sm" style="color: var(--app-text-muted);"></i>
+        </button>
+        <span class="font-extrabold text-lg tracking-tight font-display" style="color: var(--app-text);">Admin</span>
+      </div>
+    </header>
+    <main id="admin-scroll" class="flex-1 overflow-y-auto p-5 space-y-6 pb-28">
+      <div class="app-card p-5 shadow-sm">
+        <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color: var(--app-text);">
+          <i class="fa-solid fa-bullhorn" style="color: var(--app-danger);"></i>
+          Push Notice
+        </h3>
+        <form id="notice-form" class="space-y-3">
+          <input type="text" id="notice-title" class="app-input" placeholder="Notice title..." required>
+          <textarea id="notice-body" class="app-input h-24 resize-none" placeholder="Notice body text..." required></textarea>
+          <select id="notice-priority" class="app-input">
+            <option value="normal">Normal</option>
+            <option value="urgent">Urgent</option>
+          </select>
+          <button type="submit" class="app-btn w-full">Publish Notice</button>
+        </form>
+      </div>
 
-                // Check Admin Access Strategy
-                if(user.email === 'moharshad687@gmail.com') {
-                    document.getElementById('sidebar-admin-link').classList.remove('hidden');
-                }
+      <div class="app-card p-5 shadow-sm">
+        <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color: var(--app-text);">
+          <i class="fa-solid fa-video" style="color: var(--app-success);"></i>
+          Add Lecture
+        </h3>
+        <form id="lecture-form" class="space-y-3">
+          <input type="text" id="lec-title" class="app-input" placeholder="Lecture title..." required>
+          <input type="text" id="lec-subject" class="app-input" placeholder="Subject (Physics, Chem...)" required>
+          <input type="text" id="lec-chapter" class="app-input" placeholder="Chapter (e.g. Ch. 7)" required>
+          <input type="url" id="lec-url" class="app-input" placeholder="Video URL (optional)">
+          <button type="submit" class="app-btn w-full">Add Lecture</button>
+        </form>
+      </div>
 
-                // Initial Global App Data Fetches
-                startCountdownTimer();
-                fetchDatabaseLectures();
-                fetchDatabaseNotices();
-                loadDefaultSocialVideos();
+      <div class="app-card p-5 shadow-sm">
+        <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color: var(--app-text);">
+          <i class="fa-solid fa-file-circle-check" style="color: #8b5cf6;"></i>
+          Add Mock Test
+        </h3>
+        <form id="test-form" class="space-y-3">
+          <input type="text" id="test-title" class="app-input" placeholder="Test title..." required>
+          <input type="text" id="test-subject" class="app-input" placeholder="Subject" required>
+          <textarea id="test-desc" class="app-input h-20 resize-none" placeholder="Short description..."></textarea>
+          <input type="url" id="test-link" class="app-input" placeholder="Google Drive / Form Link" required>
+          <div class="grid grid-cols-2 gap-3">
+            <input type="number" id="test-duration" class="app-input" placeholder="Duration (min)" min="1" value="60">
+            <input type="number" id="test-marks" class="app-input" placeholder="Max Marks" min="1" value="100">
+          </div>
+          <button type="submit" class="app-btn w-full">Add Mock Test</button>
+        </form>
+      </div>
 
-            } else {
-                // Not authenticated layout toggle reset
-                document.getElementById('login-screen').classList.remove('hidden');
-                document.getElementById('app-content').classList.add('hidden');
-            }
+      <div class="app-card p-5 shadow-sm">
+        <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color: var(--app-text);">
+          <i class="fa-solid fa-list-check" style="color: var(--app-accent);"></i>
+          Manage Mock Tests
+        </h3>
+        <div id="admin-tests-list" class="space-y-3">
+          <p class="text-xs text-center py-4" style="color: var(--app-text-dim);">Loading tests...</p>
+        </div>
+      </div>
+
+      <div class="app-card p-5 shadow-sm">
+        <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color: var(--app-text);">
+          <i class="fa-solid fa-calendar-day" style="color: var(--app-accent);"></i>
+          Global Exam Date
+        </h3>
+        <form id="exam-form" class="space-y-3">
+          <input type="date" id="exam-date-input" class="app-input" required>
+          <button type="submit" class="app-btn w-full">Update Countdown</button>
+        </form>
+        <p class="text-xs mt-3 font-medium" style="color: var(--app-text-dim);">Current: <span id="current-exam-date">--</span></p>
+      </div>
+    </main>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- VIDEO MODAL                                        -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div id="video-modal">
+    <div class="shrink-0 h-14 flex items-center justify-between px-4 border-b glass-header" style="border-color: var(--app-border); background: var(--app-surface);">
+      <h3 id="modal-title" class="text-sm font-bold truncate pr-4" style="color: var(--app-text);">Video</h3>
+      <button onclick="App.closeVideo()" class="w-9 h-9 rounded-full flex items-center justify-center active:scale-90 transition-transform" style="background: var(--app-surface2); border: 1px solid var(--app-border);">
+        <i class="fa-solid fa-xmark" style="color: var(--app-text-muted);"></i>
+      </button>
+    </div>
+    <div class="flex-1 flex items-center justify-center p-4" style="background: #000;">
+      <div class="w-full aspect-video rounded-2xl overflow-hidden border shadow-2xl" style="border-color: var(--app-border);">
+        <iframe id="video-iframe" class="w-full h-full" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- TEST VIEWER MODAL                                  -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div id="test-modal">
+    <div class="shrink-0 h-14 flex items-center justify-between px-4 border-b glass-header" style="border-color: var(--app-border); background: var(--app-surface);">
+      <div class="flex items-center gap-3 overflow-hidden">
+        <button onclick="App.closeTest()" class="w-9 h-9 rounded-full flex items-center justify-center active:scale-90 transition-transform shrink-0" style="background: var(--app-surface2); border: 1px solid var(--app-border);">
+          <i class="fa-solid fa-arrow-left" style="color: var(--app-text-muted);"></i>
+        </button>
+        <div class="truncate">
+          <h3 id="test-modal-title" class="text-sm font-bold truncate" style="color: var(--app-text);">Mock Test</h3>
+          <p id="test-modal-subject" class="text-[11px] font-medium" style="color: var(--app-text-dim);">Subject</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <span id="test-modal-timer" class="text-xs font-mono font-bold px-2 py-1 rounded-lg border" style="background: var(--app-surface2); border-color: var(--app-border); color: var(--app-text-muted);">--:--</span>
+      </div>
+    </div>
+    <div class="flex-1 flex flex-col">
+      <div id="test-iframe-container" class="flex-1 relative" style="background: var(--app-bg);">
+        <iframe id="test-iframe" class="w-full h-full border-0" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+      </div>
+      <div class="shrink-0 p-4 border-t flex items-center justify-between gap-3" style="border-color: var(--app-border); background: var(--app-surface);">
+        <button onclick="App.closeTest()" class="app-btn app-btn-outline flex-1" style="padding: 12px;">
+          <i class="fa-solid fa-xmark"></i>
+          <span>Close Test</span>
+        </button>
+        <a id="test-external-link" href="#" target="_blank" rel="noopener" class="app-btn flex-1" style="padding: 12px; text-decoration: none;">
+          <i class="fa-solid fa-external-link-alt"></i>
+          <span>Open in Drive</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- TOAST                                              -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div id="toast">
+    <div class="px-5 py-3.5 rounded-2xl border shadow-2xl flex items-center gap-3" style="background: var(--app-surface); border-color: var(--app-border);">
+      <i id="toast-icon" class="fa-solid fa-circle-check" style="color: var(--app-success);"></i>
+      <span id="toast-msg" class="text-sm font-semibold" style="color: var(--app-text);">Success</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- FIREBASE & APP LOGIC                               -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, deleteDoc, updateDoc, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC-psUKqTO9u5kCuA3OUqWT63Ey0IvDei4",
+      authDomain: "study-ae01d.firebaseapp.com",
+      databaseURL: "https://study-ae01d-default-rtdb.firebaseio.com",
+      projectId: "study-ae01d",
+      storageBucket: "study-ae01d.firebasestorage.app",
+      messagingSenderId: "198271524977",
+      appId: "1:198271524977:web:d54ad6d58cd6c5c4103bd0",
+      measurementId: "G-Q51PB50Q51"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const googleProvider = new GoogleAuthProvider();
+
+    const state = {
+      user: null,
+      profile: null,
+      theme: localStorage.getItem('dark_eio_theme') || 'dark',
+      tab: 'home',
+      examDate: new Date('2027-02-15T09:00:00'),
+      isAdmin: false,
+      sidebarOpen: false,
+      testTimerInterval: null,
+    };
+
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function applyTheme(theme) {
+      const classes = document.body.className.split(' ');
+      const filtered = classes.filter(function(c) { return c.indexOf('theme-') !== 0; });
+      filtered.push('theme-' + theme);
+      document.body.className = filtered.join(' ');
+      state.theme = theme;
+      localStorage.setItem('dark_eio_theme', theme);
+      $$('.theme-pill').forEach(function(p) { p.classList.remove('active'); });
+      const pill = $('#pill-' + theme);
+      if (pill) pill.classList.add('active');
+      const labels = { light: 'Light Mode', dark: 'Dark Mode', golden: 'Golden Luxe' };
+      const label = $('#theme-label');
+      if (label) label.textContent = labels[theme] || 'Dark Mode';
+    }
+
+    function showToast(msg, type) {
+      type = type || 'success';
+      const toast = $('#toast');
+      const toastMsg = $('#toast-msg');
+      const toastIcon = $('#toast-icon');
+      if (!toast || !toastMsg || !toastIcon) return;
+      toastMsg.textContent = msg;
+      var iconClass = 'fa-circle-check';
+      var iconColor = 'var(--app-success)';
+      if (type === 'error') { iconClass = 'fa-circle-xmark'; iconColor = 'var(--app-danger)'; }
+      else if (type === 'info') { iconClass = 'fa-circle-info'; iconColor = 'var(--app-accent)'; }
+      toastIcon.className = 'fa-solid ' + iconClass;
+      toastIcon.style.color = iconColor;
+      toast.classList.add('show');
+      setTimeout(function() { toast.classList.remove('show'); }, 3200);
+    }
+
+    function updateTimer() {
+      const timerEl = $('#exam-timer');
+      if (!timerEl) return;
+      const now = new Date();
+      const diff = state.examDate - now;
+      if (diff <= 0) {
+        timerEl.textContent = "Exam Started!";
+        timerEl.style.color = 'var(--app-danger)';
+        return;
+      }
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const mins = Math.floor((diff / (1000 * 60)) % 60);
+      timerEl.textContent = days + 'd ' + hours + 'h ' + mins + 'm';
+      timerEl.style.color = '';
+    }
+
+    // ─── Auth: Login ───
+    async function handleLogin(e) {
+      e.preventDefault();
+      const email = $('#login-email').value.trim();
+      const password = $('#login-password').value;
+      const btn = $('#login-submit');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Logging in...';
+      btn.disabled = true;
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        showToast('Welcome back!');
+      } catch (err) {
+        showToast(err.message, 'error');
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    }
+
+    // ─── Auth: Register ───
+    async function handleRegister(e) {
+      e.preventDefault();
+      const email = $('#reg-email').value.trim();
+      const password = $('#reg-password').value;
+      const name = $('#reg-name').value.trim();
+      const cls = $('#reg-class').value;
+      const btn = $('#reg-submit');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Creating...';
+      btn.disabled = true;
+      try {
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        await setDoc(doc(db, 'users', cred.user.uid), {
+          name: name,
+          class: cls,
+          email: email,
+          subjects: 'Hindi, English, Physics, Chemistry, Math',
+          seatNumber: 'UP-2027-88421',
+          createdAt: new Date().toISOString(),
+          board: 'UP'
         });
+        showToast('Account created! Welcome!');
+      } catch (err) {
+        showToast(err.message, 'error');
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    }
 
-        // ACTION HANDLE: GOOGLE POPUP LOGIN
-        document.getElementById('btn-google-login').addEventListener('click', () => {
-            signInWithPopup(auth, provider).catch(err => alert("Auth Fail: " + err.message));
+    // ─── Auth: Google ───
+    async function handleGoogleAuth(isRegister) {
+      const btnId = isRegister ? 'google-register' : 'google-login';
+      const btn = $('#' + btnId);
+      try {
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Connecting...';
+        const result = await signInWithPopup(auth, googleProvider);
+        const user = result.user;
+        const profileDoc = await getDoc(doc(db, 'users', user.uid));
+        if (!profileDoc.exists()) {
+          await setDoc(doc(db, 'users', user.uid), {
+            name: user.displayName || 'Student',
+            class: '12',
+            email: user.email,
+            subjects: 'Hindi, English, Physics, Chemistry, Math',
+            seatNumber: 'UP-2027-88421',
+            createdAt: new Date().toISOString(),
+            board: 'UP'
+          });
+        }
+        showToast('Signed in with Google!');
+      } catch (err) {
+        showToast(err.message, 'error');
+        if (btn) {
+          if (isRegister) {
+            btn.innerHTML = '<i class="fa-brands fa-google"></i><span>Sign up with Google</span>';
+          } else {
+            btn.innerHTML = '<i class="fa-brands fa-google"></i><span>Continue with Google</span>';
+          }
+        }
+      }
+    }
+
+    // ─── Profile ───
+    async function loadProfile(uid) {
+      const docSnap = await getDoc(doc(db, 'users', uid));
+      if (docSnap.exists()) {
+        state.profile = docSnap.data();
+        renderProfile();
+      }
+    }
+
+    function renderProfile() {
+      const p = state.profile || {};
+      const name = p.name || (state.user && state.user.displayName) || 'Student';
+      const email = p.email || (state.user && state.user.email) || 'student@school.edu';
+      const cls = p.class || '12';
+      const subjects = p.subjects || 'Hindi, English, Physics, Chemistry, Math';
+      const seat = p.seatNumber || 'UP-2027-88421';
+
+      const welcomeEl = $('#home-welcome');
+      const nameEl = $('#profile-name');
+      const classEl = $('#profile-class');
+      const emailEl = $('#profile-email');
+      const avatarEl = $('#profile-avatar');
+      const seatEl = $('#profile-seat');
+      const subjectsEl = $('#profile-subjects');
+
+      if (welcomeEl) welcomeEl.textContent = name.split(' ')[0];
+      if (nameEl) nameEl.textContent = name;
+      if (classEl) classEl.textContent = 'Class ' + cls + ' \u2022 UP Board';
+      if (emailEl) emailEl.textContent = email;
+      if (avatarEl) avatarEl.textContent = name.charAt(0).toUpperCase();
+      if (seatEl) seatEl.textContent = seat;
+      if (subjectsEl) subjectsEl.textContent = subjects;
+
+      state.isAdmin = (email === 'moharshad687@gmail.com');
+      const adminBtn = $('#admin-btn-container');
+      if (adminBtn) adminBtn.classList.toggle('hidden', !state.isAdmin);
+
+      const editName = $('#edit-name');
+      const editClass = $('#edit-class');
+      const editSubjects = $('#edit-subjects');
+      const editSeat = $('#edit-seat');
+      if (editName) editName.value = name;
+      if (editClass) editClass.value = cls;
+      if (editSubjects) editSubjects.value = subjects;
+      if (editSeat) editSeat.value = seat;
+    }
+
+    // ─── Notices ───
+    async function loadNotices() {
+      const container = $('#notices-list');
+      if (!container) return;
+      try {
+        const q = query(collection(db, 'notices'), orderBy('createdAt', 'desc'), limit(8));
+        const snapshot = await getDocs(q);
+        if (snapshot.empty) {
+          container.innerHTML = '<div class="flex gap-3 items-start"><div class="w-2 h-2 rounded-full mt-2 shrink-0" style="background: var(--app-text-dim);"></div><div><p class="text-sm leading-relaxed" style="color: var(--app-text-muted);">No notices yet. Check back later!</p></div></div>';
+          return;
+        }
+        var html = '';
+        snapshot.docs.forEach(function(docItem, idx) {
+          const n = docItem.data();
+          const isUrgent = n.priority === 'urgent';
+          const dateStr = n.createdAt ? new Date(n.createdAt).toLocaleDateString() : 'Recently';
+          const dotColor = isUrgent ? 'bg-amber-500 shadow-sm shadow-amber-500/50' : '';
+          const dotStyle = isUrgent ? '' : 'style="background: var(--app-text-dim);"';
+          html += '<div class="flex gap-3 items-start slide-in" style="animation-delay: ' + (idx * 0.05) + 's">';
+          html += '<div class="w-2 h-2 rounded-full mt-2 shrink-0 ' + dotColor + '" ' + dotStyle + '></div>';
+          html += '<div><p class="text-sm leading-relaxed" style="color: var(--app-text-muted);">' + escapeHtml(n.body) + '</p>';
+          html += '<p class="text-[11px] mt-1 font-medium" style="color: var(--app-text-dim);">' + escapeHtml(dateStr) + '</p></div></div>';
+          if (idx < snapshot.docs.length - 1) {
+            html += '<div class="h-px my-2.5" style="background: var(--app-border);"></div>';
+          }
         });
+        container.innerHTML = html;
+      } catch (e) {
+        console.error('Load notices error:', e);
+      }
+    }
 
-        // ACTION HANDLE: LOGOUT SIGN OUT SYSTEM
-        document.getElementById('btn-logout').addEventListener('click', () => {
-            signOut(auth).then(() => {
-                window.location.reload();
-            });
+    // ─── Lectures ───
+    var subjectMeta = {
+      Physics: { from: 'from-blue-950/60', to: 'to-indigo-950/60', text: 'text-blue-400', bg: 'rgba(59,130,246,0.1)', border: 'rgba(59,130,246,0.2)', solid: '#3b82f6' },
+      Chemistry: { from: 'from-emerald-950/60', to: 'to-teal-950/60', text: 'text-emerald-400', bg: 'rgba(34,197,94,0.1)', border: 'rgba(34,197,94,0.2)', solid: '#22c55e' },
+      Mathematics: { from: 'from-amber-950/60', to: 'to-orange-950/60', text: 'text-amber-400', bg: 'rgba(245,158,11,0.1)', border: 'rgba(245,158,11,0.2)', solid: '#f59e0b' },
+      Biology: { from: 'from-rose-950/60', to: 'to-pink-950/60', text: 'text-rose-400', bg: 'rgba(244,63,94,0.1)', border: 'rgba(244,63,94,0.2)', solid: '#f43f5e' },
+      English: { from: 'from-violet-950/60', to: 'to-purple-950/60', text: 'text-violet-400', bg: 'rgba(139,92,246,0.1)', border: 'rgba(139,92,246,0.2)', solid: '#8b5cf6' },
+      Hindi: { from: 'from-orange-950/60', to: 'to-red-950/60', text: 'text-orange-400', bg: 'rgba(249,115,22,0.1)', border: 'rgba(249,115,22,0.2)', solid: '#f97316' },
+      CS: { from: 'from-cyan-950/60', to: 'to-sky-950/60', text: 'text-cyan-400', bg: 'rgba(6,182,212,0.1)', border: 'rgba(6,182,212,0.2)', solid: '#06b6d4' },
+    };
+
+    async function loadLectures() {
+      const container = $('#lectures-grid');
+      if (!container) return;
+      container.innerHTML = '<div class="col-span-full space-y-4"><div class="skeleton h-40 rounded-2xl"></div><div class="skeleton h-40 rounded-2xl"></div></div>';
+      try {
+        const snapshot = await getDocs(collection(db, 'lectures'));
+        var defaults = [
+          { title: 'Electric Charges & Fields', subject: 'Physics', chapter: 'Ch. 1', progress: 65, total: 12, current: 8, duration: '45 min' },
+          { title: 'The Solid State', subject: 'Chemistry', chapter: 'Ch. 1', progress: 90, total: 12, current: 11, duration: '38 min' },
+          { title: 'Relations & Functions', subject: 'Mathematics', chapter: 'Ch. 1', progress: 45, total: 12, current: 5, duration: '52 min' },
+          { title: 'Python File Handling', subject: 'CS', chapter: 'Ch. 3', progress: 30, total: 10, current: 3, duration: '55 min' },
+        ];
+        var items = snapshot.empty ? defaults : snapshot.docs.map(function(d) { var data = d.data(); data.id = d.id; return data; });
+        var html = '';
+        items.forEach(function(l, idx) {
+          html += renderLectureCard(l, idx);
         });
+        container.innerHTML = html;
+      } catch (e) {
+        console.error('Load lectures error:', e);
+        container.innerHTML = '<p class="text-sm text-center py-8" style="color: var(--app-text-dim);">Unable to load lectures.</p>';
+      }
+    }
 
-        // ACTION HANDLE: SAVE STUDENT PROFILE ONBOARDING
-        document.getElementById('btn-save-onboarding').addEventListener('click', async () => {
-            const studentClass = document.getElementById('onboard-class').value.trim();
-            const studentSubjects = document.getElementById('onboard-subjects').value.trim();
-            const studentSeat = document.getElementById('onboard-seat').value.trim();
+    function renderLectureCard(l, idx) {
+      var color = subjectMeta[l.subject] || subjectMeta.Physics;
+      var progress = l.progress || Math.round(((l.current || 0) / (l.total || 1)) * 100);
+      var delay = idx * 0.08;
+      return '<div class="app-card active:scale-[0.97] transition-transform shadow-sm animate-fade-up" style="animation-delay: ' + delay + 's">' +
+        '<div class="h-36 bg-gradient-to-br ' + color.from + ' ' + color.to + ' flex items-center justify-center relative border-b" style="border-color: var(--app-border);">' +
+        '<i class="fa-solid fa-book-open text-5xl ' + color.text + ' opacity-40"></i>' +
+        '<span class="absolute top-3 right-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white border border-white/10 shadow-lg" style="background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);">' + escapeHtml(l.duration || '40 min') + '</span>' +
+        '</div>' +
+        '<div class="p-4">' +
+        '<span class="badge mb-2.5" style="background: ' + color.bg + '; color: ' + color.solid + '; border-color: ' + color.border + ';">' +
+        '<i class="fa-solid fa-circle text-[6px]"></i> ' + escapeHtml(l.subject) +
+        '</span>' +
+        '<h3 class="font-bold text-sm mb-1" style="color: var(--app-text);">' + escapeHtml(l.title) + '</h3>' +
+        '<p class="text-xs line-clamp-2 leading-relaxed" style="color: var(--app-text-dim);">' + escapeHtml(l.chapter) + ' &bull; ' + escapeHtml(l.subject) + ' fundamentals and core concepts.</p>' +
+        '<div class="mt-3.5 flex items-center gap-3">' +
+        '<div class="progress-track flex-1">' +
+        '<div class="progress-fill" style="background: ' + color.solid + '; width: ' + progress + '%;"></div>' +
+        '</div>' +
+        '<span class="text-[10px] font-mono font-bold" style="color: var(--app-text-dim);">' + (l.current || 0) + '/' + (l.total || 12) + '</span>' +
+        '</div>' +
+        '</div>' +
+        '</div>';
+    }
 
-            if(!studentClass || !studentSubjects) {
-                alert("Please fill Class and Subject details.");
-                return;
-            }
-
-            const payload = {
-                name: currentUserGlobal.displayName,
-                email: currentUserGlobal.email,
-                class: studentClass,
-                subjects: studentSubjects,
-                examSeat: studentSeat || "Not Assigned",
-                role: currentUserGlobal.email === 'moharshad687@gmail.com' ? 'admin' : 'student'
-            };
-
-            await setDoc(doc(db, "users", currentUserGlobal.uid), payload);
-            document.getElementById('onboarding-modal').classList.add('hidden');
-            loadUserProfileData(payload);
+    // ─── Mock Tests ───
+    async function loadTests() {
+      const container = $('#tests-grid');
+      if (!container) return;
+      container.innerHTML = '<div class="space-y-4"><div class="skeleton h-32 rounded-2xl"></div><div class="skeleton h-32 rounded-2xl"></div><div class="skeleton h-32 rounded-2xl"></div></div>';
+      try {
+        var q = query(collection(db, 'tests'), orderBy('createdAt', 'desc'));
+        var snapshot = await getDocs(q);
+        if (snapshot.empty) {
+          container.innerHTML = '<div class="text-center py-14"><div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style="background: var(--app-surface2); border: 1px solid var(--app-border);">' +
+            '<i class="fa-solid fa-file-circle-check text-2xl" style="color: var(--app-text-dim);"></i></div>' +
+            '<p class="text-sm font-semibold" style="color: var(--app-text-muted);">No mock tests available yet</p>' +
+            '<p class="text-xs mt-1" style="color: var(--app-text-dim);">Check back after admin adds tests.</p></div>';
+          return;
+        }
+        var html = '';
+        snapshot.docs.forEach(function(docItem, idx) {
+          var t = docItem.data();
+          var color = subjectMeta[t.subject] || subjectMeta.Physics;
+          var delay = idx * 0.08;
+          var safeId = docItem.id;
+          var safeTitle = escapeHtml(t.title).replace(/'/g, "\\'");
+          var safeSubject = escapeHtml(t.subject).replace(/'/g, "\\'");
+          var safeLink = escapeHtml(t.link).replace(/'/g, "\\'");
+          html += '<div class="app-card p-5 animate-fade-up shadow-sm" style="animation-delay: ' + delay + 's">' +
+            '<div class="flex items-start justify-between gap-3 mb-3">' +
+            '<div class="flex items-center gap-2.5">' +
+            '<div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: ' + color.bg + '; border: 1px solid ' + color.border + ';">' +
+            '<i class="fa-solid fa-file-pen text-sm" style="color: ' + color.solid + ';"></i></div>' +
+            '<div>' +
+            '<span class="badge" style="background: ' + color.bg + '; color: ' + color.solid + '; border-color: ' + color.border + ';">' + escapeHtml(t.subject) + '</span>' +
+            '<h3 class="font-bold text-sm mt-1" style="color: var(--app-text);">' + escapeHtml(t.title) + '</h3>' +
+            '</div></div>' +
+            '<span class="text-[10px] font-bold px-2 py-1 rounded-lg border shrink-0" style="background: var(--app-surface2); border-color: var(--app-border); color: var(--app-text-dim);">' + (t.duration || 60) + 'm</span>' +
+            '</div>' +
+            '<p class="text-xs leading-relaxed mb-4 line-clamp-2" style="color: var(--app-text-muted);">' + escapeHtml(t.description || 'Practice test following UP Board pattern.') + '</p>' +
+            '<div class="flex items-center justify-between">' +
+            '<span class="text-[11px] font-bold" style="color: var(--app-text-dim);">' + (t.marks || 100) + ' Marks</span>' +
+            '<button onclick="App.openTest(\'' + safeId + '\', \'' + safeTitle + '\', \'' + safeSubject + '\', \'' + safeLink + '\', ' + (t.duration || 60) + ')" class="app-btn" style="padding: 10px 20px; font-size: 13px; background: ' + color.solid + '; color: #fff;">' +
+            '<i class="fa-solid fa-play"></i><span>Start Test</span></button>' +
+            '</div></div>';
         });
+        container.innerHTML = html;
+      } catch (e) {
+        console.error('Load tests error:', e);
+        container.innerHTML = '<p class="text-sm text-center py-8" style="color: var(--app-text-dim);">Unable to load tests.</p>';
+      }
+    }
 
-        function loadUserProfileData(data) {
-            document.getElementById('prof-name').innerText = data.name || currentUserGlobal.displayName;
-            document.getElementById('prof-email').innerText = data.email;
-            document.getElementById('prof-class').innerText = data.class || "Class 12";
-            document.getElementById('prof-subjects').innerText = data.subjects || "Not Specified";
-            document.getElementById('prof-seat').innerText = data.examSeat || "Not Assigned";
-            document.getElementById('prof-avatar').innerText = (data.name || "U").charAt(0).toUpperCase();
+    async function loadAdminTests() {
+      const container = $('#admin-tests-list');
+      if (!container) return;
+      try {
+        var q = query(collection(db, 'tests'), orderBy('createdAt', 'desc'));
+        var snapshot = await getDocs(q);
+        if (snapshot.empty) {
+          container.innerHTML = '<p class="text-xs text-center py-4" style="color: var(--app-text-dim);">No tests added yet.</p>';
+          return;
         }
-
-        // FEATURE 1: CORE DYNAMIC COUNTDOWN TIMER
-        function startCountdownTimer() {
-            // Target set by default for Class 12 Boards (February 15, 2027)
-            const targetDate = new Date("February 15, 2027 00:00:00").getTime();
-            
-            setInterval(() => {
-                const now = new Date().getTime();
-                const difference = targetDate - now;
-
-                if (difference < 0) {
-                    document.getElementById('countdown-timer').innerText = "Exams Started!";
-                    return;
-                }
-
-                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-
-                document.getElementById('countdown-timer').innerText = `${days}d : ${hours}h : ${minutes}m left`;
-            }, 1000);
-        }
-
-        // FEATURE 2: FIRESTORE LECTURES REAL-TIME RENDERING ENGINE
-        async function fetchDatabaseLectures() {
-            const container = document.getElementById('lecture-list-container');
-            container.innerHTML = `<p class="text-zinc-500 text-sm">Loading online classes links...</p>`;
-            
-            try {
-                const qSnap = await getDocs(collection(db, "lectures"));
-                container.innerHTML = '';
-                
-                if(qSnap.empty) {
-                    container.innerHTML = `<p class="text-zinc-500 text-sm italic col-span-2">No uploaded lecture sessions available.</p>`;
-                    return;
-                }
-
-                qSnap.forEach(docSnap => {
-                    const lec = docSnap.data();
-                    const card = document.createElement('div');
-                    card.className = "bg-zinc-900 border border-zinc-800 p-4 rounded-xl flex flex-col justify-between gap-3";
-                    
-                    // Simple check if link belongs to youtube to extract ID or treat as external Drive file link
-                    let clickAction = `window.open('${lec.url}', '_blank')`;
-                    if(lec.url.includes('youtube.com') || lec.url.includes('youtu.be')) {
-                        let ytId = lec.url.split('v=')[1] || lec.url.split('/').pop();
-                        if(ytId.includes('&')) ytId = ytId.split('&')[0];
-                        clickAction = `window.playInAppVideo('${ytId}', '${lec.title.replace(/'/g, "\\'")}')`;
-                    }
-
-                    card.innerHTML = `
-                        <div>
-                            <span class="text-[10px] bg-red-950 text-red-400 font-bold px-2 py-0.5 rounded-full border border-red-900/50 uppercase tracking-wider mb-2 inline-block">${lec.subject}</span>
-                            <h3 class="text-sm font-bold text-zinc-200 line-clamp-2">${lec.title}</h3>
-                        </div>
-                        <button onclick="${clickAction}" class="w-full text-center bg-zinc-800 hover:bg-zinc-700 text-zinc-100 text-xs font-semibold py-2 rounded-lg transition">▶ Watch Stream</button>
-                    `;
-                    container.appendChild(card);
-                });
-            } catch (e) {
-                container.innerHTML = `<p class="text-red-400 text-xs">Error parsing files links.</p>`;
-            }
-        }
-
-        // FEATURE 3: FIRESTORE NOTICES RENDERING
-        async function fetchDatabaseNotices() {
-            const container = document.getElementById('notice-list-container');
-            const homeNoticeBox = document.getElementById('home-notice-box');
-            container.innerHTML = '';
-
-            try {
-                const qSnap = await getDocs(collection(db, "notices"));
-                let count = 0;
-                
-                qSnap.forEach(docSnap => {
-                    const notice = docSnap.data();
-                    if(count === 0) homeNoticeBox.innerText = notice.message; // Mirror latest to Dashboard Home view
-                    
-                    const el = document.createElement('div');
-                    el.className = "bg-zinc-900/60 border border-zinc-800 p-4 rounded-xl";
-                    el.innerHTML = `<p class="text-sm text-zinc-300 leading-relaxed">${notice.message}</p>`;
-                    container.appendChild(el);
-                    count++;
-                });
-
-                if(count === 0) {
-                    container.innerHTML = `<p class="text-zinc-500 text-sm italic">No official notices right now.</p>`;
-                }
-            } catch (e) { console.error(e); }
-        }
-
-        // FEATURE 4: INTEGRATED SOCIAL YOUTUBE CLONE COMPONENT
-        const ytGrid = document.getElementById('yt-video-grid');
-        
-        function loadDefaultSocialVideos() {
-            const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=15&q=trending+anime+gaming+music&type=video&key=${ytApiKey}`;
-            executeYoutubeFetch(url);
-        }
-
-        document.getElementById('yt-search-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const q = document.getElementById('yt-search-input').value.trim();
-            if(!q) return;
-            const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=18&q=${encodeURIComponent(q)}&type=video&key=${ytApiKey}`;
-            executeYoutubeFetch(url);
+        var html = '';
+        snapshot.docs.forEach(function(docItem) {
+          var t = docItem.data();
+          html += '<div class="flex items-center justify-between p-3 rounded-xl border" style="background: var(--app-surface2); border-color: var(--app-border);">' +
+            '<div class="overflow-hidden">' +
+            '<p class="text-sm font-bold truncate" style="color: var(--app-text);">' + escapeHtml(t.title) + '</p>' +
+            '<p class="text-[11px]" style="color: var(--app-text-dim);">' + escapeHtml(t.subject) + ' &bull; ' + (t.duration || 60) + 'm</p>' +
+            '</div>' +
+            '<button onclick="App.deleteTest(\'' + docItem.id + '\')" class="w-8 h-8 rounded-lg flex items-center justify-center active:scale-90 transition-transform shrink-0 ml-2" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2);">' +
+            '<i class="fa-solid fa-trash text-xs" style="color: var(--app-danger);"></i></button>' +
+            '</div>';
         });
+        container.innerHTML = html;
+      } catch (e) {
+        console.error('Load admin tests error:', e);
+      }
+    }
 
-        function executeYoutubeFetch(url) {
-            ytGrid.innerHTML = `<p class="text-zinc-500 text-sm col-span-3">Streaming search queries from cloud...</p>`;
-            fetch(url)
-            .then(res => res.json())
-            .then(data => {
-                ytGrid.innerHTML = '';
-                if(!data.items || data.items.length === 0) {
-                    ytGrid.innerHTML = `<p class="text-zinc-500 text-sm col-span-3">No matching results found.</p>`;
-                    return;
-                }
-                data.items.forEach(item => {
-                    if(item.id && item.id.videoId) {
-                        const vId = item.id.videoId;
-                        const title = item.snippet.title.replace(/'/g, "\\'");
-                        const thumb = item.snippet.thumbnails.high ? item.snippet.thumbnails.high.url : item.snippet.thumbnails.medium.url;
-                        const channel = item.snippet.channelTitle;
+    async function deleteTest(id) {
+      if (!confirm('Delete this mock test?')) return;
+      try {
+        await deleteDoc(doc(db, 'tests', id));
+        showToast('Test deleted');
+        loadTests();
+        loadAdminTests();
+      } catch (e) {
+        showToast(e.message, 'error');
+      }
+    }
 
-                        const card = document.createElement('div');
-                        card.className = "bg-zinc-900/40 border border-zinc-800 rounded-xl overflow-hidden cursor-pointer group";
-                        card.setAttribute('onclick', `window.playInAppVideo('${vId}', '${title}')`);
-                        card.innerHTML = `
-                            <div class="aspect-video w-full bg-zinc-800 overflow-hidden relative">
-                                <img src="${thumb}" class="w-full h-full object-cover group-hover:scale-105 transition duration-200">
-                            </div>
-                            <div class="p-3">
-                                <h4 class="text-xs font-bold text-zinc-200 line-clamp-2 leading-snug">${item.snippet.title}</h4>
-                                <p class="text-[10px] text-zinc-500 mt-1 font-semibold">${channel}</p>
-                            </div>
-                        `;
-                        ytGrid.appendChild(card);
-                    }
-                });
-            })
-            .catch(() => { ytGrid.innerHTML = `<p class="text-red-400 text-xs">API Error or Limit issues.</p>`; });
+    // ─── Test Viewer ───
+    function openTest(id, title, subject, link, duration) {
+      var modal = $('#test-modal');
+      var titleEl = $('#test-modal-title');
+      var subjectEl = $('#test-modal-subject');
+      var iframe = $('#test-iframe');
+      var external = $('#test-external-link');
+      var timerEl = $('#test-modal-timer');
+
+      if (titleEl) titleEl.textContent = title;
+      if (subjectEl) subjectEl.textContent = subject;
+      if (external) external.href = link;
+
+      var embedUrl = link;
+      var driveIdx = link.indexOf('drive.google.com/file/d/');
+      if (driveIdx !== -1) {
+        var after = link.substring(driveIdx + 24);
+        var slashIdx = after.indexOf('/');
+        var fileId = slashIdx !== -1 ? after.substring(0, slashIdx) : after;
+        var qIdx = fileId.indexOf('?');
+        if (qIdx !== -1) fileId = fileId.substring(0, qIdx);
+        embedUrl = 'https://drive.google.com/file/d/' + fileId + '/preview';
+      }
+      if (iframe) iframe.src = embedUrl;
+      if (modal) modal.classList.add('open');
+
+      var remaining = (duration || 60) * 60;
+      if (state.testTimerInterval) clearInterval(state.testTimerInterval);
+      function updateTestTimer() {
+        var m = Math.floor(remaining / 60).toString().padStart(2, '0');
+        var s = (remaining % 60).toString().padStart(2, '0');
+        if (timerEl) timerEl.textContent = m + ':' + s;
+        if (remaining <= 300 && timerEl) timerEl.style.color = 'var(--app-danger)';
+        if (remaining <= 0) {
+          clearInterval(state.testTimerInterval);
+          if (timerEl) timerEl.textContent = "TIME UP";
         }
+        remaining--;
+      }
+      updateTestTimer();
+      state.testTimerInterval = setInterval(updateTestTimer, 1000);
+    }
 
-        // FEATURE 5: MOHARSHAD687 EXPERT ADMIN WRITING PROTOCOLS
-        document.getElementById('btn-adm-add-lec').addEventListener('click', async () => {
-            const title = document.getElementById('adm-lec-title').value.trim();
-            const url = document.getElementById('adm-lec-url').value.trim();
-            const subject = document.getElementById('adm-lec-subject').value.trim();
+    function closeTest() {
+      var modal = $('#test-modal');
+      var iframe = $('#test-iframe');
+      if (modal) modal.classList.remove('open');
+      if (iframe) iframe.src = '';
+      if (state.testTimerInterval) {
+        clearInterval(state.testTimerInterval);
+        state.testTimerInterval = null;
+      }
+    }
 
-            if(!title || !url || !subject) return alert("Fill all lecture fields.");
-
-            await addDoc(collection(db, "lectures"), { title, url, subject, timestamp: new Date().getTime() });
-            alert("Lecture added into real-time stream successfully!");
-            document.getElementById('adm-lec-title').value = '';
-            document.getElementById('adm-lec-url').value = '';
-            document.getElementById('adm-lec-subject').value = '';
-            fetchDatabaseLectures();
+    // ─── Tab Router ───
+    function switchTab(tab) {
+      state.tab = tab;
+      $$('.nav-btn').forEach(function(btn) {
+        btn.classList.toggle('active-tab', btn.dataset.tab === tab);
+      });
+      $$('.tab-view').forEach(function(v) { v.classList.remove('active'); });
+      var target = $('#tab-' + tab);
+      if (target) {
+        target.classList.add('active');
+        target.querySelectorAll('.animate-fade-up').forEach(function(el) {
+          el.style.animation = 'none';
+          void el.offsetHeight;
+          el.style.animation = '';
         });
+      }
+      var scroll = $('#main-scroll');
+      if (scroll) scroll.scrollTop = 0;
+      if (tab === 'home') loadNotices();
+      if (tab === 'classes') loadLectures();
+      if (tab === 'tests') loadTests();
+    }
 
-        document.getElementById('btn-adm-add-notice').addEventListener('click', async () => {
-            const msg = document.getElementById('adm-notice-msg').value.trim();
-            if(!msg) return alert("Write some notice message text.");
+    // ─── Sidebar ───
+    function toggleSidebar() {
+      state.sidebarOpen = !state.sidebarOpen;
+      var sidebar = $('#sidebar');
+      var overlay = $('#sidebar-overlay');
+      if (sidebar) sidebar.classList.toggle('open', state.sidebarOpen);
+      if (overlay) overlay.classList.toggle('open', state.sidebarOpen);
+    }
 
-            await addDoc(collection(db, "notices"), { message: msg, timestamp: new Date().getTime() });
-            alert("Broadcast notice live pushed!");
-            document.getElementById('adm-notice-msg').value = '';
-            fetchDatabaseNotices();
-        });
+    // ─── Auth View Switcher ───
+    function showLogin() {
+      var loginBox = $('#login-box');
+      var regBox = $('#register-box');
+      if (loginBox) { loginBox.classList.remove('hidden'); }
+      if (regBox) { regBox.classList.add('hidden'); }
+    }
 
-    </script>
+    function showRegister() {
+      var loginBox = $('#login-box');
+      var regBox = $('#register-box');
+      if (loginBox) { loginBox.classList.add('hidden'); }
+      if (regBox) { regBox.classList.remove('hidden'); }
+    }
 
-    <script>
-        // SPA TAB MANAGER ROUTING SYSTEM
-        function switchTab(tabId) {
-            const tabs = document.querySelectorAll('.tab-view');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            
-            const target = document.getElementById(tabId);
-            if(target) {
-                target.classList.add('active');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
+    // ─── Admin ───
+    function openAdmin() {
+      var panel = $('#admin-panel');
+      if (panel) panel.classList.add('open');
+      toggleSidebar();
+      var currentDate = $('#current-exam-date');
+      if (currentDate) currentDate.textContent = state.examDate.toLocaleDateString();
+      loadAdminTests();
+    }
+
+    function closeAdmin() {
+      var panel = $('#admin-panel');
+      if (panel) panel.classList.remove('open');
+    }
+
+    // ─── Edit Profile ───
+    function openEditModal() {
+      var modal = $('#edit-modal');
+      if (modal) modal.classList.add('open');
+    }
+
+    function closeEditModal() {
+      var modal = $('#edit-modal');
+      if (modal) modal.classList.remove('open');
+    }
+
+    async function saveProfile(e) {
+      e.preventDefault();
+      if (!state.user) return;
+      var data = {
+        name: $('#edit-name').value,
+        class: $('#edit-class').value,
+        subjects: $('#edit-subjects').value,
+        seatNumber: $('#edit-seat').value,
+      };
+      await setDoc(doc(db, 'users', state.user.uid), data, { merge: true });
+      state.profile = Object.assign({}, state.profile, data);
+      renderProfile();
+      closeEditModal();
+      showToast('Profile updated!');
+    }
+
+    // ─── Admin Forms ───
+    async function publishNotice(e) {
+      e.preventDefault();
+      await addDoc(collection(db, 'notices'), {
+        title: $('#notice-title').value,
+        body: $('#notice-body').value,
+        priority: $('#notice-priority').value,
+        createdAt: new Date().toISOString()
+      });
+      $('#notice-form').reset();
+      showToast('Notice published!');
+    }
+
+    async function addLecture(e) {
+      e.preventDefault();
+      await addDoc(collection(db, 'lectures'), {
+        title: $('#lec-title').value,
+        subject: $('#lec-subject').value,
+        chapter: $('#lec-chapter').value,
+        url: $('#lec-url').value,
+        progress: 0, current: 0, total: 12, duration: '40 min',
+        createdAt: new Date().toISOString()
+      });
+      $('#lecture-form').reset();
+      showToast('Lecture added!');
+    }
+
+    async function addMockTest(e) {
+      e.preventDefault();
+      await addDoc(collection(db, 'tests'), {
+        title: $('#test-title').value,
+        subject: $('#test-subject').value,
+        description: $('#test-desc').value,
+        link: $('#test-link').value,
+        duration: parseInt($('#test-duration').value) || 60,
+        marks: parseInt($('#test-marks').value) || 100,
+        createdAt: new Date().toISOString()
+      });
+      $('#test-form').reset();
+      showToast('Mock test added!');
+      loadAdminTests();
+    }
+
+    async function updateExamDate(e) {
+      e.preventDefault();
+      var date = $('#exam-date-input').value;
+      if (!date) return;
+      await setDoc(doc(db, 'settings', 'global'), { examDate: date }, { merge: true });
+      state.examDate = new Date(date + 'T09:00:00');
+      var currentDate = $('#current-exam-date');
+      if (currentDate) currentDate.textContent = state.examDate.toLocaleDateString();
+      showToast('Exam date updated!');
+    }
+
+    // ─── Video Modal ───
+    function playVideo(id, title) {
+      var modalTitle = $('#modal-title');
+      var iframe = $('#video-iframe');
+      if (modalTitle) modalTitle.textContent = title;
+      if (iframe) iframe.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1';
+      var modal = $('#video-modal');
+      if (modal) modal.classList.add('open');
+    }
+
+    function closeVideo() {
+      var modal = $('#video-modal');
+      var iframe = $('#video-iframe');
+      if (modal) modal.classList.remove('open');
+      if (iframe) iframe.src = '';
+    }
+
+    // ─── Logout ───
+    async function logout() {
+      await signOut(auth);
+      state.user = null;
+      state.profile = null;
+      var appShell = $('#app-shell');
+      var authScreen = $('#auth-screen');
+      if (appShell) { appShell.classList.add('hidden'); appShell.classList.remove('flex'); }
+      if (authScreen) { authScreen.classList.remove('hidden', 'hidden-auth'); }
+      showToast('Logged out');
+    }
+
+    // ─── Init ───
+    function init() {
+      applyTheme(state.theme);
+
+      $('#login-form')?.addEventListener('submit', handleLogin);
+      $('#register-form')?.addEventListener('submit', handleRegister);
+      $('#google-login')?.addEventListener('click', function() { handleGoogleAuth(false); });
+      $('#google-register')?.addEventListener('click', function() { handleGoogleAuth(true); });
+
+      $$('.nav-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() { switchTab(btn.dataset.tab); });
+      });
+
+      $('#menu-btn')?.addEventListener('click', toggleSidebar);
+      $('#sidebar-overlay')?.addEventListener('click', toggleSidebar);
+
+      $('#edit-profile-btn')?.addEventListener('click', openEditModal);
+      $('#edit-form')?.addEventListener('submit', saveProfile);
+
+      $('#notice-form')?.addEventListener('submit', publishNotice);
+      $('#lecture-form')?.addEventListener('submit', addLecture);
+      $('#test-form')?.addEventListener('submit', addMockTest);
+      $('#exam-form')?.addEventListener('submit', updateExamDate);
+
+      onAuthStateChanged(auth, async function(user) {
+        if (user) {
+          state.user = user;
+          var authScreen = $('#auth-screen');
+          if (authScreen) authScreen.classList.add('hidden-auth');
+          setTimeout(function() {
+            if (authScreen) authScreen.classList.add('hidden');
+            var appShell = $('#app-shell');
+            appShell?.classList.remove('hidden');
+            appShell?.classList.add('flex');
+            loadProfile(user.uid);
+            loadNotices();
+            updateTimer();
+            setInterval(updateTimer, 60000);
+          }, 500);
+        } else {
+          var authScreen = $('#auth-screen');
+          authScreen?.classList.remove('hidden', 'hidden-auth');
+          var appShell = $('#app-shell');
+          appShell?.classList.add('hidden');
+          appShell?.classList.remove('flex');
         }
+      });
 
-        // SIDEBAR DRAWER TOGGLE UTILITY
-        function toggleSidebar() {
-            const drawer = document.getElementById('sidebar-drawer');
-            if(drawer.classList.contains('-translate-x-full')) {
-                drawer.classList.remove('-translate-x-full');
-            } else {
-                drawer.classList.add('-translate-x-full');
-            }
+      getDoc(doc(db, 'settings', 'global')).then(function(snap) {
+        if (snap.exists() && snap.data().examDate) {
+          state.examDate = new Date(snap.data().examDate + 'T09:00:00');
         }
+      }).catch(function() {});
+    }
 
-        // FULL SCREEN OVERLAY IN-APP EMBED PLAYER CONTROLS
-        window.playInAppVideo = function(id, title) {
-            const modal = document.getElementById('inapp-player-modal');
-            const iframe = document.getElementById('inapp-iframe');
-            const titleContainer = document.getElementById('inapp-player-title');
+    // ─── Expose App API ───
+    window.App = {
+      setTheme: applyTheme,
+      logout: logout,
+      playVideo: playVideo,
+      closeVideo: closeVideo,
+      openAdmin: openAdmin,
+      closeAdmin: closeAdmin,
+      openEditModal: openEditModal,
+      closeEditModal: closeEditModal,
+      toggleSidebar: toggleSidebar,
+      openTest: openTest,
+      closeTest: closeTest,
+      deleteTest: deleteTest,
+      showLogin: showLogin,
+      showRegister: showRegister,
+    };
 
-            iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
-            titleContainer.innerText = title;
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeInAppPlayer() {
-            const modal = document.getElementById('inapp-player-modal');
-            const iframe = document.getElementById('inapp-iframe');
-            iframe.src = '';
-            modal.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
-    </script>
+    init();
+  </script>
 </body>
-</html>
+</html>'''
+
+with open('/mnt/agents/output/dark_eio_upboard.html', 'w', encoding='utf-8') as f:
+    f.write(html_content)
+
+print("File saved successfully!")
+print(f"Size: {len(html_content)} characters")
