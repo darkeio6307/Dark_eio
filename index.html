@@ -45,13 +45,9 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
             border: 2px solid #2f3542;
             margin-bottom: 25px;
-            position: relative;
         }
 
         iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
             border: none;
@@ -113,7 +109,7 @@
     </header>
 
     <div class="player-container">
-        <iframe id="main-player" src="https://vidsrc.me/embed/anime/naruto-shippuden/1" allowfullscreen></iframe>
+        <iframe id="main-player" src="https://vidsrc.me/embed/tv/31910/1/1" allowfullscreen></iframe>
     </div>
 
     <div class="controls-container">
@@ -132,14 +128,18 @@
         function changeEpisode(epNumber, buttonElement) {
             const player = document.getElementById('main-player');
             
-            const baseAnimeUrl = "https://vidsrc.me/embed/anime/naruto-shippuden/";
-            player.src = baseAnimeUrl + epNumber;
+            // एनिमे की सही TMDB ID (Naruto Shippuden के लिए 31910) और सीज़न (1)
+            const tmdbId = "31910"; 
+            const season = "1"; 
 
+            // नया लिंक जिसमें नाम नहीं, ID जा रही है
+            player.src = `https://vidsrc.me/embed/tv/${tmdbId}/${season}/${epNumber}`;
+
+            // बटन का कलर बदलने का लॉजिक
             const currentActive = document.querySelector('.ep-btn.active');
             if (currentActive) {
                 currentActive.classList.remove('active');
             }
-
             buttonElement.classList.add('active');
         }
     </script>
